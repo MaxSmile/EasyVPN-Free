@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 import com.j256.ormlite.android.AndroidDatabaseResults;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
@@ -40,9 +41,14 @@ public class RecordsORMAdapter extends BaseAdapter {
 
 
     @Override
-    public Object getItem(final int position) {
+    public VPNGateServerRecord getItem(final int position) {
         dbResults.moveAbsolute(position);
-        return null;
+        String[] s = new String[dbResults.getColumnCount()];
+        // TODO: make sure about columns order
+        for (int i = 0; i < dbResults.getColumnCount(); i++) {
+            s[i] = dbResults.getString(i);
+        }
+        return new VPNGateServerRecord(s);
     }
 
 
@@ -58,11 +64,11 @@ public class RecordsORMAdapter extends BaseAdapter {
             v = inflater.inflate(R.layout.layout_server_record_row, parent, false);
 
         VPNGateServerRecord r = getItem(position);
-//
-//        User u = getItem(position);
-//        u.toString();
-//        ((TextView) v.findViewById(android.R.id.text1)).setText(u.device);
-//        ((TextView) v.findViewById(android.R.id.text2)).setText(u.user);
+
+        ((TextView) v.findViewById(R.id.textHostName)).setText(r.HostName);
+        ((TextView) v.findViewById(R.id.textIP)).setText(r.IP);
+        ((TextView) v.findViewById(R.id.textCountry)).setText(r.CountryLong);
+        ((TextView) v.findViewById(R.id.textPing)).setText(r.Ping);
 
         return v;
     }
