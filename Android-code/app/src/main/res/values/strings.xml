@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Easy VPN Free</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="loading_text">Loading...</string>
+    <string name="downloading_csv_text">Downloading servers list...</string>
+    <string name="parsing_csv_text">Parsing servers list...</string>
+    <string name="csv_file_error">Problem with a file reading...</string>
+    <string name="csv_file_error_parsing">Problem with a file parsing...</string>
+    <string name="network_error">Network erro...</string>
+    <string name="successfully_loaded">Successfully loaded...</string>
+</resources>
