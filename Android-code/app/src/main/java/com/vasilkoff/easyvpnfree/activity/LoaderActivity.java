@@ -1,4 +1,4 @@
-package com.vasilkoff.easyvpnfree;
+package com.vasilkoff.easyvpnfree.activity;
 
 import android.content.Intent;
 import android.os.Handler;
@@ -13,14 +13,12 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.DownloadListener;
 import com.androidnetworking.interfaces.DownloadProgressListener;
 import com.daimajia.numberprogressbar.NumberProgressBar;
-import com.j256.ormlite.dao.Dao;
-import com.vasilkoff.easyvpnfree.database.VPNGateServerRecordsHelper;
-import com.vasilkoff.easyvpnfree.model.VPNGateServerRecord;
+import com.vasilkoff.easyvpnfree.R;
+import com.vasilkoff.easyvpnfree.database.DBHelper;
 
-import java.io.FileNotFoundException;
+import java.io.BufferedReader;
 import java.io.FileReader;
-
-import au.com.bytecode.opencsv.CSVReader;
+import java.io.IOException;
 
 
 public class LoaderActivity extends AppCompatActivity {
@@ -72,8 +70,9 @@ public class LoaderActivity extends AppCompatActivity {
                         updateHandler.sendMessageDelayed(end,500);
                     } break;
                     case SWITCH_TO_RESULT: {
-                        Intent myIntent = new Intent(LoaderActivity.this, ServersListActivity.class);
+                        Intent myIntent = new Intent(LoaderActivity.this, HomeActivity.class);
                         startActivity(myIntent);
+                        finish();
                     }
                 }
                 return true;
@@ -118,34 +117,27 @@ public class LoaderActivity extends AppCompatActivity {
     }
 
     private void parseCSVFile() {
-        CSVReader reader = null;
+        BufferedReader reader = null;
         try {
-            reader = new CSVReader(new FileReader(getCacheDir().getPath().concat("/").concat(CSV_FILE_NAME)));
-        } catch (FileNotFoundException e) {
+            reader = new BufferedReader(new FileReader(getCacheDir().getPath().concat("/").concat(CSV_FILE_NAME)));
+        } catch (IOException e) {
             e.printStackTrace();
             Message msg = new Message();
             msg.arg1 = LOAD_ERROR;
             msg.arg2 = R.string.csv_file_error;
             updateHandler.sendMessage(msg);
         }
-        if (reader!=null) {
-            String[] nextLine;
+        if (reader != null) {
             try {
-                // skip first 2 lines
-                reader.readNext();
-                reader.readNext();
-
-                // Let's insert everyting into DB
-                VPNGateServerRecordsHelper helper = new VPNGateServerRecordsHelper(this);
-                Dao<VPNGateServerRecord, Long> record = helper.getDao();
+                DBHelper dbHelper = new DBHelper(this);
+                dbHelper.clearTable();
                 int counter = 0;
-                while ((nextLine = reader.readNext()) != null) {
-                    // nextLine[] is an array of values from the line
-                    if (nextLine.length>1) {
-                        System.out.println(nextLine[0] + nextLine[1] + "etc...");
-                        record.create(new VPNGateServerRecord(nextLine));
-                        counter++;
+                String line = null;
+                while ((line = reader.readLine()) != null) {
+                    if (counter > 1) {
+                        dbHelper.putLine(line);
                     }
+                    counter++;
                     Message msg = new Message();
                     msg.arg1 = PARSE_PROGRESS;
                     msg.arg2 = counter;// we know that the server returns 100 records
@@ -155,7 +147,7 @@ public class LoaderActivity extends AppCompatActivity {
                 msg.arg1 = PARSE_PROGRESS;
                 msg.arg2 = 100;
                 updateHandler.sendMessage(msg);
-                record.queryForAll();
+
                 Message end = new Message();
                 end.arg1 = LOADING_SUCCESS;
                 updateHandler.sendMessageDelayed(end,200);
