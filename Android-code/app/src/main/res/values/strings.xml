@@ -3,7 +3,18 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="home_country_spinner_prompt">Choose country</string>
+    <string name="home_btn_choose_country">Choose country</string>
+
+    <string name="home_pop_up_title_choose_country">Choose country</string>
+
+    <string name="server_btn_connect">Connect</string>
+    <string name="server_txt_ping">Ping:</string>
+    <string name="server_txt_sessions">Sessions:</string>
+    <string name="server_txt_speed">Speed:</string>
+
+    <string name="mbps">Mbps</string>
+    <string name="ms">ms</string>
+
 
     <string name="action_settings">Settings</string>
     <string name="loading_text">Loading...</string>

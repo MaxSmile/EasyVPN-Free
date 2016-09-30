@@ -1,10 +1,13 @@
 package com.vasilkoff.easyvpnfree.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Kusenko on 29.09.2016.
  */
 
-public class Server {
+public class Server implements Parcelable {
 
     private String hostName;
     private String ip;
@@ -39,6 +42,36 @@ public class Server {
         this.message = message;
         this.configData = configData;
     }
+
+    protected Server(Parcel in) {
+        hostName = in.readString();
+        ip = in.readString();
+        score = in.readString();
+        ping = in.readString();
+        speed = in.readString();
+        countryLong = in.readString();
+        countryShort = in.readString();
+        numVpnSessions = in.readString();
+        uptime = in.readString();
+        totalUsers = in.readString();
+        totalTraffic = in.readString();
+        logType = in.readString();
+        operator = in.readString();
+        message = in.readString();
+        configData = in.readString();
+    }
+
+    public static final Creator<Server> CREATOR = new Creator<Server>() {
+        @Override
+        public Server createFromParcel(Parcel in) {
+            return new Server(in);
+        }
+
+        @Override
+        public Server[] newArray(int size) {
+            return new Server[size];
+        }
+    };
 
     public String getHostName() {
         return hostName;
@@ -98,5 +131,29 @@ public class Server {
 
     public String getConfigData() {
         return configData;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(hostName);
+        dest.writeString(ip);
+        dest.writeString(score);
+        dest.writeString(ping);
+        dest.writeString(speed);
+        dest.writeString(countryLong);
+        dest.writeString(countryShort);
+        dest.writeString(numVpnSessions);
+        dest.writeString(uptime);
+        dest.writeString(totalUsers);
+        dest.writeString(totalTraffic);
+        dest.writeString(logType);
+        dest.writeString(operator);
+        dest.writeString(message);
+        dest.writeString(configData);
     }
 }

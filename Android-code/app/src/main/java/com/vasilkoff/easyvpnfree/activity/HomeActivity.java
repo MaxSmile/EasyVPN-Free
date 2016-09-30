@@ -1,9 +1,13 @@
 package com.vasilkoff.easyvpnfree.activity;
 
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,6 +19,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.vasilkoff.easyvpnfree.R;
@@ -25,21 +32,31 @@ import java.util.List;
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static final String EXTRA_COUNTRY = "country";
+
+    private PopupWindow popupWindow;
+    private int widthWindow ;
+    private int heightWindow;
+    private RelativeLayout homeContextRL;
+
+    private List<String> countryList;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+        widthWindow = dm.widthPixels;
+        heightWindow = dm.heightPixels;
+
+        homeContextRL = (RelativeLayout) findViewById(R.id.homeContextRL);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -50,29 +67,11 @@ public class HomeActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        initCountries();
+        countryList = new DBHelper(this).getCountries();
     }
 
-    private void initCountries() {
-        final List<String> countryList = new DBHelper(this).getCountries();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, countryList);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        Spinner countrySpinner = (Spinner) findViewById(R.id.homeCountrySpinner);
-        countrySpinner.setAdapter(adapter);
-        countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getApplicationContext(), ServersListActivity.class);
-                intent.putExtra("country", countryList.get(position));
-                startActivity(intent);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+    public void homeOnClick(View view) {
+        chooseCountry();
     }
 
     @Override
@@ -130,5 +129,38 @@ public class HomeActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void chooseCountry() {
+        LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.pop_up_choose_country,null);
+
+        popupWindow = new PopupWindow(
+                view,
+                (int)(widthWindow * 0.8f),
+                (int)(heightWindow * 0.7f)
+        );
+
+        popupWindow.setOutsideTouchable(false);
+        popupWindow.setFocusable(true);
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+
+        ListView lvCountry = (ListView) view.findViewById(R.id.homeCountryList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, countryList);
+
+        lvCountry.setAdapter(adapter);
+        lvCountry.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                popupWindow.dismiss();
+                Intent intent = new Intent(getApplicationContext(), ServersListActivity.class);
+                intent.putExtra(EXTRA_COUNTRY, countryList.get(position));
+                startActivity(intent);
+
+            }
+        });
+
+        popupWindow.showAtLocation(homeContextRL, Gravity.CENTER,0, 0);
     }
 }
