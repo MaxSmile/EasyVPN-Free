@@ -5,4 +5,10 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="popUpBg">#C6E1ED</color>
+
+    <color name="mapFill">#282828</color>
+    <color name="mapStroke">#7f7f7f</color>
+    <color name="mapBackground">#01476d</color>
+    <color name="mapNameCountry">#ffffff</color>
+    <color name="mapLine">#ffffff</color>
 </resources>

@@ -3,8 +3,7 @@ package com.vasilkoff.easyvpnfree.activity;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,24 +21,48 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.google.maps.android.geojson.GeoJsonLayer;
+import com.google.maps.android.geojson.GeoJsonPolygonStyle;
 import com.vasilkoff.easyvpnfree.R;
 import com.vasilkoff.easyvpnfree.database.DBHelper;
+import com.vasilkoff.easyvpnfree.model.Country;
+import com.vasilkoff.easyvpnfree.util.LoadData;
 
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        OnMapReadyCallback {
+
+    private GoogleMap mMap = null;
+    private final float ZOOM = 4.0f;
 
     public static final String EXTRA_COUNTRY = "country";
-
     private PopupWindow popupWindow;
     private int widthWindow ;
     private int heightWindow;
     private RelativeLayout homeContextRL;
 
     private List<String> countryList;
+    private final String COUNTRY_FILE_NAME = "countries.json";
+
+    private List<Country> countryLatLonList = null;
 
 
     @Override
@@ -54,6 +77,9 @@ public class HomeActivity extends AppCompatActivity
         heightWindow = dm.heightPixels;
 
         homeContextRL = (RelativeLayout) findViewById(R.id.homeContextRL);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
@@ -68,7 +94,10 @@ public class HomeActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         countryList = new DBHelper(this).getCountries();
+
     }
+
+
 
     public void homeOnClick(View view) {
         chooseCountry();
@@ -154,13 +183,86 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 popupWindow.dismiss();
-                Intent intent = new Intent(getApplicationContext(), ServersListActivity.class);
-                intent.putExtra(EXTRA_COUNTRY, countryList.get(position));
-                startActivity(intent);
+                onSelectCountry(countryList.get(position));
 
             }
         });
 
         popupWindow.showAtLocation(homeContextRL, Gravity.CENTER,0, 0);
+    }
+
+    private void onSelectCountry(String country) {
+        Intent intent = new Intent(getApplicationContext(), ServersListActivity.class);
+        intent.putExtra(EXTRA_COUNTRY, country);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        mMap.getUiSettings().setRotateGesturesEnabled(false);
+       // mMap.getUiSettings().setZoomGesturesEnabled(false);
+        mMap.getUiSettings().setMapToolbarEnabled(false);
+        mMap.getUiSettings().setCompassEnabled(false);
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                onSelectCountry(marker.getTitle());
+                return false;
+            }
+        });
+
+        int color =  ContextCompat.getColor(this,R.color.mapBackground);
+
+        mMap.addPolygon(new PolygonOptions()
+                .add(new LatLng(-85, -170), new LatLng(85, -170), new LatLng(85, 170), new LatLng(-85, 170))
+                .strokeWidth(0)
+                .zIndex(-1)
+                .fillColor(color));
+
+        mMap.addPolygon(new PolygonOptions()
+                .add(new LatLng(-85, 0), new LatLng(85, 0), new LatLng(85, 179), new LatLng(-85, 179))
+                .strokeWidth(0)
+                .zIndex(-1)
+                .fillColor(color));
+
+        mMap.addPolygon(new PolygonOptions()
+                .add(new LatLng(-85, 0), new LatLng(85, 0), new LatLng(85, -180), new LatLng(-85, -180))
+                .strokeWidth(0)
+                .zIndex(-1)
+                .fillColor(color));
+
+        try {
+            GeoJsonLayer layer = new GeoJsonLayer(mMap, R.raw.countries,
+                    getApplicationContext());
+
+            GeoJsonPolygonStyle polygonStyle = layer.getDefaultPolygonStyle();
+            polygonStyle.setFillColor(ContextCompat.getColor(this,R.color.mapFill));
+            polygonStyle.setStrokeColor(ContextCompat.getColor(this,R.color.mapStroke));
+            polygonStyle.setStrokeWidth(1);
+            layer.addLayerToMap();
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+
+        initServerOnMap();
+
+    }
+
+    private void initServerOnMap() {
+        Type listType = new TypeToken<ArrayList<Country>>(){}.getType();
+        countryLatLonList =  new Gson().fromJson(LoadData.fromFile(COUNTRY_FILE_NAME, this), listType);
+
+        for (String countryName : countryList) {
+            for (Country country : countryLatLonList) {
+                if (countryName.equals(country.getCountryName())) {
+                    mMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(country.getCapitalLatitude(), country.getCapitalLongitude()))
+                            .title(country.getCountryName()));
+                }
+            }
+        }
     }
 }
