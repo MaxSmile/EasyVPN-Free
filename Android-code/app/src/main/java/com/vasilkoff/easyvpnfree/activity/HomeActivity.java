@@ -201,6 +201,7 @@ public class HomeActivity extends AppCompatActivity
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
         mMap.getUiSettings().setRotateGesturesEnabled(false);
        // mMap.getUiSettings().setZoomGesturesEnabled(false);
         mMap.getUiSettings().setMapToolbarEnabled(false);
