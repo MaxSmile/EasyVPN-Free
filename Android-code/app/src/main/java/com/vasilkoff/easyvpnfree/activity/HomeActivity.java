@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.SwitchCompat;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,14 +19,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -37,6 +41,7 @@ import com.google.maps.android.geojson.GeoJsonPolygonStyle;
 import com.vasilkoff.easyvpnfree.R;
 import com.vasilkoff.easyvpnfree.database.DBHelper;
 import com.vasilkoff.easyvpnfree.model.Country;
+import com.vasilkoff.easyvpnfree.util.BitmapGenerator;
 import com.vasilkoff.easyvpnfree.util.LoadData;
 
 import org.json.JSONException;
@@ -64,7 +69,6 @@ public class HomeActivity extends AppCompatActivity
 
     private List<Country> countryLatLonList = null;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,12 +81,13 @@ public class HomeActivity extends AppCompatActivity
         heightWindow = dm.heightPixels;
 
         homeContextRL = (RelativeLayout) findViewById(R.id.homeContextRL);
+
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -94,14 +99,13 @@ public class HomeActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         countryList = new DBHelper(this).getCountries();
-
     }
-
-
 
     public void homeOnClick(View view) {
         chooseCountry();
     }
+
+
 
     @Override
     public void onBackPressed() {
@@ -141,18 +145,9 @@ public class HomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        if (id == R.id.nav_refresh) {
+            startActivity(new Intent(this, LoaderActivity.class));
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -210,7 +205,9 @@ public class HomeActivity extends AppCompatActivity
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                onSelectCountry(marker.getTitle());
+                if (marker.getTag() != null)
+                    onSelectCountry((String)marker.getTag());
+
                 return false;
             }
         });
@@ -259,9 +256,17 @@ public class HomeActivity extends AppCompatActivity
         for (String countryName : countryList) {
             for (Country country : countryLatLonList) {
                 if (countryName.equals(country.getCountryName())) {
+                    LatLng position = new LatLng(country.getCapitalLatitude(), country.getCapitalLongitude());
+
+                    Marker markerServer = mMap.addMarker(new MarkerOptions()
+                            .position(position)
+                            .anchor(0.5f, 0.5f));
+                    markerServer.setTag(countryName);
+
                     mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(country.getCapitalLatitude(), country.getCapitalLongitude()))
-                            .title(country.getCountryName()));
+                            .position(position)
+                            .anchor(0.5f, 0)
+                            .icon(BitmapDescriptorFactory.fromBitmap(BitmapGenerator.getTextAsBitmap(countryName, 20, ContextCompat.getColor(this,R.color.mapNameCountry)))));
                 }
             }
         }

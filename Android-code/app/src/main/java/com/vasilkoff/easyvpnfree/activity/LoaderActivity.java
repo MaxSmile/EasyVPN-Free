@@ -13,19 +13,12 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.DownloadListener;
 import com.androidnetworking.interfaces.DownloadProgressListener;
 import com.daimajia.numberprogressbar.NumberProgressBar;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.vasilkoff.easyvpnfree.R;
 import com.vasilkoff.easyvpnfree.database.DBHelper;
-import com.vasilkoff.easyvpnfree.model.Country;
-import com.vasilkoff.easyvpnfree.util.LoadData;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class LoaderActivity extends AppCompatActivity {
@@ -41,7 +34,6 @@ public class LoaderActivity extends AppCompatActivity {
     private final int SWITCH_TO_RESULT = 4;
     private final String CSV_SERVERS_LIST_URL = "http://www.vpngate.net/api/iphone/";
     private final String CSV_FILE_NAME = "vpngate.csv";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,9 +79,9 @@ public class LoaderActivity extends AppCompatActivity {
             }
         });
         progressBar.setProgress(0);
+
         downloadCSVFile();
     }
-
 
     private void downloadCSVFile() {
         AndroidNetworking.download(CSV_SERVERS_LIST_URL,getCacheDir().getPath(),CSV_FILE_NAME)

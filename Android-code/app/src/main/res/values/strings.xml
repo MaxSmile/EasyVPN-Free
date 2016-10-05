@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Easy VPN Free</string>
 
+    <string name="nav_refresh">Refresh servers</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="home_btn_choose_country">Choose country</string>

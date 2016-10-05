@@ -10,6 +10,8 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.net.VpnService;
 import android.os.IBinder;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -86,10 +88,7 @@ public class ServerActivity extends AppCompatActivity {
 
     }
 
-
-
     private void changeServerStatus(VpnStatus.ConnectionStatus status) {
-        System.out.println("TEST status- " + status);
         if (currentServer != null) {
             switch (status) {
                 case LEVEL_CONNECTED:
@@ -163,6 +162,15 @@ public class ServerActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        if (VpnStatus.isVPNActive()) {
+            stopVpn();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         Intent intent = new Intent(this, OpenVPNService.class);
@@ -215,7 +223,7 @@ public class ServerActivity extends AppCompatActivity {
 
         @Override
         public void onServiceDisconnected(ComponentName arg0) {
-            mService =null;
+            mService = null;
         }
 
     };
