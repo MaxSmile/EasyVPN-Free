@@ -260,6 +260,7 @@ public class HomeActivity extends AppCompatActivity
 
                     Marker markerServer = mMap.addMarker(new MarkerOptions()
                             .position(position)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_server_full))
                             .anchor(0.5f, 0.5f));
                     markerServer.setTag(countryName);
 

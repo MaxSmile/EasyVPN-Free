@@ -6,10 +6,12 @@
 
     <color name="popUpBg">#C6E1ED</color>
 
-    <color name="mapFill">#282828</color>
+    <color name="mapFill">#1c3f60</color>
     <color name="mapStroke">#7f7f7f</color>
-    <color name="mapBackground">#01476d</color>
+    <color name="mapBackground">#71bad2</color>
     <color name="mapNameCountry">#ffffff</color>
     <color name="mapLine">#ffffff</color>
+
+    <color name="global_title">#cbecfd</color>
 
 </resources>

@@ -40,7 +40,11 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.ServerActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.HomeActivity"/>
+        </activity >
 
         <service
             android:name="de.blinkt.openvpn.core.OpenVPNService"
@@ -49,7 +53,6 @@
                 <action android:name="android.net.VpnService" />
             </intent-filter>
         </service>
-
 
     </application>
 

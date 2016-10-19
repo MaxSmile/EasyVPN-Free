@@ -14,9 +14,11 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,7 +59,21 @@ public class ServerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
         currentServer = (Server)getIntent().getParcelableExtra(Server.class.getCanonicalName());
+
+        ((ImageView) findViewById(R.id.serverFlag))
+                .setImageResource(
+                        getResources().getIdentifier(currentServer.getCountryShort().toLowerCase(),
+                        "drawable",
+                        getPackageName()));
 
         ((TextView) findViewById(R.id.serverCountry)).setText(currentServer.getCountryLong());
         ((TextView) findViewById(R.id.serverIP)).setText(currentServer.getIp());

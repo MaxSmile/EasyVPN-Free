@@ -13,71 +13,112 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <TextView
-            android:id="@+id/serverCountry"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
-        <TextView
-            android:id="@+id/serverIP"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
+            android:orientation="horizontal"
+            android:background="@drawable/server_info_bg"
+            android:paddingBottom="10dp"
+            android:layout_marginBottom="10dp">
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:gravity="end"
                 android:layout_height="wrap_content"
-                android:text="@string/server_txt_speed"/>
-            <TextView
-                android:id="@+id/serverSpeed"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/serverCountry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"/>
+                <ImageView
+                    android:id="@+id/serverFlag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"/>
+                <Button
+                    android:id="@+id/serverConnect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/server_btn_connect"
+                    android:textAllCaps="false"
+                    android:onClick="serverOnClick"/>
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:gravity="end"
+                android:layout_weight="2"
                 android:layout_height="wrap_content"
-                android:text="@string/server_txt_sessions"/>
-            <TextView
-                android:id="@+id/serverSessions"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"/>
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    style="@style/serverDetails"/>
+                <TextView
+                    android:id="@+id/serverIP"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    style="@style/serverDetails"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:layout_height="wrap_content"
+                        android:text="@string/server_txt_speed"
+                        style="@style/serverDetails"/>
+                    <TextView
+                        android:id="@+id/serverSpeed"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        style="@style/serverDetails"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:layout_height="wrap_content"
+                        android:text="@string/server_txt_sessions"
+                        style="@style/serverDetails"/>
+                    <TextView
+                        android:id="@+id/serverSessions"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        style="@style/serverDetails"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:layout_height="wrap_content"
+                        android:text="@string/server_txt_ping"
+                        style="@style/serverDetails"/>
+                    <TextView
+                        android:id="@+id/serverPing"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        style="@style/serverDetails"/>
+                </LinearLayout>
+
+            </LinearLayout>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:layout_height="wrap_content"
-                android:text="@string/server_txt_ping"/>
-            <TextView
-                android:id="@+id/serverPing"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-        <Button
-            android:id="@+id/serverConnect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/server_btn_connect"
-            android:onClick="serverOnClick"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
