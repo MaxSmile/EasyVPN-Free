@@ -4,7 +4,8 @@
     <color name="colorPrimaryDark">#1c3f61</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="popUpBg">#C6E1ED</color>
+    <color name="popUpBg">#ffffff</color>
+    <color name="listDivider">#356690</color>
 
     <color name="mapFill">#1c3f60</color>
     <color name="mapStroke">#7f7f7f</color>

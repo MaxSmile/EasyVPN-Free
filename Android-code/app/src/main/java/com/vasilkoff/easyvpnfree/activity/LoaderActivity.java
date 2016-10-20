@@ -21,7 +21,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 
-public class LoaderActivity extends AppCompatActivity {
+public class LoaderActivity extends BaseActivity {
 
     private NumberProgressBar progressBar;
     private TextView commentsText;
@@ -81,6 +81,11 @@ public class LoaderActivity extends AppCompatActivity {
         progressBar.setProgress(0);
 
         downloadCSVFile();
+    }
+
+    @Override
+    protected boolean useHomeButton() {
+        return false;
     }
 
     private void downloadCSVFile() {

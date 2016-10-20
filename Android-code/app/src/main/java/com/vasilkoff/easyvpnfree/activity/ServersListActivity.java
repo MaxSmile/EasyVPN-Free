@@ -1,6 +1,8 @@
 package com.vasilkoff.easyvpnfree.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,14 +26,6 @@ public class ServersListActivity extends BaseActivity {
         ListView listView = (ListView) findViewById(R.id.list);
         final List<Server> serverList = new DBHelper(this).getServersByCountry(country);
         listView.setAdapter(new ServerListAdapter(this, serverList));
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getApplicationContext(), ServerActivity.class);
-                intent.putExtra(Server.class.getCanonicalName(), serverList.get(position));
-                startActivity(intent);
-            }
-        });
     }
 
 }

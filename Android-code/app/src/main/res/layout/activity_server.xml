@@ -43,6 +43,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/server_btn_connect"
+                    style="@style/buttons"
+                    android:minHeight="35dp"
                     android:textAllCaps="false"
                     android:onClick="serverOnClick"/>
             </LinearLayout>
@@ -76,7 +78,7 @@
                     <TextView
                         android:id="@+id/serverSpeed"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
+                        android:layout_weight="2"
                         android:layout_height="wrap_content"
                         style="@style/serverDetails"/>
                 </LinearLayout>
@@ -94,7 +96,7 @@
                     <TextView
                         android:id="@+id/serverSessions"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
+                        android:layout_weight="2"
                         android:layout_height="wrap_content"
                         style="@style/serverDetails"/>
                 </LinearLayout>
@@ -112,7 +114,7 @@
                     <TextView
                         android:id="@+id/serverPing"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
+                        android:layout_weight="2"
                         android:layout_height="wrap_content"
                         style="@style/serverDetails"/>
                 </LinearLayout>

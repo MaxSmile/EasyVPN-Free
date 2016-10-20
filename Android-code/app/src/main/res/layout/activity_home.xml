@@ -15,13 +15,27 @@
         tools:context="com.casper.app.activity.HomeActivity"/>
 
     <Button
+        android:id="@+id/homeBtnChooseCountry"
         android:text="@string/home_btn_choose_country"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/buttons"
+        android:minHeight="40dp"
+        android:minWidth="150dp"
+        android:layout_marginBottom="25dp"
+        android:onClick="homeOnClick"
         android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <ImageButton
+        android:id="@+id/homeBtnRefresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
-        android:id="@+id/homeBtnChooseCountry"
+        android:layout_marginTop="23dp"
+        android:background="@null"
+        android:src="@drawable/ic_refresh"
         android:onClick="homeOnClick"/>
 </RelativeLayout>
 
