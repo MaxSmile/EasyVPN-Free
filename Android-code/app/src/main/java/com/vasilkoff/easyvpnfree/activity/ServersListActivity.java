@@ -1,7 +1,6 @@
 package com.vasilkoff.easyvpnfree.activity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,7 +13,7 @@ import com.vasilkoff.easyvpnfree.model.Server;
 
 import java.util.List;
 
-public class ServersListActivity extends AppCompatActivity {
+public class ServersListActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +33,5 @@ public class ServersListActivity extends AppCompatActivity {
             }
         });
     }
-
 
 }

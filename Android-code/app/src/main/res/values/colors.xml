@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimaryDark">#1c3f61</color>
     <color name="colorAccent">#FF4081</color>
 
     <color name="popUpBg">#C6E1ED</color>
@@ -12,6 +12,10 @@
     <color name="mapNameCountry">#ffffff</color>
     <color name="mapLine">#ffffff</color>
 
-    <color name="global_title">#cbecfd</color>
+    <color name="toolbarTitle">#cbecfd</color>
+    <color name="toolbarBg">#356690</color>
+
+    <color name="buttonText">#cbecfd</color>
+    <color name="buttonBg">#356690</color>
 
 </resources>

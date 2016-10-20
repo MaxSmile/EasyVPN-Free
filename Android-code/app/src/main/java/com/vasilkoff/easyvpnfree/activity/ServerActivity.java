@@ -10,11 +10,9 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.net.VpnService;
 import android.os.IBinder;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+
 import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
@@ -31,8 +29,7 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 import de.blinkt.openvpn.VpnProfile;
 import de.blinkt.openvpn.core.ConfigParser;
@@ -41,7 +38,7 @@ import de.blinkt.openvpn.core.ProfileManager;
 import de.blinkt.openvpn.core.VPNLaunchHelper;
 import de.blinkt.openvpn.core.VpnStatus;
 
-public class ServerActivity extends AppCompatActivity {
+public class ServerActivity extends BaseActivity {
 
     private static final int START_VPN_PROFILE = 70;
     private BroadcastReceiver br;
@@ -58,14 +55,6 @@ public class ServerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
 
         currentServer = (Server)getIntent().getParcelableExtra(Server.class.getCanonicalName());
 
@@ -174,15 +163,6 @@ public class ServerActivity extends AppCompatActivity {
             }
         } else {
             onActivityResult(START_VPN_PROFILE, Activity.RESULT_OK, null);
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (VpnStatus.isVPNActive()) {
-            stopVpn();
-        } else {
-            super.onBackPressed();
         }
     }
 
