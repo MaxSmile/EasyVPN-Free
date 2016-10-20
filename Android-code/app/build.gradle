@@ -21,10 +21,26 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            applicationVariants.all { variant ->
+                appendVersionNameVersionCode(variant, defaultConfig)
+            }
         }
     }
 }
 
+def appendVersionNameVersionCode(variant, defaultConfig) {
+    variant.outputs.each { output ->
+        if (output.zipAlign) {
+            def file = output.outputFile
+            def fileName = file.name.replace(".apk", "-casper-" + defaultConfig.versionName + "-" + defaultConfig.versionCode + ".apk")
+            output.outputFile = new File(file.parent, fileName)
+        }
+
+        def file = output.packageApplication.outputFile
+        def fileName = file.name.replace(".apk", "-" + defaultConfig.versionName + "-" + defaultConfig.versionCode + ".apk")
+        output.packageApplication.outputFile = new File(file.parent, fileName)
+    }
+}
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
