@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">Easy VPN Free</string>
-
+    <string name="google_maps_key">AIzaSyC68yVZhsb4ADQVLW73HJLK4DfRQHLpiPE</string>
     <string name="nav_refresh">Refresh servers</string>
+    <string name="state_user_vpn_permission">state_user_vpn_permission</string>
+    <string name="unknown_state">unknown_state</string>
+
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
