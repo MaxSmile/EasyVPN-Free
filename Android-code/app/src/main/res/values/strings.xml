@@ -1,14 +1,7 @@
 <resources>
     <string name="app_name">Easy VPN Free</string>
-
-    <string name="nav_refresh">Refresh servers</string>
-
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="home_btn_choose_country">Choose country</string>
-
     <string name="home_pop_up_title_choose_country">Choose country</string>
-
     <string name="server_btn_connect">Connect</string>
     <string name="server_btn_disconnect">Disconnect</string>
     <string name="server_txt_ping">Ping:</string>
@@ -16,22 +9,14 @@
     <string name="server_txt_speed">Speed:</string>
     <string name="server_error_loading_profile">Error loading profile</string>
     <string name="server_txt_status">Status connection:</string>
-    <string name="server_txt_status_active">Active</string>
-    <string name="server_txt_status_inactive">Inactive</string>
-
     <string name="server_list_more">More</string>
-
     <string name="mbps">Mbps</string>
     <string name="ms">ms</string>
-
-
-    <string name="action_settings">Settings</string>
     <string name="loading_text">Loading...</string>
     <string name="downloading_csv_text">Downloading servers list...</string>
     <string name="parsing_csv_text">Parsing servers list...</string>
     <string name="csv_file_error">Problem with a file reading...</string>
     <string name="csv_file_error_parsing">Problem with a file parsing...</string>
-    <string name="network_error">Network erro...</string>
+    <string name="network_error">Network error...</string>
     <string name="successfully_loaded">Successfully loaded...</string>
-    <string name="title_activity_maps">Map</string>
 </resources>

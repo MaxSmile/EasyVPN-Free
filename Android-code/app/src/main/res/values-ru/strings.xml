@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Easy VPN Free</string>
+    <string name="home_btn_choose_country">Выберите страну</string>
+    <string name="home_pop_up_title_choose_country">Выберите страну</string>
+    <string name="server_btn_connect">Подключить</string>
+    <string name="server_btn_disconnect">Разъединить</string>
+    <string name="server_txt_ping">Пинг:</string>
+    <string name="server_txt_sessions">Сессии:</string>
+    <string name="server_txt_speed">Скорость:</string>
+    <string name="server_error_loading_profile">Ошибка загрузки профиля</string>
+    <string name="server_txt_status">Состояние соединения:</string>
+    <string name="server_list_more">Подробнее</string>
+    <string name="mbps">Mbps</string>
+    <string name="ms">ms</string>
+    <string name="loading_text">Загрузка...</string>
+    <string name="downloading_csv_text">Загрузка списка серверов...</string>
+    <string name="parsing_csv_text">Парсинг списка серверов...</string>
+    <string name="csv_file_error">Проблема с чтением файла...</string>
+    <string name="csv_file_error_parsing">Проблема с парсингом файла...</string>
+    <string name="network_error">Ошибка сети...</string>
+    <string name="successfully_loaded">Загрузка завершена...</string>
+</resources>
