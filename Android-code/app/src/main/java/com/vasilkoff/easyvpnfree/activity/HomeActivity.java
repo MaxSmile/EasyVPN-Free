@@ -84,14 +84,15 @@ public class HomeActivity extends BaseActivity implements  OnMapReadyCallback {
         return false;
     }
 
+    @Override
+    protected boolean useBtnReload() {
+        return true;
+    }
+
     public void homeOnClick(View view) {
         switch (view.getId()) {
             case R.id.homeBtnChooseCountry:
                 chooseCountry();
-                break;
-            case R.id.homeBtnRefresh:
-                startActivity(new Intent(this, LoaderActivity.class));
-                finish();
                 break;
         }
 
