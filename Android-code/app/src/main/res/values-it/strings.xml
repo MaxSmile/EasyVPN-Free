@@ -9,13 +9,13 @@
     <string name="server_error_loading_profile"> Impossibile caricare il profilo </string>
     <string name="server_txt_status"> Stato connessione: </string>
     <string name="server_list_more"> Dettagli </string>
-    <string name="Mbps"> Mbps </string>
+    <string name="mbps"> Mbps </string>
     <string name="ms">  ms </string>
     <string name="loading_text"> Caricamento ... </string>
     <string name="downloading_csv_text"> Elenco server Carica ... </string>
-    <string name="parsing_csv_text"> l'analisi di un elenco di server ... </string>
+    <string name="parsing_csv_text"> l\'analisi di un elenco di server ... </string>
     <string name="csv_file_error"> Il problema con la lettura del file ... </string>
-    <string name="csv_file_error_parsing"> Il problema con l'analisi del file ... </string>
+    <string name="csv_file_error_parsing"> Il problema con l\'analisi del file ... </string>
     <string name="network_error"> Errore di rete ... </string>
     <string name="successfully_loaded"> Scarica completa ... </string>
 </resources>

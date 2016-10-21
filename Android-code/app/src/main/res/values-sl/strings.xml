@@ -10,7 +10,7 @@
     <string name="server_error_loading_profile"> Napaka pri nalaganju profila </string>
     <string name="server_txt_status"> Stanje povezave: </string>
     <string name="server_list_more"> Podrobnosti </string>
-    <string name="Mb"> Mbps </string>
+    <string name="mbps"> Mbps </string>
     <string name="ms"> ms </string>
     <string name="loading_text"> Nalaganje ... </string>
     <string name="downloading_csv_text"> Rokovanje Seznam Server ... </string>

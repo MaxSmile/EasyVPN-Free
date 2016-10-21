@@ -7,10 +7,10 @@
     <string name="server_txt_ping">表：</string>
     <string name="server_txt_sessions">セッション：</string>
     <string name="server_txt_speed">スピード：</string>
-    <string name="server_error_loading_profileは">プロファイルをロードできませんでした</string>
+    <string name="server_error_loading_profile">プロファイルをロードできませんでした</string>
     <string name="server_txt_status">接続ステータス：</string>
     <string name="server_list_more">詳細</string>
-    <string name="Mbps"> Mbps</string>
+    <string name="mbps"> Mbps</string>
     <string name="ms">ミリ</string>
     <string name="loading_text">読み込んでいます... </string>
     <string name="downloading_csv_text">ロードサーバリスト... </string>

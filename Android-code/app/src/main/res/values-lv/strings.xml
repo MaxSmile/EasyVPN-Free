@@ -10,7 +10,7 @@
         <string name="server_error_loading_profile"> Neizdevās ielādēt anketu </string>
         <string name="server_txt_status"> Connection Status: </string>
         <string name="server_list_more"> Detaļas </string>
-        <string name="Mbps"> Mbps </string>
+        <string name="mbps"> Mbps </string>
         <string name="ms"> ms </string>
         <string name="loading_text"> Loading ... </string>
         <string name="downloading_csv_text"> Load Server saraksts ... </string>

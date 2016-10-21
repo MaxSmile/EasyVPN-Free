@@ -10,8 +10,8 @@
     <string name="server_error_loading_profile"> ไม่สามารถโหลดรายละเอียด </string>
     <string name="server_txt_status"> สถานะการเชื่อมต่อ: </string>
     <string name="server_list_more"> รายละเอียด </string>
-    <string name="Mbps"> Mbps </string>
-    <string name="MS"> MS </string>
+    <string name="mbps"> Mbps </string>
+    <string name="ms"> ms </string>
     <string name="loading_text"> โหลด ... </string>
     <string name="downloading_csv_text"> รายชื่อเซิร์ฟเวอร์โหลด ... </string>
     <string name="parsing_csv_text"> แยกรายชื่อของเซิร์ฟเวอร์ ... </string>

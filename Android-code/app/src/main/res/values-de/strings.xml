@@ -17,7 +17,7 @@
     <string name="parsing_csv_text"> eine Liste der Server Parsen ... </string>
     <string name="csv_file_error"> Das Problem mit dem Lesen der Datei ... </string>
     <string name="csv_file_error_parsing"> Das Problem mit Parsen der Datei ... </string>
-    <string name="NETWORK_ERROR"> Netzwerkfehler ... </string>
+    <string name="network_error"> Netzwerkfehler ... </string>
     <string name="successfully_loaded"> Download komplett ... </string>
 
 </resources>

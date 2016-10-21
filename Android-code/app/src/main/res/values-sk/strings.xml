@@ -5,12 +5,12 @@
     <string name="server_btn_connect"> Pripojiť </string>
     <string name="server_btn_disconnect"> Odpojiť </string>
     <string name="server_txt_ping"> Tabuľka: </string>
-    <string name=""> server_txt_sessions Sessions: </string>
+    <string name="server_txt_sessions">  Sessions: </string>
     <string name="server_txt_speed"> Speed: </string>
     <string name="server_error_loading_profile"> Nepodarilo sa načítať profil </string>
     <string name="server_txt_status"> Connection Status: </string>
     <string name="server_list_more"> Podrobnosti </string>
-    <string name="Mbps"> Mbps </string>
+    <string name="mbps"> Mbps </string>
     <string name="ms"> MS </string>
     <string name="loading_text"> Loading ... </string>
     <string name="downloading_csv_text"> Zoznam zaťaženie serverov ... </string>

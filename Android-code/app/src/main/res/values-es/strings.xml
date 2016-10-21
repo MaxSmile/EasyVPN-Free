@@ -5,18 +5,18 @@
     <string name="server_btn_connect"> Conectar </string>
     <string name="server_btn_disconnect"> Desconectar </string>
     <string name="server_txt_ping"> Tabla: </string>
-    <string name=""> server_txt_sessions Sesiones: </string>
+    <string name="server_txt_sessions">  Sesiones: </string>
     <string name="server_txt_speed"> Velocidad: </string>
     <string name="server_error_loading_profile"> No se ha podido cargar el perfil </string>
     <string name="server_txt_status"> Estado de la conexión: </string>
     <string name="server_list_more"> Detalles </string>
-    <string name="Mbps"> Mbps </string>
-    <string name=""> ms ms </string>
+    <string name="mbps"> Mbps </string>
+    <string name="ms"> ms </string>
     <string name="loading_text"> Cargando ... </string>
     <string name="downloading_csv_text"> Lista de servidores de carga ... </string>
     <string name="parsing_csv_text"> Analizar una lista de servidores ... </string>
     <string name="csv_file_error"> El problema con el archivo de lectura ... </string>
     <string name="csv_file_error_parsing"> El problema con el análisis del archivo ... </string>
-    <string name="NETWORK_ERROR"> Error de red ... </string>
+    <string name="network_error"> Error de red ... </string>
     <string name="successfully_loaded"> Descarga completa ... </string>
 </resources>

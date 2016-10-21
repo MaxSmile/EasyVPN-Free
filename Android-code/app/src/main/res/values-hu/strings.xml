@@ -10,7 +10,7 @@
     <string name="server_error_loading_profile"> Nem sikerült betölteni a profilt </string>
     <string name="server_txt_status"> Connection Status: </string>
     <string name="server_list_more"> Részletek </string>
-    <string name="Mbps"> Mbps </string>
+    <string name="mbps"> Mbps </string>
     <string name="ms"> ms </string>
     <string name="loading_text"> Betöltés ... </string>
     <string name="downloading_csv_text"> Load Server List ... </string>

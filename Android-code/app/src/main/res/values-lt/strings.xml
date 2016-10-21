@@ -10,8 +10,8 @@
     <string name="server_error_loading_profile"> Nepavyko įkelti profilį </string>
     <string name="server_txt_status"> Ryšio Būsena: </string>
     <string name="server_list_more"> Detalės </string>
-    <string name="Mbps"> Mbps </string>
-    <string name="MS"> MS </string>
+    <string name="mbps"> Mbps </string>
+    <string name="ms"> ms </string>
     <string name="loading_text"> Kraunasi ... </string>
     <string name="downloading_csv_text"> Apkrovos serveriu ... </string>
     <string name="parsing_csv_text"> Analizuojant serverių sąrašą ... </string>
