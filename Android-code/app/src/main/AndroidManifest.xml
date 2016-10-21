@@ -27,20 +27,20 @@
 
         <activity
             android:name=".activity.LoaderActivity"
-            android:screenOrientation="portrait"/>
+            />
         <activity
             android:name=".activity.HomeActivity"
-            android:screenOrientation="portrait">
+            >
 
         </activity>
 
         <activity
             android:name=".activity.ServersListActivity"
-            android:screenOrientation="portrait"/>
+            />
 
         <activity
             android:name=".activity.ServerActivity"
-            android:screenOrientation="portrait"/>
+            />
 
         <service
             android:name="de.blinkt.openvpn.core.OpenVPNService"
