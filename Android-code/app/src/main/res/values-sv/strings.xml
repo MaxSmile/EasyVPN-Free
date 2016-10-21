@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Enkel Free VPN</string>
+    <string name="home_btn_choose_country"> Välj ditt land </string>
+    <string name="home_pop_up_title_choose_country"> Välj ditt land </string>
+    <string name="server_btn_connect"> Anslut </string>
+    <string name="server_btn_disconnect"> Koppla </string>
+    <string name="server_txt_ping"> Tabell: </string>
+    <string name="server_txt_sessions"> Sessions: </string>
+    <string name="server_txt_speed"> Hastighet: </string>
+    <string name="server_error_loading_profile"> Det gick inte att läsa in profilen </string>
+    <string name="server_txt_status"> Anslutningsstatus: </string>
+    <string name="server_list_more"> Detaljer </string>
+    <string name="mbps"> Mbps </string>
+    <string name="ms"> ms </string>
+    <string name="loading_text"> Loading ... </string>
+    <string name="downloading_csv_text"> Ladda serverlista ... </string>
+    <string name="parsing_csv_text"> Analysera en lista över servrar ... </string>
+    <string name="csv_file_error"> Problemet med läsning fil ... </string>
+    <string name="csv_file_error_parsing"> Problemet med tolkning av fil ... </string>
+    <string name="network_error"> Nätverks fel ... </string>
+    <string name="successfully_loaded"> Hämta komplett ... </string>
+</resources>

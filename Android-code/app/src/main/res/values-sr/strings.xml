@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Лако ВПН Бесплатно</string>
+    <string name="home_btn_choose_country">Изаберите своју земљу</string>
+    <string name="home_pop_up_title_choose_country">Изаберите своју земљу</string>
+    <string name="server_btn_connect">Повежи</string>
+    <string name="server_btn_disconnect">Ацтион</string>
+    <string name="server_txt_ping">Табела:</string>
+    <string name="server_txt_sessions">Сессионс:</string>
+    <string name="server_txt_speed">Брзина:</string>
+    <string name="server_error_loading_profile">Фаилед то лоад профил</string>
+    <string name="server_txt_status">Статус везе:</string>
+    <string name="server_list_more">Детаљи</string>
+    <string name="mbps">Мбит</string>
+    <string name="ms">ms</string>
+    <string name="loading_text">Учитавање...</string>
+    <string name="downloading_csv_text">Tерета Сервер Лист...</string>
+    <string name="parsing_csv_text">Рашчлањивање списак серверa...</string>
+    <string name="csv_file_error">Проблем са читањем филе...</string>
+    <string name="csv_file_error_parsing">Проблем са парсирања фајл...</string>
+    <string name="network_error">Грешка мреже...</string>
+    <string name="successfully_loaded">Преузмите комплетан...</string>
+</resources>

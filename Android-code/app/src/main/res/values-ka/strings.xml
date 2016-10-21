@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Simple უფასო VPN</string>
+    <string name="home_btn_choose_country"> აირჩიეთ თქვენი ქვეყანა </string>
+    <string name="home_pop_up_title_choose_country"> აირჩიეთ თქვენი ქვეყანა </string>
+    <string name="server_btn_connect"> Connect </string>
+    <string name="server_btn_disconnect"> გათიშულია </string>
+    <string name="server_txt_ping"> მაგიდა: </string>
+    <string name="server_txt_sessions"> სესიები: </string>
+    <string name="server_txt_speed"> Speed: </string>
+    <string name="server_error_loading_profile"> ვერ მოხერხდა ნახვა </string>
+    <string name="server_txt_status"> Connection სტატუსი: </string>
+    <string name="server_list_more"> დეტალები </string>
+    <string name="mbps"> Mbps </string>
+    <string name="ms"> ms </string>
+    <string name="loading_text"> Loading ... </string>
+    <string name="downloading_csv_text"> Load Server List ... </string>
+    <string name="parsing_csv_text"> დამუშავების სია სერვერები ... </string>
+    <string name="csv_file_error"> პრობლემა მოსმენით ფაილი ... </string>
+    <string name="csv_file_error_parsing"> პრობლემა parsing ფაილი ... </string>
+    <string name="network_error"> ქსელის შეცდომა ... </string>
+    <string name="successfully_loaded"> ჩამოტვირთვა სრული ... </string>
+</resources>

@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">ฟรีง่ายๆ VPN</string>
+    <string name="home_btn_choose_country"> เลือกประเทศของคุณ </string>
+    <string name="home_pop_up_title_choose_country"> เลือกประเทศของคุณ </string>
+    <string name="server_btn_connect"> เชื่อมต่อ </string>
+    <string name="server_btn_disconnect"> ยกเลิกการเชื่อมต่อ </string>
+    <string name="server_txt_ping"> ตาราง: </string>
+    <string name="server_txt_sessions"> Sessions: </string>
+    <string name="server_txt_speed"> ความเร็ว: </string>
+    <string name="server_error_loading_profile"> ไม่สามารถโหลดรายละเอียด </string>
+    <string name="server_txt_status"> สถานะการเชื่อมต่อ: </string>
+    <string name="server_list_more"> รายละเอียด </string>
+    <string name="Mbps"> Mbps </string>
+    <string name="MS"> MS </string>
+    <string name="loading_text"> โหลด ... </string>
+    <string name="downloading_csv_text"> รายชื่อเซิร์ฟเวอร์โหลด ... </string>
+    <string name="parsing_csv_text"> แยกรายชื่อของเซิร์ฟเวอร์ ... </string>
+    <string name="csv_file_error"> ปัญหากับการอ่านไฟล์ The ... </string>
+    <string name="csv_file_error_parsing"> ปัญหาเกี่ยวกับการแยกไฟล์ที่ ... </string>
+    <string name="network_error"> ข้อผิดพลาดเครือข่าย ... </string>
+    <string name="successfully_loaded"> ดาวน์โหลดเสร็จสมบูรณ์ ... </string>
+</resources>

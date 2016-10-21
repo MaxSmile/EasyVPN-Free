@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Basit Free VPN</string>
+    <string name = "home_btn_choose_country"> Ülkenizi seçin </string>
+    <string name = "home_pop_up_title_choose_country"> Ülkenizi seçin </string>
+    <string name = "server_btn_connect"> Bağlan </string>
+    <string name = "server_btn_disconnect"> Bağlantıyı kes </string>
+    <string name = "server_txt_ping"> Tablo: </string>
+    <string name = "server_txt_sessions"> Oturumlar: </string>
+    <string name = "server_txt_speed"> Hız: </string>
+    <string name = "server_error_loading_profile"> profili yüklenemedi </string>
+    <string name = "server_txt_status"> Bağlantı Durumu: </string>
+    <string name = "server_list_more"> Detaylar </string>
+    <string name = "mbps"> Mbps </string>
+    <string name = "ms"> ms </string>
+    <string name = "loading_text"> Yükleniyor ... </string>
+    <string name = "downloading_csv_text"> Load Sunucu Listesi ... </string>
+    <string name = "parsing_csv_text"> sunucularının listesini ayrıştırılıyor ... </string>
+    <string name = "csv_file_error"> okuma dosyası ile sorun ... </string>
+    <string name = "csv_file_error_parsing"> dosyasını ayrıştırma sorun ... </string>
+    <string name = "network_error"> Ağ hatası ... </string>
+    <string name = "successfully_loaded"> İndirme tamamlandı ... </string>
+</resources>

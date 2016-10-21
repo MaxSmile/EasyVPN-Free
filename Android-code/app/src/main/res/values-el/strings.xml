@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Απλή Δωρεάν VPN</string>
+    <string name="home_btn_choose_country"> Επιλέξτε τη χώρα  </string>
+    <string name="home_pop_up_title_choose_country"> Επιλέξτε τη χώρα </string>
+    <string name="server_btn_connect"> Σύνδεση </string>
+    <string name="server_btn_disconnect"> Αποσύνδεση </string>
+    <string name="server_txt_ping"> Πίνακας: </string>
+    <string name="server_txt_sessions"> Συνεδρίες: </string>
+    <string name="server_txt_speed"> Ταχύτητα: </string>
+    <string name="server_error_loading_profile"> Απέτυχε η φόρτωση του προφίλ </string>
+    <string name="server_txt_status"> Κατάσταση σύνδεσης: </string>
+    <string name="server_list_more"> Λεπτομέρειες </string>
+    <string name="mbps"> Mbps </string>
+    <string name="ms"> ms </string>
+    <string name="loading_text"> Φόρτωση ... </string>
+    <string name="downloading_csv_text"> Load Λίστα διακομιστή ... </string>
+    <string name="parsing_csv_text"> Parsing μια λίστα των διακομιστών ... </string>
+    <string name="csv_file_error"> Το πρόβλημα με την ανάγνωση του αρχείου ... </string>
+    <string name="csv_file_error_parsing"> Το πρόβλημα με την ανάλυση του αρχείου ... </string>
+    <string name="network_error"> Σφάλμα δικτύου ... </string>
+    <string name="successfully_loaded"> Λήψη πλήρη ... </string>
+</resources>

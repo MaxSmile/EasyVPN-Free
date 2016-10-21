@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Sederhana Free VPN</string>
+    <string name="home_btn_choose_country"> Pilih negara </string>
+    <string name="home_pop_up_title_choose_country"> Pilih negara </string>
+    <string name="server_btn_connect"> Connect </string>
+    <string name="server_btn_disconnect"> Putus </string>
+    <string name="server_txt_ping"> Table: </string>
+    <string name="server_txt_sessions"> Sessions: </string>
+    <string name="server_txt_speed"> Kecepatan: </string>
+    <string name="server_error_loading_profile"> Gagal memuat profil </string>
+    <string name="server_txt_status"> Status Connection: </string>
+    <string name="server_list_more"> Detail </string>
+    <string name="mbps"> Mbps </string>
+    <string name="ms"> ms </string>
+    <string name="loading_text"> Loading ... </string>
+    <string name="downloading_csv_text"> Muat Daftar Server ... </string>
+    <string name="parsing_csv_text"> Parsing daftar server ... </string>
+    <string name="csv_file_error"> Masalah dengan membaca file ... </string>
+    <string name="csv_file_error_parsing"> Masalah dengan parsing file ... </string>
+    <string name="network_error"> error Jaringan ... </string>
+    <string name="successfully_loaded"> Unduh lengkap ... </string>
+</resources>

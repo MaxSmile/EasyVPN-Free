@@ -1,0 +1,22 @@
+<resources>
+  <string name="app_name">简易VPN免费</string>
+      <string name="home_btn_choose_country">选择您所在的国家</string>
+      <string name="home_pop_up_title_choose_country">选择您所在的国家</string>
+      <string name="server_btn_connect">连接</string>
+      <string name="server_btn_disconnect">断开连接</string>
+      <string name="server_txt_ping">表：</string>
+      <string name="server_txt_sessions">会话：</string>
+      <string name="server_txt_speed">速度：</string>
+      <string name="server_error_loading_profile">无法加载个人资料</string>
+      <string name="server_txt_status">连接状态：</string>
+      <string name="server_list_more">详细信息</string>
+      <string name="Mbps"> Mbps</string>
+      <string name="MS">毫秒</string>
+      <string name="loading_text">加载...</string>
+      <string name="downloading_csv_text">加载服务器列表...</string>
+      <string name="parsing_csv_text">解析服务器的列表...</string>
+      <string name="csv_file_error">伴读文件的问题...</string>
+      <string name="csv_file_error_parsing">与解析文件的问题...</string>
+      <string name="network_error">网络错误...</string>
+      <string name="successfully_loaded">下载完成...</string>
+</resources>

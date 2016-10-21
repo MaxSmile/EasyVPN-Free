@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Simplu VPN Gratuit</string>
+    <string name="home_btn_choose_country"> Selectați țara </string>
+        <string name="home_pop_up_title_choose_country"> Selectați țara </string>
+        <string name="server_btn_connect"> Connect </string>
+        <string name="server_btn_disconnect"> Deconectare </string>
+        <string name="server_txt_ping"> Tabel: </string>
+        <string name="server_txt_sessions"> Sesiuni: </string>
+        <string name="server_txt_speed"> Viteză: </string>
+        <string name="server_error_loading_profile"> Eroare la încărcarea profilului </string>
+        <string name="server_txt_status"> Connection Status: </string>
+        <string name="server_list_more"> Detalii </string>
+        <string name="mbps"> Mbps </string>
+        <string name="ms"> ms </string>
+        <string name="loading_text"> Loading ... </string>
+        <string name="downloading_csv_text"> Load Server List ... </string>
+        <string name="parsing_csv_text"> Analizare o listă de servere ... </string>
+        <string name="csv_file_error"> Problema cu citirea fișierului ... </string>
+        <string name="csv_file_error_parsing"> Problema cu analizarea fișierului ... </string>
+        <string name="network_error"> Eroare de rețea ... </string>
+        <string name="successfully_loaded"> Descărcare complet ... </string>
+</resources>

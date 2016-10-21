@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Einfache Kostenlose VPN</string>
+    <string name="home_btn_choose_country"> Wählen Sie Ihr Land </string>
+    <string name="home_pop_up_title_choose_country"> Wählen Sie Ihr Land </string>
+    <string name="server_btn_connect"> Verbinden </string>
+    <string name="server_btn_disconnect"> Trennen </string>
+    <string name="server_txt_ping"> Table: </string>
+    <string name="server_txt_sessions"> Sessions: </string>
+    <string name="server_txt_speed"> Geschwindigkeit: </string>
+    <string name="server_error_loading_profile"> Profil konnte nicht geladen werden </string>
+    <string name="server_txt_status"> Verbindungsstatus: </string>
+    <string name="server_list_more"> Details </string>
+    <string name="mbps"> Mbps </string>
+    <string name="ms"> ms </string>
+    <string name="loading_text"> Loading ... </string>
+    <string name="downloading_csv_text"> Server-Liste laden ... </string>
+    <string name="parsing_csv_text"> eine Liste der Server Parsen ... </string>
+    <string name="csv_file_error"> Das Problem mit dem Lesen der Datei ... </string>
+    <string name="csv_file_error_parsing"> Das Problem mit Parsen der Datei ... </string>
+    <string name="NETWORK_ERROR"> Netzwerkfehler ... </string>
+    <string name="successfully_loaded"> Download komplett ... </string>
+
+</resources>

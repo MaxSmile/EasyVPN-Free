@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Jednoduché VPN zadarmo</string>
+    <string name="home_btn_choose_country"> Vyberte svoju krajinu </string>
+    <string name="home_pop_up_title_choose_country"> Vyberte svoju krajinu </string>
+    <string name="server_btn_connect"> Pripojiť </string>
+    <string name="server_btn_disconnect"> Odpojiť </string>
+    <string name="server_txt_ping"> Tabuľka: </string>
+    <string name=""> server_txt_sessions Sessions: </string>
+    <string name="server_txt_speed"> Speed: </string>
+    <string name="server_error_loading_profile"> Nepodarilo sa načítať profil </string>
+    <string name="server_txt_status"> Connection Status: </string>
+    <string name="server_list_more"> Podrobnosti </string>
+    <string name="Mbps"> Mbps </string>
+    <string name="ms"> MS </string>
+    <string name="loading_text"> Loading ... </string>
+    <string name="downloading_csv_text"> Zoznam zaťaženie serverov ... </string>
+    <string name="parsing_csv_text"> Rozobrať zoznam serverov ... </string>
+    <string name="csv_file_error"> Problém s pri čítaní súboru ... </string>
+    <string name="csv_file_error_parsing"> Problém s analýze súboru ... </string>
+    <string name="network_error"> Chyba siete ... </string>
+    <string name="successfully_loaded"> Na stiahnutie kompletné ... </string>
+</resources>

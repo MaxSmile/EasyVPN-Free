@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Simple VPN gratuit</string>
+    <string name="home_btn_choose_country"> Sélectionnez votre pays </string>
+    <string name="home_pop_up_title_choose_country"> Sélectionnez votre pays </string>
+    <string name="server_btn_connect"> Connectez-vous </string>
+    <string name="server_btn_disconnect"> Déconnecter </string>
+    <string name="de server_txt_ping"> Tableau: </string>
+    <string name="server_txt_sessions"> Sessions: </string>
+    <string name="de server_txt_speed"> Vitesse: </string>
+    <string name="server_error_loading_profile"> Impossible de charger le profil </string>
+    <string name="de server_txt_status"> Connection Status: </string>
+    <string name="server_list_more"> Détails </string>
+    <string name="mbps"> Mbps </string>
+    <string name="ms"> ms </string>
+    <string name="loading_text"> Chargement en cours ... </string>
+    <string name="de downloading_csv_text"> Load Liste des serveurs ... </string>
+    <string name="parsing_csv_text"> Parsing une liste de serveurs ... </string>
+    <string name="de csv_file_error"> Le problème avec le fichier de lecture ... </string>
+    <string name="de csv_file_error_parsing"> Le problème avec l'analyse du fichier ... </string>
+    <string name="network_error"> Erreur réseau ... </string>
+    <string name="successfully_loaded"> Télécharger complète ... </string>
+</resources>

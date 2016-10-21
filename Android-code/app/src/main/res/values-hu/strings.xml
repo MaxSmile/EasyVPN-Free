@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Egyszerű Ingyenes VPN</string>
+    <string name="home_btn_choose_country"> Válassza ki az országot </string>
+    <string name="home_pop_up_title_choose_country"> Válassza ki az országot </string>
+    <string name="server_btn_connect"> Csatlakozás </string>
+    <string name="server_btn_disconnect"> Leválasztás </string>
+    <string name="server_txt_ping"> Táblázat: </string>
+    <string name="server_txt_sessions"> Sessions: </string>
+    <string name="server_txt_speed"> Speed: </string>
+    <string name="server_error_loading_profile"> Nem sikerült betölteni a profilt </string>
+    <string name="server_txt_status"> Connection Status: </string>
+    <string name="server_list_more"> Részletek </string>
+    <string name="Mbps"> Mbps </string>
+    <string name="ms"> ms </string>
+    <string name="loading_text"> Betöltés ... </string>
+    <string name="downloading_csv_text"> Load Server List ... </string>
+    <string name="parsing_csv_text"> Elemzés a kiszolgálók listáját ... </string>
+    <string name="csv_file_error"> A probléma a fájl olvasása közben ... </string>
+    <string name="csv_file_error_parsing"> A probléma elemzés a file ... </string>
+    <string name="network_error"> Hálózati hiba ... </string>
+    <string name="successfully_loaded"> Letöltés kész ... </string>
+</resources>

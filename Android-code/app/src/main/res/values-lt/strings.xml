@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Paprasta Nemokama VPT</string>
+    <string name="home_btn_choose_country"> Pasirinkite savo šalį </string>
+    <string name="home_pop_up_title_choose_country"> Pasirinkite savo šalį </string>
+    <string name="server_btn_connect"> Jungti </string>
+    <string name="server_btn_disconnect"> Baigti </string>
+    <string name="server_txt_ping"> Lentelė: </string>
+    <string name="server_txt_sessions"> posėdžiai </string>
+    <string name="server_txt_speed"> Greitis: </string>
+    <string name="server_error_loading_profile"> Nepavyko įkelti profilį </string>
+    <string name="server_txt_status"> Ryšio Būsena: </string>
+    <string name="server_list_more"> Detalės </string>
+    <string name="Mbps"> Mbps </string>
+    <string name="MS"> MS </string>
+    <string name="loading_text"> Kraunasi ... </string>
+    <string name="downloading_csv_text"> Apkrovos serveriu ... </string>
+    <string name="parsing_csv_text"> Analizuojant serverių sąrašą ... </string>
+    <string name="csv_file_error"> Problema su skaitymo failo ... </string>
+    <string name="csv_file_error_parsing"> Problema su apdorojant failą ... </string>
+    <string name="network_error"> Tinklo klaida ... </string>
+    <string name="successfully_loaded"> Atsisiųsti baigtas ... </string>
+</resources>

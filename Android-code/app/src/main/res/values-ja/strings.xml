@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">シンプルな無料のVPN</string>
+    <string name="home_btn_choose_country"> にあなたの国を選択</string>
+    <string name="home_pop_up_title_choose_country"> にあなたの国を選択</string>
+    <string name="server_btn_connect">接続</string>
+    <string name="server_btn_disconnect">を切断</string>
+    <string name="server_txt_ping">表：</string>
+    <string name="server_txt_sessions">セッション：</string>
+    <string name="server_txt_speed">スピード：</string>
+    <string name="server_error_loading_profileは">プロファイルをロードできませんでした</string>
+    <string name="server_txt_status">接続ステータス：</string>
+    <string name="server_list_more">詳細</string>
+    <string name="Mbps"> Mbps</string>
+    <string name="ms">ミリ</string>
+    <string name="loading_text">読み込んでいます... </string>
+    <string name="downloading_csv_text">ロードサーバリスト... </string>
+    <string name="parsing_csv_text">サーバーのリストを解析... </string>
+    <string name="csv_file_error">読み取りファイルに問題... </string>
+    <string name="csv_file_error_parsing">ファイルを解析すると、問題... </string>
+    <string name="network_error">ネットワークエラー... </string>
+    <string name="successfully_loaded">ダウンロードの完了... </string>
+</resources>
