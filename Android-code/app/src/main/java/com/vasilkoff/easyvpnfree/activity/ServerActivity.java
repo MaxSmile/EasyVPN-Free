@@ -77,15 +77,17 @@ public class ServerActivity extends BaseActivity {
         ((TextView) findViewById(R.id.serverSpeed)).setText(speed);
 
         serverConnect = (Button) findViewById(R.id.serverConnect);
-        String status = VpnStatus.isVPNActive() ? getString(R.string.server_btn_disconnect) : getString(R.string.server_btn_connect);
+
+        String status = checkStatus() ? getString(R.string.server_btn_disconnect) : getString(R.string.server_btn_connect);
         serverConnect.setText(status);
 
         br = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-
-                changeServerStatus(VpnStatus.ConnectionStatus.valueOf(intent.getStringExtra("status")));
-                ((TextView) findViewById(R.id.serverStatus)).setText(VpnStatus.getLastCleanLogMessage(getApplicationContext()));
+                if (checkStatus()) {
+                    changeServerStatus(VpnStatus.ConnectionStatus.valueOf(intent.getStringExtra("status")));
+                    ((TextView) findViewById(R.id.serverStatus)).setText(VpnStatus.getLastCleanLogMessage(getApplicationContext()));
+                }
             }
         };
 
@@ -93,24 +95,38 @@ public class ServerActivity extends BaseActivity {
 
     }
 
-    private void changeServerStatus(VpnStatus.ConnectionStatus status) {
-        if (currentServer != null) {
-            switch (status) {
-                case LEVEL_CONNECTED:
-                    serverConnect.setText(getString(R.string.server_btn_disconnect));
-                    break;
-                case LEVEL_NOTCONNECTED:
-                    serverConnect.setText(getString(R.string.server_btn_connect));
-                    break;
-                default:
-                    serverConnect.setText(getString(R.string.server_btn_disconnect));
-            }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(getApplicationContext(), ServersListActivity.class);
+        intent.putExtra(HomeActivity.EXTRA_COUNTRY, currentServer.getCountryLong());
+        startActivity(intent);
+        finish();
+    }
+
+    private boolean checkStatus() {
+        if (hostName != null && hostName.equals(currentServer.getHostName())) {
+            return VpnStatus.isVPNActive();
         }
 
+        return false;
+    }
+
+    private void changeServerStatus(VpnStatus.ConnectionStatus status) {
+        switch (status) {
+            case LEVEL_CONNECTED:
+                serverConnect.setText(getString(R.string.server_btn_disconnect));
+                break;
+            case LEVEL_NOTCONNECTED:
+                serverConnect.setText(getString(R.string.server_btn_connect));
+                break;
+            default:
+                serverConnect.setText(getString(R.string.server_btn_disconnect));
+        }
     }
 
     public void serverOnClick(View view) {
-        if (VpnStatus.isVPNActive()) {
+        if (checkStatus()) {
             stopVpn();
             serverConnect.setText(getString(R.string.server_btn_connect));
         } else {
@@ -141,6 +157,7 @@ public class ServerActivity extends BaseActivity {
     }
 
     private void stopVpn() {
+        hostName = null;
         ProfileManager.setConntectedVpnProfileDisconnected(this);
         if (mService != null && mService.getManagement() != null)
             mService.getManagement().stopVPN(false);
@@ -148,6 +165,8 @@ public class ServerActivity extends BaseActivity {
     }
 
     private void startVpn() {
+        hostName = currentServer.getHostName();
+
         Intent intent = VpnService.prepare(this);
 
         if (intent != null) {
@@ -173,14 +192,16 @@ public class ServerActivity extends BaseActivity {
         intent.setAction(OpenVPNService.START_SERVICE);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 
-        if (VpnStatus.isVPNActive()) {
+        if (checkStatus()) {
             try {
                 TimeUnit.SECONDS.sleep(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if(!VpnStatus.isVPNActive())
+            if(!checkStatus())
                 serverConnect.setText(getString(R.string.server_btn_connect));
+        } else {
+            serverConnect.setText(getString(R.string.server_btn_connect));
         }
     }
 

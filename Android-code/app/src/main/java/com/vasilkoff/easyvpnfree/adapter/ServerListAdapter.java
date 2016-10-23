@@ -2,6 +2,8 @@ package com.vasilkoff.easyvpnfree.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.vasilkoff.easyvpnfree.R;
+import com.vasilkoff.easyvpnfree.activity.BaseActivity;
 import com.vasilkoff.easyvpnfree.activity.ServerActivity;
 import com.vasilkoff.easyvpnfree.model.Server;
 
@@ -22,7 +25,7 @@ import java.util.List;
  */
 public class ServerListAdapter extends BaseAdapter {
 
-    private final LayoutInflater inflater;
+    private LayoutInflater inflater;
     private List<Server> serverList = new ArrayList<Server>();
     private Context context;
 
@@ -40,23 +43,23 @@ public class ServerListAdapter extends BaseAdapter {
 
 
     @Override
-    public Server getItem(final int position) {
+    public Server getItem(int position) {
         return serverList.get(position);
     }
 
 
     @Override
-    public long getItemId(final int position) {
+    public long getItemId(int position) {
         return position;
     }
 
 
     @Override
-    public View getView(final int position, View v, final ViewGroup parent) {
-        if (v == null)
-            v = inflater.inflate(R.layout.layout_server_record_row, parent, false);
+    public View getView(int position, View v, ViewGroup parent) {
 
-        Server server = getItem(position);
+        v = inflater.inflate(R.layout.layout_server_record_row, parent, false);
+
+        final Server server = getItem(position);
 
         ((ImageView) v.findViewById(R.id.imageFlag))
                 .setImageResource(
@@ -64,17 +67,23 @@ public class ServerListAdapter extends BaseAdapter {
                                 "drawable",
                                 context.getPackageName()));
 
-        ((TextView) v.findViewById(R.id.textHostName)).setText(server.getHostName());
+        String hostName = server.getHostName();
+
+        ((TextView) v.findViewById(R.id.textHostName)).setText(hostName);
         ((TextView) v.findViewById(R.id.textIP)).setText(server.getIp());
         ((TextView) v.findViewById(R.id.textCountry)).setText(server.getCountryLong());
         ((TextView) v.findViewById(R.id.textPing)).setText(server.getPing());
 
         Button button = (Button) v.findViewById(R.id.serverListConnect);
+        if (BaseActivity.hostName != null && BaseActivity.hostName.equals(hostName)) {
+            button.setBackground(ContextCompat.getDrawable(context, R.drawable.connected_bg));
+        }
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ServerActivity.class);
-                intent.putExtra(Server.class.getCanonicalName(), getItem(position));
+                intent.putExtra(Server.class.getCanonicalName(), server);
                 context.startActivity(intent);
             }
         });

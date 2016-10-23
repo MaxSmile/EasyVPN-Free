@@ -20,6 +20,7 @@ public class BaseActivity extends AppCompatActivity {
     private DrawerLayout fullLayout;
     private Toolbar toolbar;
     private ImageButton reload;
+    public static String hostName = null;
 
     @Override
     public void setContentView(int layoutResID)
@@ -28,13 +29,11 @@ public class BaseActivity extends AppCompatActivity {
         FrameLayout activityContainer = (FrameLayout) fullLayout.findViewById(R.id.activity_content);
         getLayoutInflater().inflate(layoutResID, activityContainer, true);
         super.setContentView(fullLayout);
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (useToolbar())
-        {
+        if (useToolbar()) {
             setSupportActionBar(toolbar);
-        }
-        else
-        {
+        } else {
             toolbar.setVisibility(View.GONE);
         }
 
@@ -46,6 +45,7 @@ public class BaseActivity extends AppCompatActivity {
                 finish();
             }
         });
+
         if (useBtnReload()) {
             reload.setVisibility(View.VISIBLE);
         }
