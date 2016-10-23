@@ -57,6 +57,7 @@
             style="@style/buttons"
             android:minHeight="35dp"
             android:textAllCaps="false"
+            android:padding="5dp"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true" />
     </RelativeLayout>

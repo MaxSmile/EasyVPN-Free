@@ -24,6 +24,7 @@
         android:minWidth="150dp"
         android:layout_marginBottom="25dp"
         android:onClick="homeOnClick"
+        android:padding="5dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 

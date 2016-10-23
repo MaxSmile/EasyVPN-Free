@@ -46,6 +46,7 @@
                     style="@style/buttons"
                     android:minHeight="35dp"
                     android:textAllCaps="false"
+                    android:padding="5dp"
                     android:onClick="serverOnClick"/>
             </LinearLayout>
             <LinearLayout
