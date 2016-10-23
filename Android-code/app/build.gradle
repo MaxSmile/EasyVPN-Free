@@ -22,7 +22,11 @@ android {
     }
 
     buildTypes {
+        debug {
+            manifestPlaceholders = [ mapApiKeyValue:"AIzaSyCXg3m41LU8VfrUxsc8NN69yER7jQCXPw4"]
+        }
         release {
+            manifestPlaceholders = [ mapApiKeyValue:"AIzaSyDXkYjRv_7DBT0quzpQwiZp7iVJXdy64zs"]
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             applicationVariants.all { variant ->
