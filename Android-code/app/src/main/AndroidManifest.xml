@@ -19,10 +19,7 @@
             android:value="@string/google_maps_key" />
         <activity
             android:name=".activity.LauncherActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
 
         <activity
@@ -31,11 +28,15 @@
         <activity
             android:name=".activity.HomeActivity"
             android:screenOrientation="portrait">
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity
             android:name=".activity.ServersListActivity"
+            android:noHistory="true"
             android:screenOrientation="portrait"/>
 
         <activity
