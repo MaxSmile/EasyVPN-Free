@@ -8,7 +8,7 @@ android {
         applicationId "com.vasilkoff.easyvpnfree"
         minSdkVersion 17
         targetSdkVersion 24
-        versionCode 4
+        versionCode 5
         versionName "1.0"
         multiDexEnabled true
     }
@@ -22,7 +22,11 @@ android {
     }
 
     buildTypes {
+        debug {
+            manifestPlaceholders = [ mapApiKeyValue:"AIzaSyCXg3m41LU8VfrUxsc8NN69yER7jQCXPw4"]
+        }
         release {
+            manifestPlaceholders = [ mapApiKeyValue:"AIzaSyDXkYjRv_7DBT0quzpQwiZp7iVJXdy64zs"]
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             applicationVariants.all { variant ->
