@@ -67,15 +67,14 @@ public class ServerListAdapter extends BaseAdapter {
                                 "drawable",
                                 context.getPackageName()));
 
-        String hostName = server.getHostName();
-
-        ((TextView) v.findViewById(R.id.textHostName)).setText(hostName);
+        ((TextView) v.findViewById(R.id.textHostName)).setText(server.getHostName());
         ((TextView) v.findViewById(R.id.textIP)).setText(server.getIp());
         ((TextView) v.findViewById(R.id.textCountry)).setText(server.getCountryLong());
         ((TextView) v.findViewById(R.id.textPing)).setText(server.getPing());
 
         Button button = (Button) v.findViewById(R.id.serverListConnect);
-        if (BaseActivity.hostName != null && BaseActivity.hostName.equals(hostName)) {
+
+        if (BaseActivity.connectedServer != null && BaseActivity.connectedServer.getHostName().equals(server.getHostName())) {
             button.setBackground(ContextCompat.getDrawable(context, R.drawable.connected_bg));
         }
 

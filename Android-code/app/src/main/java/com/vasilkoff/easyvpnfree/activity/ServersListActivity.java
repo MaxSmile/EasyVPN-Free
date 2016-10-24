@@ -19,7 +19,7 @@ public class ServersListActivity extends BaseActivity {
         setContentView(R.layout.activity_servers_list);
 
         if (!VpnStatus.isVPNActive()) {
-            hostName = null;
+            connectedServer = null;
         }
 
         String country = getIntent().getStringExtra(HomeActivity.EXTRA_COUNTRY);

@@ -8,9 +8,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 
 import com.vasilkoff.easyvpnfree.R;
+import com.vasilkoff.easyvpnfree.model.Server;
 
 /**
  * Created by Kusenko on 20.10.2016.
@@ -20,7 +20,7 @@ public class BaseActivity extends AppCompatActivity {
 
     private DrawerLayout fullLayout;
     private Toolbar toolbar;
-    public static String hostName = null;
+    public static Server connectedServer = null;
 
     @Override
     public void setContentView(int layoutResID)

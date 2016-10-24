@@ -57,6 +57,8 @@ public class ServerActivity extends BaseActivity {
         setContentView(R.layout.activity_server);
 
         currentServer = (Server)getIntent().getParcelableExtra(Server.class.getCanonicalName());
+        if (currentServer == null)
+            currentServer = connectedServer;
 
         ((ImageView) findViewById(R.id.serverFlag))
                 .setImageResource(
@@ -78,8 +80,13 @@ public class ServerActivity extends BaseActivity {
 
         serverConnect = (Button) findViewById(R.id.serverConnect);
 
-        String status = checkStatus() ? getString(R.string.server_btn_disconnect) : getString(R.string.server_btn_connect);
-        serverConnect.setText(status);
+
+        if (checkStatus()) {
+            serverConnect.setText(getString(R.string.server_btn_disconnect));
+            ((TextView) findViewById(R.id.serverStatus)).setText(VpnStatus.getLastCleanLogMessage(getApplicationContext()));
+        } else {
+            serverConnect.setText(getString(R.string.server_btn_connect));
+        }
 
         br = new BroadcastReceiver() {
             @Override
@@ -105,7 +112,7 @@ public class ServerActivity extends BaseActivity {
     }
 
     private boolean checkStatus() {
-        if (hostName != null && hostName.equals(currentServer.getHostName())) {
+        if (connectedServer != null && connectedServer.getHostName().equals(currentServer.getHostName())) {
             return VpnStatus.isVPNActive();
         }
 
@@ -128,7 +135,6 @@ public class ServerActivity extends BaseActivity {
     public void serverOnClick(View view) {
         if (checkStatus()) {
             stopVpn();
-            serverConnect.setText(getString(R.string.server_btn_connect));
         } else {
             if (loadVpnProfile()) {
                 serverConnect.setText(getString(R.string.server_btn_disconnect));
@@ -157,7 +163,8 @@ public class ServerActivity extends BaseActivity {
     }
 
     private void stopVpn() {
-        hostName = null;
+        serverConnect.setText(getString(R.string.server_btn_connect));
+        connectedServer = null;
         ProfileManager.setConntectedVpnProfileDisconnected(this);
         if (mService != null && mService.getManagement() != null)
             mService.getManagement().stopVPN(false);
@@ -165,7 +172,7 @@ public class ServerActivity extends BaseActivity {
     }
 
     private void startVpn() {
-        hostName = currentServer.getHostName();
+        connectedServer = currentServer;
 
         Intent intent = VpnService.prepare(this);
 
@@ -188,6 +195,9 @@ public class ServerActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (getIntent().getAction() != null)
+            stopVpn();
+
         Intent intent = new Intent(this, OpenVPNService.class);
         intent.setAction(OpenVPNService.START_SERVICE);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
@@ -199,7 +209,7 @@ public class ServerActivity extends BaseActivity {
                 e.printStackTrace();
             }
             if (!checkStatus()) {
-                hostName = null;
+                connectedServer = null;
                 serverConnect.setText(getString(R.string.server_btn_connect));
             }
 
