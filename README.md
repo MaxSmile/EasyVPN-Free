@@ -1,13 +1,20 @@
 # Easy VPN Free
-
+----
 ## Introduction
 
 Android application which lets you easily to connect to a number of free VPN server around the world with just a single tap!
 
 The list of servers the application connect is http://www.vpngate.net/
 **VPN Gate Academic Experiment Project** is an online service as an academic research at Graduate School of University of Tsukuba, Japan. The purpose of this research is to expand the knowledge of "Global Distributed Public VPN Relay Servers" .
+----
+###Demo
 
+![Easy VPN Free](https://github.com/MaxSmile/EasyVPN-Free/blob/master/easy-vpn-free.gif?raw=true)
 
+----
+## Installation
+
+Compiled binary is available  here https://github.com/MaxSmile/EasyVPN-Free/tree/master/binary
 
 ----
 ## Why VPN Gate?
@@ -19,12 +26,6 @@ You can take these advantages by using VPN Gate:
 * You can protect yourself by utilizing its strong encryption while using public Wi-Fi.
 Unlike traditional VPN services, VPN Gate can get through most firewalls.
 VPN Gate is free of charge. Not a single registration is required.
-
-----
-## Installation
-
-Compiled binary is available  here https://github.com/MaxSmile/EasyVPN-Free/tree/master/binary
-
 
 ----
 ## License
@@ -40,6 +41,7 @@ This application uses the following components; see the source code for full det
 * NumberProgressBar https://github.com/daimajia/NumberProgressBar under MIT
 * Fast-Android-Networking https://github.com/amitshekhariitbhu/Fast-Android-Networking under Apache 2.0
 
+----
 ## You can help
 
 Even if you are not a programmer you can help by translating the Easy VPN Free client into your native language.
