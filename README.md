@@ -5,7 +5,8 @@
 Android application which lets you easily to connect to a number of free VPN server around the world with just a single tap!
 
 The list of servers the application connect is http://www.vpngate.net/
-**VPN Gate Academic Experiment Project** is an online service as an academic research at Graduate School of University of Tsukuba, Japan. The purpose of this research is to expand the knowledge of "Global Distributed Public VPN Relay Servers" .
+**VPN Gate Academic Experiment Project** is an online service as an academic research at Graduate School of University of Tsukuba, Japan. The purpose of this research is to expand the knowledge of "Global Distributed Public VPN Relay Servers".
+
 ----
 ###Demo
 
