@@ -19,4 +19,6 @@
     <string name="csv_file_error_parsing">Problem with a file parsing...</string>
     <string name="network_error">Network error...</string>
     <string name="successfully_loaded">Successfully loaded...</string>
+    <string name="action_about">About</string>
+    <string name="action_refresh">Refresh servers list</string>
 </resources>

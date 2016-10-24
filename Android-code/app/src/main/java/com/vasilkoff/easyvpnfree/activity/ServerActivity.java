@@ -198,8 +198,11 @@ public class ServerActivity extends BaseActivity {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if(!checkStatus())
+            if (!checkStatus()) {
+                hostName = null;
                 serverConnect.setText(getString(R.string.server_btn_connect));
+            }
+
         } else {
             serverConnect.setText(getString(R.string.server_btn_connect));
         }
