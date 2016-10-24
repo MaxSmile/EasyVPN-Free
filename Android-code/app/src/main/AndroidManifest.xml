@@ -19,20 +19,21 @@
             android:value="${mapApiKeyValue}" />
 
         <activity android:name=".activity.LauncherActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".activity.LoaderActivity" />
-        <activity android:name=".activity.HomeActivity" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".activity.HomeActivity" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-        </activity>
         <activity
             android:name=".activity.ServersListActivity"
             android:noHistory="true" />
         <activity android:name=".activity.ServerActivity" />
+
+        <activity android:name=".activity.AboutActivity"/>
 
         <service
             android:name="de.blinkt.openvpn.core.OpenVPNService"
@@ -42,7 +43,6 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".activity.AboutActivity"></activity>
     </application>
 
 </manifest>
