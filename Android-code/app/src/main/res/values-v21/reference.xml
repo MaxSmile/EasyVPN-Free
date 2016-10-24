@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="ic_menu_close_clear_cancel">@drawable/ic_close_white_24dp</drawable>
+    <drawable name="ic_menu_play">@drawable/ic_play_arrow_white_24dp</drawable>
+    <drawable name="ic_menu_pause">@drawable/ic_pause_white_24dp</drawable>
+</resources>
