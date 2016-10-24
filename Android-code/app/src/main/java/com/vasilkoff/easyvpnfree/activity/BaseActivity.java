@@ -72,9 +72,9 @@ public class BaseActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), LoaderActivity.class));
                 finish();
                 return true;
-            case R.id.actionAbout:
+           /* case R.id.actionAbout:
                 startActivity(new Intent(getApplicationContext(), AboutActivity.class));
-                return true;
+                return true;*/
         }
 
         return super.onOptionsItemSelected(item);

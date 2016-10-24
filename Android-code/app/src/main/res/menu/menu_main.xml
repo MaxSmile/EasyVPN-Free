@@ -8,10 +8,5 @@
         android:title="@string/action_refresh"
         android:icon="@drawable/ic_reload"
         app:showAsAction="ifRoom"/>
-    <item
-        android:id="@+id/actionAbout"
-        android:orderInCategory="200"
-        android:icon="@android:drawable/ic_menu_info_details"
-        android:title="@string/action_about"
-        app:showAsAction="never"/>
+
 </menu>

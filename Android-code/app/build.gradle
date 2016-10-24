@@ -8,7 +8,7 @@ android {
         applicationId "com.vasilkoff.easyvpnfree"
         minSdkVersion 17
         targetSdkVersion 24
-        versionCode 5
+        versionCode 6
         versionName "1.0"
         multiDexEnabled true
     }
