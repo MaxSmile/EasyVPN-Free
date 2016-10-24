@@ -1,11 +1,5 @@
 package com.vasilkoff.easyvpnfree.activity;
-
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.vasilkoff.easyvpnfree.R;
@@ -15,12 +9,18 @@ import com.vasilkoff.easyvpnfree.model.Server;
 
 import java.util.List;
 
+import de.blinkt.openvpn.core.VpnStatus;
+
 public class ServersListActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_servers_list);
+
+        if (!VpnStatus.isVPNActive()) {
+            hostName = null;
+        }
 
         String country = getIntent().getStringExtra(HomeActivity.EXTRA_COUNTRY);
         ListView listView = (ListView) findViewById(R.id.list);

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -19,7 +20,6 @@ public class BaseActivity extends AppCompatActivity {
 
     private DrawerLayout fullLayout;
     private Toolbar toolbar;
-    private ImageButton reload;
     public static String hostName = null;
 
     @Override
@@ -37,25 +37,13 @@ public class BaseActivity extends AppCompatActivity {
             toolbar.setVisibility(View.GONE);
         }
 
-        reload = (ImageButton) findViewById(R.id.btnReload);
-        reload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), LoaderActivity.class));
-                finish();
-            }
-        });
-
-        if (useBtnReload()) {
-            reload.setVisibility(View.VISIBLE);
-        }
-
         if (useHomeButton()) {
             if (getSupportActionBar() != null){
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 getSupportActionBar().setDisplayShowHomeEnabled(true);
             }
         }
+
     }
 
     protected boolean useToolbar()
@@ -68,9 +56,10 @@ public class BaseActivity extends AppCompatActivity {
         return true;
     }
 
-    protected boolean useBtnReload()
-    {
-        return false;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
     @Override
@@ -79,7 +68,15 @@ public class BaseActivity extends AppCompatActivity {
             case android.R.id.home:
                 onBackPressed();
                 return true;
+            case R.id.actionRefresh:
+                startActivity(new Intent(getApplicationContext(), LoaderActivity.class));
+                finish();
+                return true;
+           /* case R.id.actionAbout:
+                startActivity(new Intent(getApplicationContext(), AboutActivity.class));
+                return true;*/
         }
-        return false;
+
+        return super.onOptionsItemSelected(item);
     }
 }
