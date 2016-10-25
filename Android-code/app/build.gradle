@@ -8,7 +8,7 @@ android {
         applicationId "com.vasilkoff.easyvpnfree"
         minSdkVersion 17
         targetSdkVersion 24
-        versionCode 6
+        versionCode 7
         versionName "1.0"
         multiDexEnabled true
         setProperty("archivesBaseName", "easyvpnfree-$versionName-$versionCode")
@@ -42,9 +42,10 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:support-v4:24.2.1'
     compile 'com.android.support:design:24.2.1'
+
     compile 'com.daimajia.numberprogressbar:library:1.2@aar'
     compile 'com.amitshekhar.android:android-networking:0.2.0'
-    //compile 'com.android.support:recyclerview-v7:24.2.1'
+
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.google.android.gms:play-services-maps:9.6.1'
     compile 'com.google.maps.android:android-maps-utils:0.4.4'
