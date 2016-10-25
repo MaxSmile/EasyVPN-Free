@@ -88,6 +88,11 @@ public class LoaderActivity extends BaseActivity {
         return false;
     }
 
+    @Override
+    protected boolean useMenu() {
+        return false;
+    }
+
     private void downloadCSVFile() {
         AndroidNetworking.download(CSV_SERVERS_LIST_URL,getCacheDir().getPath(),CSV_FILE_NAME)
                 .setTag("downloadCSV")

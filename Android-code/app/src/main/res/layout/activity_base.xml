@@ -15,7 +15,8 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/toolbarBg"
             app:titleTextColor="@color/toolbarTitle"
-            app:titleMarginStart="30dp"
+            app:titleMarginStart="20dp"
+            app:contentInsetStart="10dp"
             app:logo="@drawable/ic_app_small">
 
         </android.support.v7.widget.Toolbar>
