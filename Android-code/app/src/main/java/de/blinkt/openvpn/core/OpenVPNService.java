@@ -37,6 +37,8 @@ import com.vasilkoff.easyvpnfree.BuildConfig;
 
 import com.vasilkoff.easyvpnfree.R;
 import com.vasilkoff.easyvpnfree.activity.HomeActivity;
+import com.vasilkoff.easyvpnfree.activity.ServerActivity;
+import com.vasilkoff.easyvpnfree.model.Server;
 
 
 import java.io.IOException;
@@ -145,14 +147,14 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
             }
         }
     }
-/*
+
     private void showNotification(final String msg, String tickerText, boolean lowpriority, long when, ConnectionStatus status) {
         String ns = Context.NOTIFICATION_SERVICE;
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(ns);
 
 
         //int icon = getIconByConnectionStatus(status);
-        int icon = R.mipmap.ic_launcher;
+        int icon = R.drawable.ic_app_notif;
         android.app.Notification.Builder nbuilder = new Notification.Builder(this);
 
         if (mProfile != null)
@@ -203,7 +205,7 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
                 }
             });
     }
-*/
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void lpNotificationExtras(Notification.Builder nbuilder) {
         nbuilder.setCategory(Notification.CATEGORY_SERVICE);
@@ -238,7 +240,6 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
         }
     }*/
 
-    /*
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void jbNotificationExtras(boolean lowpriority,
                                       android.app.Notification.Builder nbuilder) {
@@ -253,24 +254,24 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
 
             }
 
-            Intent disconnectVPN = new Intent(this, DisconnectVPN.class);
+            Intent disconnectVPN = new Intent(this, ServerActivity.class);
             disconnectVPN.setAction(DISCONNECT_VPN);
             PendingIntent disconnectPendingIntent = PendingIntent.getActivity(this, 0, disconnectVPN, 0);
 
-            nbuilder.addAction(R.mipmap.ic_launcher,
+            nbuilder.addAction(R.drawable.ic_menu_close_clear_cancel,
                     getString(R.string.cancel_connection), disconnectPendingIntent);
 
             Intent pauseVPN = new Intent(this, OpenVPNService.class);
             if (mDeviceStateReceiver == null || !mDeviceStateReceiver.isUserPaused()) {
                 pauseVPN.setAction(PAUSE_VPN);
                 PendingIntent pauseVPNPending = PendingIntent.getService(this, 0, pauseVPN, 0);
-                nbuilder.addAction(R.mipmap.ic_launcher,
+                nbuilder.addAction(R.drawable.ic_menu_pause,
                         getString(R.string.pauseVPN), pauseVPNPending);
 
             } else {
                 pauseVPN.setAction(RESUME_VPN);
                 PendingIntent resumeVPNPending = PendingIntent.getService(this, 0, pauseVPN, 0);
-                nbuilder.addAction(R.mipmap.ic_launcher,
+                nbuilder.addAction(R.drawable.ic_menu_play,
                         getString(R.string.resumevpn), resumeVPNPending);
             }
 
@@ -285,19 +286,14 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
 
     PendingIntent getLogPendingIntent() {
         // Let the configure Button show the Log
-        Intent intent = new Intent(getBaseContext(), LogWindow.class);
+        Intent intent = new Intent(getBaseContext(), ServerActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         PendingIntent startLW = PendingIntent.getActivity(this, 0, intent, 0);
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         return startLW;
 
     }
-*/
-    PendingIntent getLogPendingIntent() {
-        Intent intent = new Intent(getBaseContext(), HomeActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        return PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
-    }
+
 
     synchronized void registerDeviceStateReceiver(OpenVPNManagement magnagement) {
         // Registers BroadcastReceiver to track network connection changes.
@@ -955,9 +951,9 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
             // This also mean we are no longer connected, ignore bytecount messages until next
             // CONNECTED
             // Does not work :(
-            /*String msg = getString(resid);
+            String msg = getString(resid);
             showNotification(VpnStatus.getLastCleanLogMessage(this),
-                    msg, lowpriority, 0, level);*/
+                    msg, lowpriority, 0, level);
 
         }
     }

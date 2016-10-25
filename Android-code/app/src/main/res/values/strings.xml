@@ -9,6 +9,7 @@
     <string name="server_txt_speed">Speed:</string>
     <string name="server_error_loading_profile">Error loading profile</string>
     <string name="server_txt_status">Status connection:</string>
+    <string name="server_not_connected">Not connected</string>
     <string name="server_list_more">More</string>
     <string name="mbps">Mbps</string>
     <string name="ms">ms</string>

@@ -8,9 +8,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 
 import com.vasilkoff.easyvpnfree.R;
+import com.vasilkoff.easyvpnfree.model.Server;
 
 /**
  * Created by Kusenko on 20.10.2016.
@@ -20,7 +20,7 @@ public class BaseActivity extends AppCompatActivity {
 
     private DrawerLayout fullLayout;
     private Toolbar toolbar;
-    public static String hostName = null;
+    public static Server connectedServer = null;
 
     @Override
     public void setContentView(int layoutResID)
@@ -56,10 +56,15 @@ public class BaseActivity extends AppCompatActivity {
         return true;
     }
 
+    protected boolean useMenu()
+    {
+        return true;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        return useMenu();
     }
 
     @Override
@@ -72,9 +77,9 @@ public class BaseActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), LoaderActivity.class));
                 finish();
                 return true;
-           /* case R.id.actionAbout:
+            case R.id.actionAbout:
                 startActivity(new Intent(getApplicationContext(), AboutActivity.class));
-                return true;*/
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="ic_menu_close_clear_cancel">@android:drawable/ic_menu_close_clear_cancel</drawable>
+    <drawable name="ic_menu_play">@android:drawable/ic_media_play</drawable>
+    <drawable name="ic_menu_pause">@android:drawable/ic_media_pause</drawable>
+</resources>
