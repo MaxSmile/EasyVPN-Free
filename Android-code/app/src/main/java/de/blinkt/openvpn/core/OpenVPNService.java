@@ -154,7 +154,7 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
 
 
         //int icon = getIconByConnectionStatus(status);
-        int icon = R.mipmap.ic_launcher;
+        int icon = R.drawable.ic_app_notif;
         android.app.Notification.Builder nbuilder = new Notification.Builder(this);
 
         if (mProfile != null)

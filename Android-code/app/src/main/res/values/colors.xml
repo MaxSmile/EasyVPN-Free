@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#1c3f61</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#356690</color>
 
     <color name="popUpBg">#ffffff</color>
     <color name="listDivider">#356690</color>

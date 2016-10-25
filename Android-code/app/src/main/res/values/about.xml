@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="aboutApp">
+        <b>Introduction</b>
+        \nAndroid application which lets you easily to connect to a number of free VPN server around the world with just a single tap!
+        The list of servers the application connect is http://www.vpngate.net VPN Gate Academic Experiment Project is an online service as an academic research at Graduate School of University of Tsukuba, Japan. The purpose of this research is to expand the knowledge of \"Global Distributed Public VPN Relay Servers\".
+        \n\n<b>Why VPN Gate?</b>
+        \nYou can take these advantages by using VPN Gate:
+        \n * It is about 8531 Public VPN Relay Servers by volunteers around the world.
+        \n * You can get through the government\'s firewall to browse restricted websites (e.g. YouTube).
+        \n * You can disguise your IP address to hide your identity while surfing the Internet.
+        \n * You can protect yourself by utilizing its strong encryption while using public Wi-Fi.
+        \nUnlike traditional VPN services, VPN Gate can get through most firewalls.
+        \nVPN Gate is free of charge. Not a single registration is required.
+        \n\n<b>License</b>
+        \n <i>Free Software!</i>
+        \nhttps://www.gnu.org/licenses/gpl-3.0.en.html
+        \nThis application uses the following components; see the source code for full details on the licenses.
+        \n * OpenVPN for Android https://github.com/schwabe/ics-openvpn under GPLv2
+        \n * NumberProgressBar https://github.com/daimajia/NumberProgressBar under MIT
+        \n * Fast-Android-Networking https://github.com/amitshekhariitbhu/Fast-Android-Networking under Apache 2.0
+        \n\n<b>You can help</b>
+        \nEven if you are not a programmer you can help by translating the Easy VPN Free client into your native language.
+    </string>
+</resources>

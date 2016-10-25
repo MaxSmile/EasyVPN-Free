@@ -12,15 +12,11 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <LinearLayout
+        <TextView
+            android:id="@+id/aboutApp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <WebView
-                android:id="@+id/aboutFullLicenses"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:text="@string/aboutApp"
+            android:autoLink="web"/>
     </ScrollView>
-
 </RelativeLayout>

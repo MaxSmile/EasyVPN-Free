@@ -48,8 +48,9 @@ public class ServerActivity extends BaseActivity {
     private VpnProfile vpnProfile;
 
     private Server currentServer = null;
-
     private Button serverConnect;
+
+    private TextView lastLog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +79,11 @@ public class ServerActivity extends BaseActivity {
         String speed = String.valueOf(speedValue) + " " + getString(R.string.mbps);
         ((TextView) findViewById(R.id.serverSpeed)).setText(speed);
 
+        lastLog = (TextView) findViewById(R.id.serverStatus);
+        lastLog.setText(R.string.server_not_connected);
+
         serverConnect = (Button) findViewById(R.id.serverConnect);
+
 
 
         if (checkStatus()) {
@@ -93,7 +98,7 @@ public class ServerActivity extends BaseActivity {
             public void onReceive(Context context, Intent intent) {
                 if (checkStatus()) {
                     changeServerStatus(VpnStatus.ConnectionStatus.valueOf(intent.getStringExtra("status")));
-                    ((TextView) findViewById(R.id.serverStatus)).setText(VpnStatus.getLastCleanLogMessage(getApplicationContext()));
+                    lastLog.setText(VpnStatus.getLastCleanLogMessage(getApplicationContext()));
                 }
             }
         };
@@ -163,6 +168,7 @@ public class ServerActivity extends BaseActivity {
     }
 
     private void stopVpn() {
+        lastLog.setText(R.string.server_not_connected);
         serverConnect.setText(getString(R.string.server_btn_connect));
         connectedServer = null;
         ProfileManager.setConntectedVpnProfileDisconnected(this);
@@ -211,6 +217,7 @@ public class ServerActivity extends BaseActivity {
             if (!checkStatus()) {
                 connectedServer = null;
                 serverConnect.setText(getString(R.string.server_btn_connect));
+                lastLog.setText(R.string.server_not_connected);
             }
 
         } else {
