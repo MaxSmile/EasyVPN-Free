@@ -11,6 +11,7 @@ android {
         versionCode 6
         versionName "1.0"
         multiDexEnabled true
+        setProperty("archivesBaseName", "easyvpnfree-$versionName-$versionCode")
     }
 
     dexOptions {
@@ -29,26 +30,12 @@ android {
             manifestPlaceholders = [ mapApiKeyValue:"AIzaSyDXkYjRv_7DBT0quzpQwiZp7iVJXdy64zs"]
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            applicationVariants.all { variant ->
-                appendVersionNameVersionCode(variant, defaultConfig)
-            }
+
         }
     }
 }
 
-def appendVersionNameVersionCode(variant, defaultConfig) {
-    variant.outputs.each { output ->
-        if (output.zipAlign) {
-            def file = output.outputFile
-            def fileName = file.name.replace(".apk", "-easyvpnfree-" + defaultConfig.versionName + "-" + defaultConfig.versionCode + ".apk")
-            output.outputFile = new File(file.parent, fileName)
-        }
 
-        def file = output.packageApplication.outputFile
-        def fileName = file.name.replace(".apk", "-" + defaultConfig.versionName + "-" + defaultConfig.versionCode + ".apk")
-        output.packageApplication.outputFile = new File(file.parent, fileName)
-    }
-}
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -57,7 +44,7 @@ dependencies {
     compile 'com.android.support:design:24.2.1'
     compile 'com.daimajia.numberprogressbar:library:1.2@aar'
     compile 'com.amitshekhar.android:android-networking:0.2.0'
-    compile 'com.android.support:recyclerview-v7:24.2.1'
+    //compile 'com.android.support:recyclerview-v7:24.2.1'
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.google.android.gms:play-services-maps:9.6.1'
     compile 'com.google.maps.android:android-maps-utils:0.4.4'
