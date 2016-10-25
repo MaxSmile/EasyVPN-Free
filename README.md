@@ -22,7 +22,6 @@ Compiled binary is available  here https://github.com/MaxSmile/EasyVPN-Free/tree
 
 You can take these advantages by using VPN Gate:
 * It is about 8531 Public VPN Relay Servers by volunteers around the world.
-* You can get through the government's firewall to browse restricted websites (e.g. YouTube).
 * You can disguise your IP address to hide your identity while surfing the Internet.
 * You can protect yourself by utilizing its strong encryption while using public Wi-Fi.
 Unlike traditional VPN services, VPN Gate can get through most firewalls.
