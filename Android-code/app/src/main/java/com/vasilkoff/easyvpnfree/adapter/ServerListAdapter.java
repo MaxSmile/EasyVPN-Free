@@ -29,6 +29,10 @@ public class ServerListAdapter extends BaseAdapter {
     private List<Server> serverList = new ArrayList<Server>();
     private Context context;
 
+    private static final String CONNECT_BAD = "ic_connect_bad";
+    private static final String CONNECT_GOOD = "ic_connect_good";
+    private static final String CONNECT_EXCELLENT = "ic_connect_excellent";
+
     public ServerListAdapter(Context c, List<Server> serverList) {
         inflater = LayoutInflater.from(c);
         context = c;
@@ -66,11 +70,15 @@ public class ServerListAdapter extends BaseAdapter {
                         context.getResources().getIdentifier(server.getCountryShort().toLowerCase(),
                                 "drawable",
                                 context.getPackageName()));
+        ((ImageView) v.findViewById(R.id.imageConnect))
+                .setImageResource(
+                        context.getResources().getIdentifier(getConnectIcon(server),
+                                "drawable",
+                                context.getPackageName()));
 
         ((TextView) v.findViewById(R.id.textHostName)).setText(server.getHostName());
         ((TextView) v.findViewById(R.id.textIP)).setText(server.getIp());
         ((TextView) v.findViewById(R.id.textCountry)).setText(server.getCountryLong());
-        ((TextView) v.findViewById(R.id.textPing)).setText(server.getPing());
 
         Button button = (Button) v.findViewById(R.id.serverListConnect);
 
@@ -88,6 +96,24 @@ public class ServerListAdapter extends BaseAdapter {
         });
 
         return v;
+    }
+
+    private String getConnectIcon(Server server) {
+        int speed = Integer.parseInt(server.getSpeed());
+        int sessions = Integer.parseInt(server.getNumVpnSessions());
+
+        int ping = 0;
+        if (!(server.getPing().equals("-") || server.getPing().equals(""))) {
+            ping = Integer.parseInt(server.getPing());
+        }
+
+        if (speed > 10000000 && ping < 30 && (sessions != 0 && sessions < 100)) {
+            return CONNECT_EXCELLENT;
+        } else if (speed < 1000000 || ping > 100 || (sessions == 0 || sessions > 150)) {
+            return CONNECT_BAD;
+        } else {
+            return CONNECT_GOOD;
+        }
     }
 
 
