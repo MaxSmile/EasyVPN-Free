@@ -8,8 +8,8 @@ android {
         applicationId "com.vasilkoff.easyvpnfree"
         minSdkVersion 17
         targetSdkVersion 24
-        versionCode 8
-        versionName "1.0"
+        versionCode 9
+        versionName "1.1"
         multiDexEnabled true
         setProperty("archivesBaseName", "easyvpnfree-$versionName-$versionCode")
     }
