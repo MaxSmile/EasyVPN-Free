@@ -8,14 +8,9 @@ android {
         applicationId "com.vasilkoff.easyvpnfree"
         minSdkVersion 17
         targetSdkVersion 24
-        versionCode 9
+        versionCode 10
         versionName "1.1"
-        multiDexEnabled true
         setProperty("archivesBaseName", "easyvpnfree-$versionName-$versionCode")
-    }
-
-    dexOptions {
-        javaMaxHeapSize "4g"
     }
 
     lintOptions {
@@ -23,11 +18,7 @@ android {
     }
 
     buildTypes {
-        debug {
-            manifestPlaceholders = [ mapApiKeyValue:"AIzaSyCXg3m41LU8VfrUxsc8NN69yER7jQCXPw4"]
-        }
         release {
-            manifestPlaceholders = [ mapApiKeyValue:"AIzaSyDXkYjRv_7DBT0quzpQwiZp7iVJXdy64zs"]
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
@@ -45,10 +36,8 @@ dependencies {
 
     compile 'com.daimajia.numberprogressbar:library:1.2@aar'
     compile 'com.amitshekhar.android:android-networking:0.2.0'
-
     compile 'com.google.code.gson:gson:2.7'
-    compile 'com.google.android.gms:play-services-maps:9.6.1'
-    compile 'com.google.maps.android:android-maps-utils:0.4.4'
-    compile 'com.android.support:multidex:1.0.1'
+    compile 'org.mapsforge:mapsforge-map-android:0.6.1'
+    compile 'com.caverock:androidsvg:1.2.2-beta-1'
     testCompile 'junit:junit:4.12'
 }

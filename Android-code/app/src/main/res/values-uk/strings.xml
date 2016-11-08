@@ -19,4 +19,5 @@
     <string name="csv_file_error_parsing">Проблема з парсингом файла...</string>
     <string name="network_error">Помилка мережі...</string>
     <string name="successfully_loaded">Завантаження завершене...</string>
+    <string name="network_error_message">Інтернет недоступний, підключіться до мережі та спробуйте ще раз.</string>
 </resources>

@@ -3,8 +3,6 @@
     package="com.vasilkoff.easyvpnfree">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
@@ -14,9 +12,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="${mapApiKeyValue}" />
 
         <activity android:name=".activity.LauncherActivity">
             <intent-filter>
@@ -26,7 +21,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.LoaderActivity" />
-        <activity android:name=".activity.HomeActivity" />
+        <activity android:name=".activity.HomeActivity" >
+
+        </activity>
 
         <activity
             android:name=".activity.ServersListActivity"

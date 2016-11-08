@@ -2,6 +2,7 @@ package com.vasilkoff.easyvpnfree.activity;
 
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 
@@ -13,40 +14,37 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
-
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.google.maps.android.geojson.GeoJsonLayer;
-import com.google.maps.android.geojson.GeoJsonPolygonStyle;
 import com.vasilkoff.easyvpnfree.R;
 import com.vasilkoff.easyvpnfree.database.DBHelper;
 import com.vasilkoff.easyvpnfree.model.Country;
 import com.vasilkoff.easyvpnfree.util.BitmapGenerator;
 import com.vasilkoff.easyvpnfree.util.LoadData;
+import com.vasilkoff.easyvpnfree.util.map.MapCreator;
+import com.vasilkoff.easyvpnfree.util.map.MyMarker;
 
-import org.json.JSONException;
 
-import java.io.IOException;
+import org.mapsforge.core.graphics.Bitmap;
+import org.mapsforge.core.model.LatLong;
+import org.mapsforge.core.model.Point;
+import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
+import org.mapsforge.map.android.view.MapView;
+import org.mapsforge.map.layer.Layers;
+import org.mapsforge.map.layer.overlay.Marker;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends BaseActivity implements  OnMapReadyCallback {
+public class HomeActivity extends BaseActivity {
 
-    private GoogleMap mMap = null;
-    private final float ZOOM = 4.0f;
+    private MapView mapView;
 
     public static final String EXTRA_COUNTRY = "country";
     private PopupWindow popupWindow;
@@ -72,12 +70,35 @@ public class HomeActivity extends BaseActivity implements  OnMapReadyCallback {
 
         homeContextRL = (RelativeLayout) findViewById(R.id.homeContextRL);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
         countryList = new DBHelper(this).getCountries();
+
+        initMap();
     }
+
+    private void initMap() {
+        AndroidGraphicFactory.createInstance(getApplication());
+        mapView = new MapView(this);
+
+        mapView.setClickable(true);
+        mapView.getMapScaleBar().setVisible(false);
+        mapView.setBuiltInZoomControls(false);
+        mapView.setZoomLevelMin((byte) 2);
+        mapView.setZoomLevelMax((byte) 10);
+
+        mapView.setZoomLevel((byte) 2);
+        mapView.getModel().displayModel.setBackgroundColor(ContextCompat.getColor(this, R.color.mapBackground));
+
+        Layers layers = mapView.getLayerManager().getLayers();
+
+        MapCreator mapCreator = new MapCreator(this, layers);
+        mapCreator.parseGeoJson("world_map.geo.json");
+
+        LinearLayout map = (LinearLayout) findViewById(R.id.map);
+        map.addView(mapView);
+
+        initServerOnMap(layers);
+    }
+
 
     @Override
     protected boolean useHomeButton() {
@@ -130,82 +151,38 @@ public class HomeActivity extends BaseActivity implements  OnMapReadyCallback {
         startActivity(intent);
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
-        mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
-        mMap.getUiSettings().setRotateGesturesEnabled(false);
-       // mMap.getUiSettings().setZoomGesturesEnabled(false);
-        mMap.getUiSettings().setMapToolbarEnabled(false);
-        mMap.getUiSettings().setCompassEnabled(false);
-
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                if (marker.getTag() != null)
-                    onSelectCountry((String)marker.getTag());
-
-                return false;
-            }
-        });
-
-        int color =  ContextCompat.getColor(this,R.color.mapBackground);
-
-        mMap.addPolygon(new PolygonOptions()
-                .add(new LatLng(-85, -170), new LatLng(85, -170), new LatLng(85, 170), new LatLng(-85, 170))
-                .strokeWidth(0)
-                .zIndex(-1)
-                .fillColor(color));
-
-        mMap.addPolygon(new PolygonOptions()
-                .add(new LatLng(-85, 0), new LatLng(85, 0), new LatLng(85, 179), new LatLng(-85, 179))
-                .strokeWidth(0)
-                .zIndex(-1)
-                .fillColor(color));
-
-        mMap.addPolygon(new PolygonOptions()
-                .add(new LatLng(-85, 0), new LatLng(85, 0), new LatLng(85, -180), new LatLng(-85, -180))
-                .strokeWidth(0)
-                .zIndex(-1)
-                .fillColor(color));
-
-        try {
-            GeoJsonLayer layer = new GeoJsonLayer(mMap, R.raw.countries,
-                    getApplicationContext());
-
-            GeoJsonPolygonStyle polygonStyle = layer.getDefaultPolygonStyle();
-            polygonStyle.setFillColor(ContextCompat.getColor(this,R.color.mapFill));
-            polygonStyle.setStrokeColor(ContextCompat.getColor(this,R.color.mapStroke));
-            polygonStyle.setStrokeWidth(1);
-            layer.addLayerToMap();
-        } catch (IOException | JSONException e) {
-            e.printStackTrace();
-        }
-
-        initServerOnMap();
-
-    }
-
-    private void initServerOnMap() {
+     private void initServerOnMap(Layers layers) {
         Type listType = new TypeToken<ArrayList<Country>>(){}.getType();
         countryLatLonList =  new Gson().fromJson(LoadData.fromFile(COUNTRY_FILE_NAME, this), listType);
 
         for (String countryName : countryList) {
             for (Country country : countryLatLonList) {
                 if (countryName.equals(country.getCountryName())) {
-                    LatLng position = new LatLng(country.getCapitalLatitude(), country.getCapitalLongitude());
 
-                    Marker markerServer = mMap.addMarker(new MarkerOptions()
-                            .position(position)
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_server_full))
-                            .anchor(0.5f, 0.5f));
-                    markerServer.setTag(countryName);
+                    LatLong position = new LatLong(country.getCapitalLatitude(), country.getCapitalLongitude());
+                    Bitmap bitmap = AndroidGraphicFactory.convertToBitmap(ContextCompat.getDrawable(this, R.drawable.ic_server_full));
 
-                    mMap.addMarker(new MarkerOptions()
-                            .position(position)
-                            .anchor(0.5f, 0)
-                            .icon(BitmapDescriptorFactory.fromBitmap(BitmapGenerator.getTextAsBitmap(countryName, 20, ContextCompat.getColor(this,R.color.mapNameCountry)))));
+                    MyMarker countryMarker = new MyMarker(position, bitmap, 0, -bitmap.getHeight() / 2, countryName) {
+                        @Override
+                        public boolean onTap(LatLong geoPoint, Point viewPosition,
+                                             Point tapPoint) {
+
+                            if (contains(viewPosition, tapPoint)) {
+                                onSelectCountry((String)getRelationObject());
+                                return true;
+                            }
+                            return false;
+                        }
+                    };
+
+                    layers.add(countryMarker);
+
+                    Drawable drawable = new BitmapDrawable(getResources(), BitmapGenerator.getTextAsBitmap(countryName, 20, ContextCompat.getColor(this,R.color.mapNameCountry)));
+                    Bitmap bitmapName = AndroidGraphicFactory.convertToBitmap(drawable);
+
+                    Marker countryNameMarker = new Marker(position, bitmapName, 0, bitmapName.getHeight() / 3);
+
+                    layers.add(countryNameMarker);
                 }
             }
         }

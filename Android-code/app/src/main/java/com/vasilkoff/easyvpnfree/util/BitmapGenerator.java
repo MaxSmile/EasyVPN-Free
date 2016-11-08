@@ -18,7 +18,7 @@ public class BitmapGenerator {
         int height = (int) (baseline + paint.descent() + 25.5f);
         Bitmap image = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(image);
-        canvas.drawText(textUp, 0, baseline + 25, paint);
+        canvas.drawText(textUp, 0, baseline, paint);
         return image;
     }
 }
