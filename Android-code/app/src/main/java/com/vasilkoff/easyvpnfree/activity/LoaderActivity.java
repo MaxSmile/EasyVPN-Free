@@ -33,6 +33,7 @@ public class LoaderActivity extends BaseActivity {
     private final int LOADING_SUCCESS = 3;
     private final int SWITCH_TO_RESULT = 4;
     private final String CSV_SERVERS_LIST_URL = "http://www.vpngate.net/api/iphone/";
+    //private final String CSV_SERVERS_LIST_URL = "http://easyvpn.rusweb.club/?type=csv";
     private final String CSV_FILE_NAME = "vpngate.csv";
 
     @Override

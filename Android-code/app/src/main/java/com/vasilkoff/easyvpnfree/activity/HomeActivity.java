@@ -110,6 +110,8 @@ public class HomeActivity extends BaseActivity {
             case R.id.homeBtnChooseCountry:
                 chooseCountry();
                 break;
+            /*case R.id.homeBtnMoreServers:
+                break;*/
         }
 
     }

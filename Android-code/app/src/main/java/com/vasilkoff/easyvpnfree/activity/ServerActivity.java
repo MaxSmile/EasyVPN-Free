@@ -1,5 +1,8 @@
 package com.vasilkoff.easyvpnfree.activity;
 
+import android.Manifest;
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
@@ -8,20 +11,31 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.net.VpnService;
+import android.os.Build;
 import android.os.IBinder;
 
 import android.os.Bundle;
 
+import android.support.v4.app.ActivityCompat;
 import android.util.Base64;
+import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.vasilkoff.easyvpnfree.BuildConfig;
 import com.vasilkoff.easyvpnfree.R;
 import com.vasilkoff.easyvpnfree.model.Server;
+import com.vasilkoff.easyvpnfree.util.iap.IabHelper;
+import com.vasilkoff.easyvpnfree.util.iap.IabResult;
+import com.vasilkoff.easyvpnfree.util.iap.Inventory;
+import com.vasilkoff.easyvpnfree.util.iap.Purchase;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -29,6 +43,7 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 
 import de.blinkt.openvpn.VpnProfile;
@@ -40,26 +55,61 @@ import de.blinkt.openvpn.core.VpnStatus;
 
 public class ServerActivity extends BaseActivity {
 
+    static final String TAG = "IAP";
+    final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
     private static final int START_VPN_PROFILE = 70;
     private BroadcastReceiver br;
     public final static String BROADCAST_ACTION = "de.blinkt.openvpn.VPN_STATUS";
+
+    static final String TEST_ITEM_SKU = "android.test.purchased";
+    static final String ITEM_SKU = "adblock";
+    private String gmail = "";
+    private String sku;
+    static final int RC_REQUEST = 10001;
+    IabHelper purchaseHelper;
+    String base64EncodedPublicKey;
 
     protected OpenVPNService mService;
     private VpnProfile vpnProfile;
 
     private Server currentServer = null;
+    private Button unblockCheck;
+    private CheckBox blockingCheck;
     private Button serverConnect;
 
     private TextView lastLog;
+
+    private static boolean filterAds = false;
+    private static boolean availableFilterAds = false;
+    private boolean availablePurchase = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server);
 
+        base64EncodedPublicKey = getString(R.string.base64EncodedPublicKey);
+        if (BuildConfig.DEBUG) {
+            sku = TEST_ITEM_SKU;
+        } else {
+            sku = ITEM_SKU;
+        }
+
+        initPurchaseHelper();
+
         currentServer = (Server)getIntent().getParcelableExtra(Server.class.getCanonicalName());
         if (currentServer == null)
             currentServer = connectedServer;
+
+        unblockCheck = (Button) findViewById(R.id.serverUnblockCheck);
+        unblockCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkPermissions();
+            }
+        });
+
+        blockingCheck = (CheckBox) findViewById(R.id.serverBlockingCheck);
 
         ((ImageView) findViewById(R.id.serverFlag))
                 .setImageResource(
@@ -84,9 +134,8 @@ public class ServerActivity extends BaseActivity {
 
         serverConnect = (Button) findViewById(R.id.serverConnect);
 
-
-
         if (checkStatus()) {
+            blockingCheck.setChecked(filterAds);
             serverConnect.setText(getString(R.string.server_btn_disconnect));
             ((TextView) findViewById(R.id.serverStatus)).setText(VpnStatus.getLastCleanLogMessage(getApplicationContext()));
         } else {
@@ -107,9 +156,147 @@ public class ServerActivity extends BaseActivity {
 
     }
 
+    private void checkAvailableFilter() {
+        blockingCheck.setEnabled(availableFilterAds);
+        if (availableFilterAds) {
+            unblockCheck.setVisibility(View.GONE);
+        } else {
+            unblockCheck.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void initPurchaseHelper() {
+        purchaseHelper = new IabHelper(this, base64EncodedPublicKey);
+        purchaseHelper.enableDebugLogging(true);
+
+        purchaseHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+            @Override
+            public void onIabSetupFinished(IabResult result) {
+
+                if (!result.isSuccess()) {
+                    availablePurchase = false;
+                    Log.d(TAG, "Oh noes, there was a problem.");
+                    return;
+                }
+
+                // Have we been disposed of in the meantime? If so, quit.
+                if (purchaseHelper == null) return;
+
+                availablePurchase = true;
+
+                if (!availableFilterAds) {
+                    checkPurchase();
+                } else {
+                    checkAvailableFilter();
+                }
+                // IAB is fully set up. Now, let's get an inventory of stuff we own.
+                Log.d(TAG, "Setup successful. Querying inventory.");
+
+            }
+        });
+    }
+
+    private void launchPurchase() {
+        getUserEmailFromAndroidAccounts();
+        if (purchaseHelper != null) purchaseHelper.flagEndAsync();
+        purchaseHelper.launchPurchaseFlow(this,
+                sku, RC_REQUEST,
+                mPurchaseFinishedListener,
+                gmail + sku);
+    }
+
+    private void checkPurchase() {
+        if (availablePurchase) {
+            if (purchaseHelper != null) purchaseHelper.flagEndAsync();
+            purchaseHelper.queryInventoryAsync(mGotInventoryListener);
+        } else {
+            Toast.makeText(this, getString(R.string.feature_not_available), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
+        @Override
+        public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
+            if (result.isFailure()) {
+                Log.d(TAG, "Oh noes, there was a problem.");
+                return;
+            } else {
+                if (purchase.getSku().equals(sku)) {
+                    if (verifyDeveloperPayload(purchase)) {
+                        availableFilterAds = true;
+                        checkAvailableFilter();
+                    }
+                }
+            }
+        }
+    };
+
+    IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
+        @Override
+        public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
+            if (result.isFailure()) {
+                Log.d(TAG, "Purchase finished: " + result + ", purchase: " + inventory);
+            } else {
+                if (inventory.hasPurchase(sku)) {
+                    availableFilterAds = true;
+                    checkAvailableFilter();
+                }
+            }
+        }
+    };
+
+    private void checkPermissions() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.GET_ACCOUNTS},
+                        REQUEST_CODE_ASK_PERMISSIONS);
+            }
+            return;
+        }
+
+        launchPurchase();
+    }
+
+    private void getUserEmailFromAndroidAccounts() {
+        Pattern gmailPattern = Patterns.EMAIL_ADDRESS;
+        Account[] accounts = AccountManager.get(this).getAccounts();
+        for (Account account : accounts) {
+            if (gmailPattern.matcher(account.name).matches()) {
+                gmail = account.name;
+            }
+        }
+    }
+
+    /** Verifies the developer payload of a purchase. */
+    boolean verifyDeveloperPayload(Purchase p) {
+
+        String responsePayload = p.getDeveloperPayload();
+        String computedPayload = gmail + sku;
+
+        return responsePayload != null && responsePayload.equals(computedPayload);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_PERMISSIONS:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission Granted
+                    launchPurchase();
+                } else {
+                    // Permission Denied
+                    Toast.makeText(this, getString(R.string.feature_not_available_without_perm), Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+
         Intent intent = new Intent(getApplicationContext(), ServersListActivity.class);
         intent.putExtra(HomeActivity.EXTRA_COUNTRY, currentServer.getCountryLong());
         startActivity(intent);
@@ -158,6 +345,14 @@ public class ServerActivity extends BaseActivity {
             cp.parseConfig(isr);
             vpnProfile = cp.convertProfile();
             vpnProfile.mName = currentServer.getCountryLong();
+
+            filterAds = blockingCheck.isChecked();
+            if (filterAds) {
+                vpnProfile.mOverrideDNS = true;
+                vpnProfile.mDNS1 = "62.109.4.190";
+                vpnProfile.mDNS2 = "176.103.130.130";
+            }
+
             ProfileManager.getInstance(this).addProfile(vpnProfile);
         } catch (IOException | ConfigParser.ConfigParseError e) {
             e.printStackTrace();
@@ -235,6 +430,8 @@ public class ServerActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(br);
+        if (purchaseHelper != null) purchaseHelper.dispose();
+        purchaseHelper = null;
     }
 
     @Override
@@ -244,9 +441,26 @@ public class ServerActivity extends BaseActivity {
                 case START_VPN_PROFILE :
                     VPNLaunchHelper.startOpenVpn(vpnProfile, this);
                     break;
+                case RC_REQUEST:
+                    Log.d(TAG, "onActivityResult(" + requestCode + "," + resultCode + "," + data);
+                    if (purchaseHelper == null) return;
+
+                    // Pass on the activity result to the helper for handling
+                    if (!purchaseHelper.handleActivityResult(requestCode, resultCode, data)) {
+                        // not handled, so handle it ourselves (here's where you'd
+                        // perform any handling of activity results not related to in-app
+                        // billing...
+                        super.onActivityResult(requestCode, resultCode, data);
+                    }
+                    else {
+                        Log.d(TAG, "onActivityResult handled by IABUtil.");
+                    }
+                    break;
             }
         }
     }
+
+
 
     private ServiceConnection mConnection = new ServiceConnection() {
 

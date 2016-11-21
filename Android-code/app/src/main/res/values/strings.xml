@@ -24,4 +24,9 @@
     <string name="action_refresh">Refresh servers list</string>
     <string name="ok">Ok</string>
     <string name="network_error_message">Internet is not available, reconnect network and try again.</string>
+    <string name="blocking_ads">Filtering ads</string>
+    <string name="more_servers">More servers</string>
+    <string name="feature_not_available">This feature temporarily is not available</string>
+    <string name="feature_not_available_without_perm">Without account information this feature is not available</string>
+    <string name="unblock">Unblock</string>
 </resources>

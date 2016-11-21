@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
-     </LinearLayout>
+    </LinearLayout>
 
     <Button
         android:id="@+id/homeBtnChooseCountry"
@@ -27,6 +27,8 @@
         android:padding="5dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
+
+
 
 </RelativeLayout>
 

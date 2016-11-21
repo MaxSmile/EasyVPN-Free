@@ -125,6 +125,31 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
+            <CheckBox
+                android:id="@+id/serverBlockingCheck"
+                android:text="@string/blocking_ads"
+                android:textSize="17sp"
+                android:enabled="false"
+                android:layout_marginEnd="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <Button
+                android:id="@+id/serverUnblockCheck"
+                android:text="@string/unblock"
+                style="@style/buttons"
+                android:minHeight="25dp"
+                android:textAllCaps="false"
+                android:padding="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
                 android:layout_width="wrap_content"
@@ -140,6 +165,5 @@
         </LinearLayout>
 
     </LinearLayout>
-
 
 </RelativeLayout>
