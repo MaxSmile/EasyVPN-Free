@@ -372,6 +372,7 @@ public class ServerActivity extends BaseActivity {
     }
 
     private void stopVpn() {
+        blockingCheck.setEnabled(availableFilterAds);
         lastLog.setText(R.string.server_not_connected);
         serverConnect.setText(getString(R.string.server_btn_connect));
         connectedServer = null;
@@ -383,6 +384,7 @@ public class ServerActivity extends BaseActivity {
 
     private void startVpn() {
         connectedServer = currentServer;
+        blockingCheck.setEnabled(false);
 
         Intent intent = VpnService.prepare(this);
 
