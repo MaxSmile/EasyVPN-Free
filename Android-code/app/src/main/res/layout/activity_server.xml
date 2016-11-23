@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_server"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -131,12 +132,14 @@
             android:orientation="horizontal"
             android:paddingTop="10dp"
             android:paddingBottom="10dp">
-                <CheckBox
+                <android.support.v7.widget.AppCompatCheckBox
                     android:id="@+id/serverBlockingCheck"
+                    app:buttonTint="@color/buttonBg"
                     android:text="@string/blocking_ads"
-                    android:textSize="17sp"
-                    android:enabled="false"
-                    style="@style/MyCheckBox"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    android:textColor="@android:color/tab_indicator_text"
                     android:layout_marginEnd="10dp"
                     android:layout_gravity="center_vertical"
                     android:layout_width="wrap_content"

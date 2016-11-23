@@ -75,7 +75,7 @@ public class ServerActivity extends BaseActivity {
 
     private Server currentServer = null;
     private Button unblockCheck;
-    private CheckBox blockingCheck;
+    private CheckBox adbBlockCheck;
     private Button serverConnect;
 
     private TextView lastLog;
@@ -96,7 +96,7 @@ public class ServerActivity extends BaseActivity {
             sku = ITEM_SKU;
         }
 
-        initPurchaseHelper();
+
 
         currentServer = (Server)getIntent().getParcelableExtra(Server.class.getCanonicalName());
         if (currentServer == null)
@@ -110,7 +110,9 @@ public class ServerActivity extends BaseActivity {
             }
         });
 
-        blockingCheck = (CheckBox) findViewById(R.id.serverBlockingCheck);
+        adbBlockCheck = (CheckBox) findViewById(R.id.serverBlockingCheck);
+
+        initPurchaseHelper();
 
         ((ImageView) findViewById(R.id.serverFlag))
                 .setImageResource(
@@ -136,7 +138,8 @@ public class ServerActivity extends BaseActivity {
         serverConnect = (Button) findViewById(R.id.serverConnect);
 
         if (checkStatus()) {
-            blockingCheck.setChecked(filterAds);
+            adbBlockCheck.setEnabled(false);
+            adbBlockCheck.setChecked(filterAds);
             serverConnect.setText(getString(R.string.server_btn_disconnect));
             ((TextView) findViewById(R.id.serverStatus)).setText(VpnStatus.getLastCleanLogMessage(getApplicationContext()));
         } else {
@@ -158,10 +161,11 @@ public class ServerActivity extends BaseActivity {
     }
 
     private void checkAvailableFilter() {
-        blockingCheck.setEnabled(availableFilterAds);
         if (availableFilterAds) {
+            adbBlockCheck.setVisibility(View.VISIBLE);
             unblockCheck.setVisibility(View.GONE);
         } else {
+            adbBlockCheck.setVisibility(View.GONE);
             unblockCheck.setVisibility(View.VISIBLE);
         }
     }
@@ -355,7 +359,7 @@ public class ServerActivity extends BaseActivity {
             vpnProfile = cp.convertProfile();
             vpnProfile.mName = currentServer.getCountryLong();
 
-            filterAds = blockingCheck.isChecked();
+            filterAds = adbBlockCheck.isChecked();
             if (filterAds) {
                 vpnProfile.mOverrideDNS = true;
                 vpnProfile.mDNS1 = "62.109.4.190";
@@ -372,7 +376,7 @@ public class ServerActivity extends BaseActivity {
     }
 
     private void stopVpn() {
-        blockingCheck.setEnabled(availableFilterAds);
+        adbBlockCheck.setEnabled(availableFilterAds);
         lastLog.setText(R.string.server_not_connected);
         serverConnect.setText(getString(R.string.server_btn_connect));
         connectedServer = null;
@@ -384,7 +388,7 @@ public class ServerActivity extends BaseActivity {
 
     private void startVpn() {
         connectedServer = currentServer;
-        blockingCheck.setEnabled(false);
+        adbBlockCheck.setEnabled(false);
 
         Intent intent = VpnService.prepare(this);
 

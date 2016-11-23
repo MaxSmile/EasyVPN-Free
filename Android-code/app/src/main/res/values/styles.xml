@@ -11,10 +11,6 @@
         <item name="android:textSize">15sp</item>
         <item name="android:layout_gravity">center</item>
     </style>
-    <style name="MyCheckBox" parent="AppTheme">
-        <item name="colorControlNormal">@color/buttonBg</item>
-        <item name="colorControlActivated">@color/buttonBg</item>
-    </style>
 
     <style name="serverList" >
         <item name="android:textSize">14sp</item>
