@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.net.VpnService;
 import android.os.Build;
 import android.os.IBinder;
@@ -269,7 +270,6 @@ public class ServerActivity extends BaseActivity {
 
     /** Verifies the developer payload of a purchase. */
     boolean verifyDeveloperPayload(Purchase p) {
-
         String responsePayload = p.getDeveloperPayload();
         String computedPayload = gmail + sku;
 
@@ -325,16 +325,25 @@ public class ServerActivity extends BaseActivity {
     }
 
     public void serverOnClick(View view) {
-        if (checkStatus()) {
-            stopVpn();
-        } else {
-            if (loadVpnProfile()) {
-                serverConnect.setText(getString(R.string.server_btn_disconnect));
-                startVpn();
-            } else {
-                Toast.makeText(this, getString(R.string.server_error_loading_profile), Toast.LENGTH_SHORT).show();
-            }
+        switch (view.getId()) {
+            case R.id.serverConnect:
+                if (checkStatus()) {
+                    stopVpn();
+                } else {
+                    if (loadVpnProfile()) {
+                        serverConnect.setText(getString(R.string.server_btn_disconnect));
+                        startVpn();
+                    } else {
+                        Toast.makeText(this, getString(R.string.server_error_loading_profile), Toast.LENGTH_SHORT).show();
+                    }
+                }
+                break;
+            case R.id.serverBtnCheckIp:
+                Intent browse = new Intent( Intent.ACTION_VIEW , Uri.parse(getString(R.string.url_check_ip)));
+                startActivity(browse);
+                break;
         }
+
     }
 
     private boolean loadVpnProfile() {
