@@ -20,4 +20,10 @@
     <string name="network_error">Ошибка сети...</string>
     <string name="successfully_loaded">Загрузка завершена...</string>
     <string name="network_error_message">Интернет недоступный, подключитесь к сети и попробуйте снова.</string>
+    <string name="blocking_ads">Фильтровать рекламу</string>
+    <string name="more_servers">Больше серверов</string>
+    <string name="feature_not_available">Эта функция временно недоступна</string>
+    <string name="feature_not_available_without_perm">Без информации об учетной записи эта функция недоступна</string>
+    <string name="unblock">Разблокировать</string>
+    <string name="what_is_my_ip">Какой мой IP?</string>
 </resources>

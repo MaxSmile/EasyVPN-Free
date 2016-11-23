@@ -20,4 +20,10 @@
     <string name="network_error">Помилка мережі...</string>
     <string name="successfully_loaded">Завантаження завершене...</string>
     <string name="network_error_message">Інтернет недоступний, підключіться до мережі та спробуйте ще раз.</string>
+    <string name="blocking_ads">Фільтрування реклами</string>
+    <string name="more_servers">Більше серверів</string>
+    <string name="feature_not_available">Ця функція тимчасово недоступна</string>
+    <string name="feature_not_available_without_perm">Без інформіції про обліковий запис ця функція недоступна</string>
+    <string name="unblock">Розблокувати</string>
+    <string name="what_is_my_ip">Який мій IP?</string>
 </resources>

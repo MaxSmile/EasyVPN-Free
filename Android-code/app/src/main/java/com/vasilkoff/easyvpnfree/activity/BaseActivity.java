@@ -80,6 +80,13 @@ public class BaseActivity extends AppCompatActivity {
             case R.id.actionAbout:
                 startActivity(new Intent(getApplicationContext(), AboutActivity.class));
                 return true;
+            case R.id.actionShare:
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text));
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
