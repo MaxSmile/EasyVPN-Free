@@ -26,6 +26,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -81,6 +82,7 @@ public class ServerActivity extends BaseActivity {
     private TextView lastLog;
 
     private static boolean filterAds = false;
+    private static boolean defaultFilterAds = true;
     private static boolean availableFilterAds = false;
     private boolean availablePurchase = false;
 
@@ -96,8 +98,6 @@ public class ServerActivity extends BaseActivity {
             sku = ITEM_SKU;
         }
 
-
-
         currentServer = (Server)getIntent().getParcelableExtra(Server.class.getCanonicalName());
         if (currentServer == null)
             currentServer = connectedServer;
@@ -111,6 +111,14 @@ public class ServerActivity extends BaseActivity {
         });
 
         adbBlockCheck = (CheckBox) findViewById(R.id.serverBlockingCheck);
+        adbBlockCheck.setChecked(defaultFilterAds);
+        adbBlockCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (!checkStatus())
+                    defaultFilterAds = isChecked;
+            }
+        });
 
         initPurchaseHelper();
 
@@ -230,6 +238,7 @@ public class ServerActivity extends BaseActivity {
                     if (verifyDeveloperPayload(purchase)) {
                         availableFilterAds = true;
                         checkAvailableFilter();
+                        adbBlockCheck.setChecked(true);
                     }
                 }
             }
