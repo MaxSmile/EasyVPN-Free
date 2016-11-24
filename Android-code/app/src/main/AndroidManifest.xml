@@ -23,7 +23,6 @@
         </activity>
         <activity android:name=".activity.LoaderActivity" />
         <activity android:name=".activity.HomeActivity" >
-
         </activity>
 
         <activity

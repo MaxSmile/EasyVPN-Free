@@ -371,8 +371,8 @@ public class ServerActivity extends BaseActivity {
             filterAds = adbBlockCheck.isChecked();
             if (filterAds) {
                 vpnProfile.mOverrideDNS = true;
-                vpnProfile.mDNS1 = "62.109.4.190";
-                vpnProfile.mDNS2 = "176.103.130.130";
+                vpnProfile.mDNS1 = "198.101.242.72";
+                vpnProfile.mDNS2 = "23.253.163.53";
             }
 
             ProfileManager.getInstance(this).addProfile(vpnProfile);
