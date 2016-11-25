@@ -64,6 +64,12 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        for (int i = 0; i < menu.size(); i++) {
+            if (menu.getItem(i).getItemId() == R.id.actionCurrentServer && connectedServer == null)
+                menu.getItem(i).setVisible(false);
+        }
+
         return useMenu();
     }
 
@@ -86,6 +92,11 @@ public class BaseActivity extends AppCompatActivity {
                 sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text));
                 sendIntent.setType("text/plain");
                 startActivity(sendIntent);
+                return true;
+            case R.id.actionCurrentServer:
+                if (connectedServer != null)
+                    startActivity(new Intent(this, ServerActivity.class));
+
                 return true;
         }
 

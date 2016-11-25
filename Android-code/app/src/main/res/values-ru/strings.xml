@@ -26,4 +26,11 @@
     <string name="feature_not_available_without_perm">Без информации об учетной записи эта функция недоступна</string>
     <string name="unblock">Купить фильтрование рекламы</string>
     <string name="what_is_my_ip">Какой мой IP?</string>
+    <string name="action_current_connection">Текущее соединение</string>
+    <string name="random_connection">Случайное соединение</string>
+    <string name="share_text">
+        Easy VPN Free! Самый быстрый, без ограничений и 100% бесплатный!
+        \nБолее 22 стран для подключения и разблокировка всех заблокированных сайтов.
+        \n\nhttps://play.google.com/store/apps/details?id=com.vasilkoff.easyvpnfree
+    </string>
 </resources>
