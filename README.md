@@ -17,7 +17,9 @@ The list of servers the application connect is http://www.vpngate.net/
 ## Installation
 The app is available оn Goole's Play Market
 [![Easy VPN Free Play Market](https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=com.vasilkoff.easyvpnfree)
- If it is not available in your country (somehow...) you also can always find compiled binaries here https://github.com/MaxSmile/EasyVPN-Free/tree/master/binary all the versions
+
+
+ BUT If it is not available in your country (somehow...) you also can always find compiled binaries here https://github.com/MaxSmile/EasyVPN-Free/tree/master/binary all the versions
 
 ----
 ## Why VPN Gate?
