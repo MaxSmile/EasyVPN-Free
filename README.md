@@ -12,10 +12,12 @@ The list of servers the application connect is http://www.vpngate.net/
 
 ![Easy VPN Free](https://github.com/MaxSmile/EasyVPN-Free/blob/master/easy-vpn-free.gif?raw=true)
 
+
 ----
 ## Installation
-
-Compiled binary is available  here https://github.com/MaxSmile/EasyVPN-Free/tree/master/binary
+The app is available оn Goole's Play Market
+[![Easy VPN Free Play Market](https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=com.vasilkoff.easyvpnfree)
+ If it is not available in your country (somehow...) you also can always find compiled binaries here https://github.com/MaxSmile/EasyVPN-Free/tree/master/binary all the versions
 
 ----
 ## Why VPN Gate?
@@ -45,3 +47,9 @@ This application uses the following components; see the source code for full det
 ## You can help
 
 Even if you are not a programmer you can help by translating the Easy VPN Free client into your native language.
+
+----
+## In-App purchases
+
+The app does not have any ads. And now more. I added ads filtering function.
+It has 7 days trial and if you like it, you buy it. Should you support the project somehow, correct? :)
