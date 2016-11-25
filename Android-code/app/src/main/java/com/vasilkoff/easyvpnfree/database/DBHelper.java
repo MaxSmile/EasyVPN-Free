@@ -138,23 +138,7 @@ public class DBHelper  extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                serverList.add(new Server(
-                        cursor.getString(1),
-                        cursor.getString(2),
-                        cursor.getString(3),
-                        cursor.getString(4),
-                        cursor.getString(5),
-                        cursor.getString(6),
-                        cursor.getString(7),
-                        cursor.getString(8),
-                        cursor.getString(9),
-                        cursor.getString(10),
-                        cursor.getString(11),
-                        cursor.getString(12),
-                        cursor.getString(13),
-                        cursor.getString(14),
-                        cursor.getString(15)
-                ));
+                serverList.add(parseServer(cursor));
             } while (cursor.moveToNext());
         } else {
             Log.d(TAG ,"0 rows");
@@ -164,5 +148,43 @@ public class DBHelper  extends SQLiteOpenHelper {
         db.close();
 
         return serverList;
+    }
+
+    public Server getRandomServer() {
+        Server randomServer = null;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM "
+                + TABLE_SERVERS
+                + " ORDER BY RANDOM() LIMIT 1", null);
+        if (cursor.moveToFirst()) {
+            randomServer = parseServer(cursor);
+        } else {
+            Log.d(TAG ,"0 rows");
+        }
+
+        cursor.close();
+        db.close();
+
+        return randomServer;
+    }
+
+    private Server parseServer(Cursor cursor) {
+        return new Server(
+                cursor.getString(1),
+                cursor.getString(2),
+                cursor.getString(3),
+                cursor.getString(4),
+                cursor.getString(5),
+                cursor.getString(6),
+                cursor.getString(7),
+                cursor.getString(8),
+                cursor.getString(9),
+                cursor.getString(10),
+                cursor.getString(11),
+                cursor.getString(12),
+                cursor.getString(13),
+                cursor.getString(14),
+                cursor.getString(15)
+        );
     }
 }

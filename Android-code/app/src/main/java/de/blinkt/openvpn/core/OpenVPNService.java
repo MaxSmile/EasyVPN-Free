@@ -976,7 +976,7 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
                     humanReadableByteCount(diffOut / OpenVPNManagement.mBytecountInterval, true));
 
             boolean lowpriority = !mNotificationAlwaysVisible;
-           // showNotification(netstat, null, lowpriority, mConnecttime, LEVEL_CONNECTED);
+            showNotification(netstat, null, lowpriority, mConnecttime, LEVEL_CONNECTED);
         }
 
     }

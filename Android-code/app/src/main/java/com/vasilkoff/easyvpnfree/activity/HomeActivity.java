@@ -24,6 +24,7 @@ import com.google.gson.reflect.TypeToken;
 import com.vasilkoff.easyvpnfree.R;
 import com.vasilkoff.easyvpnfree.database.DBHelper;
 import com.vasilkoff.easyvpnfree.model.Country;
+import com.vasilkoff.easyvpnfree.model.Server;
 import com.vasilkoff.easyvpnfree.util.BitmapGenerator;
 import com.vasilkoff.easyvpnfree.util.LoadData;
 import com.vasilkoff.easyvpnfree.util.map.MapCreator;
@@ -56,6 +57,7 @@ public class HomeActivity extends BaseActivity {
     private final String COUNTRY_FILE_NAME = "countries.json";
 
     private List<Country> countryLatLonList = null;
+    private DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +72,9 @@ public class HomeActivity extends BaseActivity {
 
         homeContextRL = (RelativeLayout) findViewById(R.id.homeContextRL);
 
-        countryList = new DBHelper(this).getCountries();
+        dbHelper = new DBHelper(this);
+
+        countryList = dbHelper.getCountries();
 
         initMap();
     }
@@ -109,6 +113,14 @@ public class HomeActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.homeBtnChooseCountry:
                 chooseCountry();
+                break;
+            case R.id.homeBtnRandomConnection:
+                Server randomServer = dbHelper.getRandomServer();
+                if (randomServer != null) {
+                    Intent intent = new Intent(this, ServerActivity.class);
+                    intent.putExtra(Server.class.getCanonicalName(), randomServer);
+                    startActivity(intent);
+                }
                 break;
             /*case R.id.homeBtnMoreServers:
                 break;*/

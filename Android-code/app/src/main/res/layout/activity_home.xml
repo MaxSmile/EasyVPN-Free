@@ -14,19 +14,40 @@
         android:orientation="horizontal">
     </LinearLayout>
 
-    <Button
-        android:id="@+id/homeBtnChooseCountry"
-        android:text="@string/home_btn_choose_country"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/buttons"
-        android:minHeight="40dp"
-        android:minWidth="150dp"
-        android:layout_marginBottom="25dp"
-        android:onClick="homeOnClick"
-        android:padding="5dp"
+        android:orientation="horizontal"
+        android:gravity="center"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="25dp">
+
+        <Button
+            android:id="@+id/homeBtnChooseCountry"
+            android:text="@string/home_btn_choose_country"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/buttons"
+            android:minHeight="40dp"
+            android:minWidth="160dp"
+            android:onClick="homeOnClick"
+            android:padding="5dp"
+            android:layout_marginEnd="10dp"/>
+
+        <Button
+            android:id="@+id/homeBtnRandomConnection"
+            android:text="@string/random_connection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/buttons"
+            android:minHeight="40dp"
+            android:onClick="homeOnClick"
+            android:padding="5dp"/>
+
+    </LinearLayout>
+
+
 
 
 

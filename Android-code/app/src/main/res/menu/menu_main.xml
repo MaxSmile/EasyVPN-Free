@@ -12,8 +12,14 @@
         android:id="@+id/actionRefresh"
         android:orderInCategory="101"
         android:title="@string/action_refresh"
-        android:icon="@drawable/ic_reload"
+        android:icon="@drawable/ic_cached_white_36dp"
         app:showAsAction="always"/>
+    <item
+        android:id="@+id/actionCurrentServer"
+        android:orderInCategory="102"
+        android:title="@string/action_current_connection"
+        android:icon="@drawable/ic_vpn_key_white_24dp"
+        app:showAsAction="ifRoom"/>
     <item
         android:id="@+id/actionAbout"
         android:orderInCategory="200"

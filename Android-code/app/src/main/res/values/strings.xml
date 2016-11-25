@@ -31,9 +31,11 @@
     <string name="feature_not_available_without_perm">Without account information this feature is not available</string>
     <string name="unblock">Purchase ads filtering</string>
     <string name="what_is_my_ip">What is my IP?</string>
+    <string name="action_current_connection">Current connection</string>
+    <string name="random_connection">Random connection</string>
     <string name="share_text">
         Easy VPN Free! Fastest, Unlimited and 100% Free!
-        \nMore then 22 countries to connect and unblock all blocked websites.
+        \nMore than 22 countries to connect and unblock all blocked websites.
         \n\nhttps://play.google.com/store/apps/details?id=com.vasilkoff.easyvpnfree
     </string>
 
