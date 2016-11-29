@@ -119,6 +119,7 @@ public class HomeActivity extends BaseActivity {
                 if (randomServer != null) {
                     Intent intent = new Intent(this, ServerActivity.class);
                     intent.putExtra(Server.class.getCanonicalName(), randomServer);
+                    intent.putExtra("randomConnection", true);
                     startActivity(intent);
                 }
                 break;

@@ -85,6 +85,7 @@ public class ServerActivity extends BaseActivity {
     private static boolean defaultFilterAds = true;
     private static boolean availableFilterAds = false;
     private boolean availablePurchase = false;
+    private boolean randomConnection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +99,7 @@ public class ServerActivity extends BaseActivity {
             sku = ITEM_SKU;
         }
 
+        randomConnection = getIntent().getBooleanExtra("randomConnection", false);
         currentServer = (Server)getIntent().getParcelableExtra(Server.class.getCanonicalName());
         if (currentServer == null)
             currentServer = connectedServer;
@@ -165,7 +167,6 @@ public class ServerActivity extends BaseActivity {
         };
 
         registerReceiver(br, new IntentFilter(BROADCAST_ACTION));
-
     }
 
     private void checkAvailableFilter() {
@@ -176,6 +177,7 @@ public class ServerActivity extends BaseActivity {
             adbBlockCheck.setVisibility(View.GONE);
             unblockCheck.setVisibility(View.VISIBLE);
         }
+
     }
 
     private void initPurchaseHelper() {
@@ -310,9 +312,13 @@ public class ServerActivity extends BaseActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        Intent intent = new Intent(getApplicationContext(), ServersListActivity.class);
-        intent.putExtra(HomeActivity.EXTRA_COUNTRY, currentServer.getCountryLong());
-        startActivity(intent);
+        if (randomConnection) {
+            startActivity(new Intent(this, HomeActivity.class));
+        } else {
+            Intent intent = new Intent(getApplicationContext(), ServersListActivity.class);
+            intent.putExtra(HomeActivity.EXTRA_COUNTRY, currentServer.getCountryLong());
+            startActivity(intent);
+        }
         finish();
     }
 
@@ -337,18 +343,22 @@ public class ServerActivity extends BaseActivity {
         }
     }
 
+    private void prepareVpn() {
+        if (loadVpnProfile()) {
+            serverConnect.setText(getString(R.string.server_btn_disconnect));
+            startVpn();
+        } else {
+            Toast.makeText(this, getString(R.string.server_error_loading_profile), Toast.LENGTH_SHORT).show();
+        }
+    }
+
     public void serverOnClick(View view) {
         switch (view.getId()) {
             case R.id.serverConnect:
                 if (checkStatus()) {
                     stopVpn();
                 } else {
-                    if (loadVpnProfile()) {
-                        serverConnect.setText(getString(R.string.server_btn_disconnect));
-                        startVpn();
-                    } else {
-                        Toast.makeText(this, getString(R.string.server_error_loading_profile), Toast.LENGTH_SHORT).show();
-                    }
+                    prepareVpn();
                 }
                 break;
             case R.id.serverBtnCheckIp:
@@ -420,6 +430,7 @@ public class ServerActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
         if (getIntent().getAction() != null)
             stopVpn();
 
@@ -441,6 +452,9 @@ public class ServerActivity extends BaseActivity {
 
         } else {
             serverConnect.setText(getString(R.string.server_btn_connect));
+
+            if (randomConnection)
+                prepareVpn();
         }
     }
 
