@@ -3,7 +3,6 @@ package com.vasilkoff.easyvpnfree.activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -21,10 +20,12 @@ import java.io.FileReader;
 import java.io.IOException;
 
 
+
 public class LoaderActivity extends BaseActivity {
 
     private NumberProgressBar progressBar;
     private TextView commentsText;
+
     private Handler updateHandler;
 
     private final int LOAD_ERROR = 0;
@@ -32,20 +33,28 @@ public class LoaderActivity extends BaseActivity {
     private final int PARSE_PROGRESS = 2;
     private final int LOADING_SUCCESS = 3;
     private final int SWITCH_TO_RESULT = 4;
-    private final String CSV_SERVERS_LIST_URL = "http://www.vpngate.net/api/iphone/";
-    //private final String CSV_SERVERS_LIST_URL = "http://easyvpn.rusweb.club/?type=csv";
-    private final String CSV_FILE_NAME = "vpngate.csv";
+    private final String BASE_URL = "http://www.vpngate.net/api/iphone/";
+    private final String BASE_FILE_NAME = "vpngate.csv";
+
+    private boolean premium = true;
+    private boolean premiumStage = true;
+
+    private final String PREMIUM_URL = "http://easyvpn.rusweb.club/?type=csv";
+    private final String PREMIUM_FILE_NAME = "premium.csv";
+
+    private DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loader);
 
+        dbHelper = new DBHelper(this);
+
         progressBar = (NumberProgressBar)findViewById(R.id.number_progress_bar);
         commentsText = (TextView)findViewById(R.id.commentsText);
+
         progressBar.setMax(100);
-
-
 
         updateHandler = new Handler(new Handler.Callback() {
             @Override
@@ -58,6 +67,7 @@ public class LoaderActivity extends BaseActivity {
                     case DOWNLOAD_PROGRESS: {
                         commentsText.setText(R.string.downloading_csv_text);
                         progressBar.setProgress(msg.arg2);
+
                     } break;
                     case PARSE_PROGRESS: {
                         commentsText.setText(R.string.parsing_csv_text);
@@ -81,7 +91,7 @@ public class LoaderActivity extends BaseActivity {
         });
         progressBar.setProgress(0);
 
-        downloadCSVFile();
+        downloadCSVFile(BASE_URL, BASE_FILE_NAME);
     }
 
     @Override
@@ -94,28 +104,35 @@ public class LoaderActivity extends BaseActivity {
         return false;
     }
 
-    private void downloadCSVFile() {
-        AndroidNetworking.download(CSV_SERVERS_LIST_URL,getCacheDir().getPath(),CSV_FILE_NAME)
+    private void downloadCSVFile(String url, String fileName) {
+        AndroidNetworking.download(url, getCacheDir().getPath(), fileName)
                 .setTag("downloadCSV")
                 .setPriority(Priority.MEDIUM)
                 .build()
                 .setDownloadProgressListener(new DownloadProgressListener() {
                     @Override
                     public void onProgress(long bytesDownloaded, long totalBytes) {
-                        if(totalBytes<0) {
-                            // when we dont know the file size, assume it is 1200000 bytes :)
-                            totalBytes = 1200000;
+                        if (!premium || !premiumStage) {
+                            if(totalBytes<0) {
+                                // when we dont know the file size, assume it is 1200000 bytes :)
+                                totalBytes = 1200000;
+                            }
+                            Message msg = new Message();
+                            msg.arg1 = DOWNLOAD_PROGRESS;
+                            msg.arg2 = (int)((100*bytesDownloaded)/totalBytes);
+                            updateHandler.sendMessage(msg);
                         }
-                        Message msg = new Message();
-                        msg.arg1 = DOWNLOAD_PROGRESS;
-                        msg.arg2 = (int)((100*bytesDownloaded)/totalBytes);
-                        updateHandler.sendMessage(msg);
                     }
                 })
                 .startDownload(new DownloadListener() {
                     @Override
                     public void onDownloadComplete() {
-                        parseCSVFile();
+                        if (premium && premiumStage) {
+                            premiumStage = false;
+                            downloadCSVFile(PREMIUM_URL, PREMIUM_FILE_NAME);
+                        } else {
+                            parseCSVFile(BASE_FILE_NAME);
+                        }
                     }
                     @Override
                     public void onError(ANError error) {
@@ -127,10 +144,10 @@ public class LoaderActivity extends BaseActivity {
                 });
     }
 
-    private void parseCSVFile() {
+    private void parseCSVFile(String fileName) {
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new FileReader(getCacheDir().getPath().concat("/").concat(CSV_FILE_NAME)));
+            reader = new BufferedReader(new FileReader(getCacheDir().getPath().concat("/").concat(fileName)));
         } catch (IOException e) {
             e.printStackTrace();
             Message msg = new Message();
@@ -140,28 +157,38 @@ public class LoaderActivity extends BaseActivity {
         }
         if (reader != null) {
             try {
-                DBHelper dbHelper = new DBHelper(this);
-                dbHelper.clearTable();
+                int startLine = 2;
+
+                if (premium && premiumStage) {
+                    startLine = 0;
+                } else {
+                    dbHelper.clearTable();
+                }
+
                 int counter = 0;
                 String line = null;
                 while ((line = reader.readLine()) != null) {
-                    if (counter > 1) {
+                    if (counter >= startLine) {
                         dbHelper.putLine(line);
                     }
                     counter++;
-                    Message msg = new Message();
-                    msg.arg1 = PARSE_PROGRESS;
-                    msg.arg2 = counter;// we know that the server returns 100 records
-                    updateHandler.sendMessage(msg);
+                    if (!premium || !premiumStage) {
+                        Message msg = new Message();
+                        msg.arg1 = PARSE_PROGRESS;
+                        msg.arg2 = counter;// we know that the server returns 100 records
+                        updateHandler.sendMessage(msg);
+                    }
                 }
-                Message msg = new Message();
-                msg.arg1 = PARSE_PROGRESS;
-                msg.arg2 = 100;
-                updateHandler.sendMessage(msg);
 
-                Message end = new Message();
-                end.arg1 = LOADING_SUCCESS;
-                updateHandler.sendMessageDelayed(end,200);
+                if (premium && !premiumStage) {
+                    premiumStage = true;
+                    parseCSVFile(PREMIUM_FILE_NAME);
+                } else {
+                    Message end = new Message();
+                    end.arg1 = LOADING_SUCCESS;
+                    updateHandler.sendMessageDelayed(end,200);
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
                 Message msg = new Message();

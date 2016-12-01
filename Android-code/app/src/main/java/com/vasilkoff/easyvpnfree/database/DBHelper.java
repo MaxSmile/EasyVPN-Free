@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 import com.vasilkoff.easyvpnfree.model.Server;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class DBHelper  extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "Records.db";
     public static final String TABLE_SERVERS = "servers";
     private static final String TAG = "DBHelper";
@@ -63,7 +64,10 @@ public class DBHelper  extends SQLiteOpenHelper {
                 + KEY_LOG_TYPE + " text,"
                 + KEY_OPERATOR + " text,"
                 + KEY_MESSAGE + " text,"
-                + KEY_CONFIG_DATA + " text"
+                + KEY_CONFIG_DATA + " text,"
+                + "UNIQUE ("
+                + KEY_HOST_NAME
+                + ") ON CONFLICT REPLACE"
                 + ")");
     }
 
@@ -104,6 +108,12 @@ public class DBHelper  extends SQLiteOpenHelper {
             db.insert(TABLE_SERVERS, null, contentValues);
             db.close();
         }
+    }
+
+    public long getCount() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteStatement statement = db.compileStatement("SELECT COUNT(*) FROM " + TABLE_SERVERS);
+        return statement.simpleQueryForLong();
     }
 
     public List<String> getCountries() {

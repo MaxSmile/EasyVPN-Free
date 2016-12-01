@@ -312,14 +312,12 @@ public class ServerActivity extends BaseActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        if (randomConnection) {
-            startActivity(new Intent(this, HomeActivity.class));
-        } else {
+        if (!randomConnection) {
             Intent intent = new Intent(getApplicationContext(), ServersListActivity.class);
             intent.putExtra(HomeActivity.EXTRA_COUNTRY, currentServer.getCountryLong());
             startActivity(intent);
+            finish();
         }
-        finish();
     }
 
     private boolean checkStatus() {

@@ -19,4 +19,6 @@
     <color name="buttonText">#cbecfd</color>
     <color name="buttonBg">#356690</color>
 
+    <color name="totalServers">#ffffff</color>
+
 </resources>

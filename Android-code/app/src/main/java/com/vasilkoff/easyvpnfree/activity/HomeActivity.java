@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -75,6 +76,9 @@ public class HomeActivity extends BaseActivity {
         dbHelper = new DBHelper(this);
 
         countryList = dbHelper.getCountries();
+
+        String totalServers = String.format(getResources().getString(R.string.total_servers), dbHelper.getCount());
+        ((TextView) findViewById(R.id.homeTotalServers)).setText(totalServers);
 
         initMap();
     }
