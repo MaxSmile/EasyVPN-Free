@@ -28,6 +28,7 @@
     <string name="what_is_my_ip">Який мій IP?</string>
     <string name="action_current_connection">Поточне з\'єднання</string>
     <string name="random_connection">Выпадкове з\'єднання</string>
+    <string name="total_servers">На даний момент, в локальній базі даних, доступно %1$d серверів</string>
     <string name="share_text">
         Easy VPN Free! Найшвидший, без обмежень і 100% безкоштовний!
         \nБільше ніж 22 країни для піключення і розблокування всіх заблокований сайтів.

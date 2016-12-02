@@ -26,7 +26,7 @@
     <string name="ok">Ok</string>
     <string name="network_error_message">Internet is not available, reconnect network and try again.</string>
     <string name="blocking_ads">Turn on ads filtering</string>
-    <string name="more_servers">More servers</string>
+    <string name="more_servers">Get more servers</string>
     <string name="feature_not_available">This feature temporarily is not available</string>
     <string name="feature_not_available_without_perm">Without account information this feature is not available</string>
     <string name="unblock">Purchase ads filtering</string>

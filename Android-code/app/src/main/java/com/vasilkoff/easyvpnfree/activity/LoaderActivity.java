@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Bundle;
+
 import android.widget.TextView;
 
 import com.androidnetworking.AndroidNetworking;
@@ -12,8 +13,8 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.DownloadListener;
 import com.androidnetworking.interfaces.DownloadProgressListener;
 import com.daimajia.numberprogressbar.NumberProgressBar;
+
 import com.vasilkoff.easyvpnfree.R;
-import com.vasilkoff.easyvpnfree.database.DBHelper;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -36,20 +37,17 @@ public class LoaderActivity extends BaseActivity {
     private final String BASE_URL = "http://www.vpngate.net/api/iphone/";
     private final String BASE_FILE_NAME = "vpngate.csv";
 
-    private boolean premium = true;
     private boolean premiumStage = true;
 
     private final String PREMIUM_URL = "http://easyvpn.rusweb.club/?type=csv";
-    private final String PREMIUM_FILE_NAME = "premium.csv";
+    private final String PREMIUM_FILE_NAME = "premiumServers.csv";
 
-    private DBHelper dbHelper;
+    private int percentDownload = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loader);
-
-        dbHelper = new DBHelper(this);
 
         progressBar = (NumberProgressBar)findViewById(R.id.number_progress_bar);
         commentsText = (TextView)findViewById(R.id.commentsText);
@@ -91,6 +89,12 @@ public class LoaderActivity extends BaseActivity {
         });
         progressBar.setProgress(0);
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         downloadCSVFile(BASE_URL, BASE_FILE_NAME);
     }
 
@@ -112,22 +116,28 @@ public class LoaderActivity extends BaseActivity {
                 .setDownloadProgressListener(new DownloadProgressListener() {
                     @Override
                     public void onProgress(long bytesDownloaded, long totalBytes) {
-                        if (!premium || !premiumStage) {
-                            if(totalBytes<0) {
-                                // when we dont know the file size, assume it is 1200000 bytes :)
-                                totalBytes = 1200000;
-                            }
-                            Message msg = new Message();
-                            msg.arg1 = DOWNLOAD_PROGRESS;
-                            msg.arg2 = (int)((100*bytesDownloaded)/totalBytes);
-                            updateHandler.sendMessage(msg);
+                        if(totalBytes < 0) {
+                            // when we dont know the file size, assume it is 1200000 bytes :)
+                            totalBytes = 1200000;
                         }
+
+                        if (!premiumServers || !premiumStage) {
+                            if (percentDownload <= 90)
+                            percentDownload = percentDownload + (int)((100 * bytesDownloaded) / totalBytes);
+                        } else {
+                            percentDownload = (int)((100 * bytesDownloaded) / totalBytes);
+                        }
+
+                        Message msg = new Message();
+                        msg.arg1 = DOWNLOAD_PROGRESS;
+                        msg.arg2 = percentDownload;
+                        updateHandler.sendMessage(msg);
                     }
                 })
                 .startDownload(new DownloadListener() {
                     @Override
                     public void onDownloadComplete() {
-                        if (premium && premiumStage) {
+                        if (premiumServers && premiumStage) {
                             premiumStage = false;
                             downloadCSVFile(PREMIUM_URL, PREMIUM_FILE_NAME);
                         } else {
@@ -159,7 +169,7 @@ public class LoaderActivity extends BaseActivity {
             try {
                 int startLine = 2;
 
-                if (premium && premiumStage) {
+                if (premiumServers && premiumStage) {
                     startLine = 0;
                 } else {
                     dbHelper.clearTable();
@@ -172,7 +182,7 @@ public class LoaderActivity extends BaseActivity {
                         dbHelper.putLine(line);
                     }
                     counter++;
-                    if (!premium || !premiumStage) {
+                    if (!premiumServers || !premiumStage) {
                         Message msg = new Message();
                         msg.arg1 = PARSE_PROGRESS;
                         msg.arg2 = counter;// we know that the server returns 100 records
@@ -180,7 +190,7 @@ public class LoaderActivity extends BaseActivity {
                     }
                 }
 
-                if (premium && !premiumStage) {
+                if (premiumServers && !premiumStage) {
                     premiumStage = true;
                     parseCSVFile(PREMIUM_FILE_NAME);
                 } else {

@@ -21,6 +21,11 @@
         android:icon="@drawable/ic_vpn_key_white_24dp"
         app:showAsAction="ifRoom"/>
     <item
+        android:id="@+id/actionGetMoreServers"
+        android:orderInCategory="103"
+        android:title="@string/more_servers"
+        app:showAsAction="never"/>
+    <item
         android:id="@+id/actionAbout"
         android:orderInCategory="200"
         android:title="@string/action_about"

@@ -4,7 +4,6 @@ import android.widget.ListView;
 
 import com.vasilkoff.easyvpnfree.R;
 import com.vasilkoff.easyvpnfree.adapter.ServerListAdapter;
-import com.vasilkoff.easyvpnfree.database.DBHelper;
 import com.vasilkoff.easyvpnfree.model.Server;
 
 import java.util.List;
@@ -24,7 +23,7 @@ public class ServersListActivity extends BaseActivity {
 
         String country = getIntent().getStringExtra(HomeActivity.EXTRA_COUNTRY);
         ListView listView = (ListView) findViewById(R.id.list);
-        final List<Server> serverList = new DBHelper(this).getServersByCountry(country);
+        final List<Server> serverList = dbHelper.getServersByCountry(country);
         listView.setAdapter(new ServerListAdapter(this, serverList));
     }
 

@@ -23,7 +23,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.vasilkoff.easyvpnfree.R;
-import com.vasilkoff.easyvpnfree.database.DBHelper;
+
 import com.vasilkoff.easyvpnfree.model.Country;
 import com.vasilkoff.easyvpnfree.model.Server;
 import com.vasilkoff.easyvpnfree.util.BitmapGenerator;
@@ -58,7 +58,6 @@ public class HomeActivity extends BaseActivity {
     private final String COUNTRY_FILE_NAME = "countries.json";
 
     private List<Country> countryLatLonList = null;
-    private DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +71,6 @@ public class HomeActivity extends BaseActivity {
         heightWindow = dm.heightPixels;
 
         homeContextRL = (RelativeLayout) findViewById(R.id.homeContextRL);
-
-        dbHelper = new DBHelper(this);
 
         countryList = dbHelper.getCountries();
 
