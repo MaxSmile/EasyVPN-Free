@@ -116,12 +116,13 @@ public class HomeActivity extends BaseActivity {
                 chooseCountry();
                 break;
             case R.id.homeBtnRandomConnection:
-                Server randomServer = dbHelper.getRandomServer();
+                Server randomServer = dbHelper.getGoodRandomServer();
                 if (randomServer != null) {
                     Intent intent = new Intent(this, ServerActivity.class);
                     intent.putExtra(Server.class.getCanonicalName(), randomServer);
                     intent.putExtra("randomConnection", true);
                     startActivity(intent);
+                    finish();
                 }
                 break;
             /*case R.id.homeBtnMoreServers:

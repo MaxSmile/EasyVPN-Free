@@ -12,6 +12,7 @@ import com.vasilkoff.easyvpnfree.model.Server;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Kusenko on 29.09.2016.
@@ -160,14 +161,31 @@ public class DBHelper  extends SQLiteOpenHelper {
         return serverList;
     }
 
-    public Server getRandomServer() {
-        Server randomServer = null;
+    public Server getGoodRandomServer() {
+        List<Server> serverListGood = new ArrayList<Server>();
+        List<Server> serverListBad = new ArrayList<Server>();
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM "
-                + TABLE_SERVERS
-                + " ORDER BY RANDOM() LIMIT 1", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SERVERS, null);
+
         if (cursor.moveToFirst()) {
-            randomServer = parseServer(cursor);
+            do {
+                int speed = Integer.parseInt(cursor.getString(5));
+                int sessions = Integer.parseInt(cursor.getString(8));
+
+                int ping = 0;
+                if (!(cursor.getString(4).equals("-") || cursor.getString(4).equals(""))) {
+                    ping = Integer.parseInt(cursor.getString(4));
+                }
+
+                if (speed > 10000000 && ping < 30 && (sessions != 0 && sessions < 100)) {
+                    serverListGood.add(parseServer(cursor));
+                } else if (speed < 1000000 || ping > 100 || (sessions == 0 || sessions > 150)) {
+                    serverListBad.add(parseServer(cursor));
+                } else {
+                    serverListGood.add(parseServer(cursor));
+                }
+
+            } while (cursor.moveToNext());
         } else {
             Log.d(TAG ,"0 rows");
         }
@@ -175,7 +193,14 @@ public class DBHelper  extends SQLiteOpenHelper {
         cursor.close();
         db.close();
 
-        return randomServer;
+        Random random = new Random();
+        if (serverListGood.size() > 0) {
+            return serverListGood.get(random.nextInt(serverListGood.size()));
+        } else if (serverListBad.size() > 0) {
+            return serverListBad.get(random.nextInt(serverListBad.size()));
+        }
+
+        return null;
     }
 
     private Server parseServer(Cursor cursor) {

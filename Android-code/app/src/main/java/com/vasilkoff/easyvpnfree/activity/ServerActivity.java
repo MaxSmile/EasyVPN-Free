@@ -155,7 +155,10 @@ public class ServerActivity extends BaseActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        if (!randomConnection) {
+        if (randomConnection) {
+            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+            finish();
+        } else {
             Intent intent = new Intent(getApplicationContext(), ServersListActivity.class);
             intent.putExtra(HomeActivity.EXTRA_COUNTRY, currentServer.getCountryLong());
             startActivity(intent);
