@@ -16,6 +16,7 @@ import com.vasilkoff.easyvpnfree.R;
 import com.vasilkoff.easyvpnfree.activity.BaseActivity;
 import com.vasilkoff.easyvpnfree.activity.ServerActivity;
 import com.vasilkoff.easyvpnfree.model.Server;
+import com.vasilkoff.easyvpnfree.util.ConnectUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +30,7 @@ public class ServerListAdapter extends BaseAdapter {
     private List<Server> serverList = new ArrayList<Server>();
     private Context context;
 
-    private static final String CONNECT_BAD = "ic_connect_bad";
-    private static final String CONNECT_GOOD = "ic_connect_good";
-    private static final String CONNECT_EXCELLENT = "ic_connect_excellent";
+
 
     public ServerListAdapter(Context c, List<Server> serverList) {
         inflater = LayoutInflater.from(c);
@@ -72,7 +71,7 @@ public class ServerListAdapter extends BaseAdapter {
                                 context.getPackageName()));
         ((ImageView) v.findViewById(R.id.imageConnect))
                 .setImageResource(
-                        context.getResources().getIdentifier(getConnectIcon(server),
+                        context.getResources().getIdentifier(ConnectUtil.getConnectIcon(server),
                                 "drawable",
                                 context.getPackageName()));
 
@@ -97,24 +96,5 @@ public class ServerListAdapter extends BaseAdapter {
 
         return v;
     }
-
-    private String getConnectIcon(Server server) {
-        int speed = Integer.parseInt(server.getSpeed());
-        int sessions = Integer.parseInt(server.getNumVpnSessions());
-
-        int ping = 0;
-        if (!(server.getPing().equals("-") || server.getPing().equals(""))) {
-            ping = Integer.parseInt(server.getPing());
-        }
-
-        if (speed > 10000000 && ping < 30 && (sessions != 0 && sessions < 100)) {
-            return CONNECT_EXCELLENT;
-        } else if (speed < 1000000 || ping > 100 || (sessions == 0 || sessions > 150)) {
-            return CONNECT_BAD;
-        } else {
-            return CONNECT_GOOD;
-        }
-    }
-
 
 }

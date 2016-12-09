@@ -10,11 +10,13 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.net.Uri;
 import android.net.VpnService;
+import android.os.AsyncTask;
 import android.os.IBinder;
 
 import android.os.Bundle;
 
 
+import android.os.SystemClock;
 import android.util.Base64;
 import android.util.Log;
 
@@ -29,6 +31,7 @@ import android.widget.Toast;
 
 import com.vasilkoff.easyvpnfree.R;
 import com.vasilkoff.easyvpnfree.model.Server;
+import com.vasilkoff.easyvpnfree.util.ConnectUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -65,6 +68,8 @@ public class ServerActivity extends BaseActivity {
 
     private boolean randomConnection;
 
+    private boolean statusConnection = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +84,7 @@ public class ServerActivity extends BaseActivity {
         unblockCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkPermissions(adblockSKU);
+                checkPermissions(adblockSKU, ADBLOCK_REQUEST);
             }
         });
 
@@ -102,6 +107,11 @@ public class ServerActivity extends BaseActivity {
         ((TextView) findViewById(R.id.serverCountry)).setText(currentServer.getCountryLong());
         ((TextView) findViewById(R.id.serverIP)).setText(currentServer.getIp());
         ((TextView) findViewById(R.id.serverSessions)).setText(currentServer.getNumVpnSessions());
+        ((ImageView) findViewById(R.id.serverImageConnect))
+                .setImageResource(
+                        getResources().getIdentifier(ConnectUtil.getConnectIcon(currentServer),
+                        "drawable",
+                        getPackageName()));
 
         String ping = currentServer.getPing() + " " +  getString(R.string.ms);
         ((TextView) findViewById(R.id.serverPing)).setText(ping);
@@ -177,6 +187,7 @@ public class ServerActivity extends BaseActivity {
     private void changeServerStatus(VpnStatus.ConnectionStatus status) {
         switch (status) {
             case LEVEL_CONNECTED:
+                statusConnection = true;
                 serverConnect.setText(getString(R.string.server_btn_disconnect));
                 break;
             case LEVEL_NOTCONNECTED:
@@ -297,8 +308,11 @@ public class ServerActivity extends BaseActivity {
         } else {
             serverConnect.setText(getString(R.string.server_btn_connect));
 
-            if (randomConnection)
+            if (randomConnection) {
+                new WaitConnectionAsync().execute();
                 prepareVpn();
+            }
+
         }
     }
 
@@ -316,23 +330,19 @@ public class ServerActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case START_VPN_PROFILE :
                     VPNLaunchHelper.startOpenVpn(vpnProfile, this);
                     break;
-                case RC_REQUEST:
+                case ADBLOCK_REQUEST:
                     Log.d(IAP_TAG, "onActivityResult(" + requestCode + "," + resultCode + "," + data);
 
                     if (iapHelper == null) return;
-                    // Pass on the activity result to the helper for handling
-                    if (!iapHelper.handleActivityResult(requestCode, resultCode, data)) {
-                        // not handled, so handle it ourselves (here's where you'd
-                        // perform any handling of activity results not related to in-app
-                        // billing...
-                        super.onActivityResult(requestCode, resultCode, data);
-                    }
-                    else {
+
+                    if (iapHelper.handleActivityResult(requestCode, resultCode, data)) {
                         Log.d(IAP_TAG, "onActivityResult handled by IABUtil.");
                         checkAvailableFilter();
                     }
@@ -359,4 +369,28 @@ public class ServerActivity extends BaseActivity {
         }
 
     };
+
+    private class WaitConnectionAsync extends AsyncTask<Void, Void, Void>
+    {
+        @Override
+        protected Void doInBackground(Void... params) {
+            SystemClock.sleep(15000);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if (!statusConnection) {
+                Server randomServer = dbHelper.getGoodRandomServer();
+                if (randomServer != null) {
+                    Intent intent = new Intent(getApplicationContext(), ServerActivity.class);
+                    intent.putExtra(Server.class.getCanonicalName(), randomServer);
+                    intent.putExtra("randomConnection", true);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        }
+    }
 }

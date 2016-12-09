@@ -2,4 +2,5 @@
 <resources>
     <string name="base64EncodedPublicKey">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAo6KAevJgZCEigAbUpgru1Phr8KX9tVR6nHITiFNJlJSazmifdT1GGjkozMC3Ff0syyA64CYx4YeNeChg5nLJeL3DKhs7tKkr2G4HhvMgP+MX/M9pOPiLe3VZ26YaqKI/BCOKXbNZ7UH1BXATiJdpANIP75HxpBXCQVbIvmwgbzp6hvTJFQMwYpQ+hyFL6URSRCiq2DOoirDPvClstXHvogSSW/5Kn7eYEiutE/YIn1G4NnT8XtCD3bCRdH5732ZSqiq+s52l0t+yDUdEeAbC6Aja/qSv/Wgfu8CsGrInuwmYlZQgtwOlhkR7quvgi9tCXyfDzanihI8LqZ88R93ytwIDAQAB</string>
     <string name="url_check_ip">https://www.iplocation.net/</string>
+
 </resources>

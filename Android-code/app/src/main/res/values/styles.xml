@@ -7,6 +7,13 @@
         <item name="colorControlNormal">@color/toolbarTitle</item>
     </style>
 
+    <style name="AppTheme.PopUp">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
     <style name="serverDetails" >
         <item name="android:textSize">15sp</item>
         <item name="android:layout_gravity">center</item>
@@ -14,6 +21,11 @@
 
     <style name="serverList" >
         <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="infoServersList" >
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/infoServersList</item>
     </style>
 
     <style name="buttons" >

@@ -38,7 +38,8 @@ public class BaseActivity extends AppCompatActivity {
     private DrawerLayout fullLayout;
     private Toolbar toolbar;
     static final int REQUEST_CODE_ASK_PERMISSIONS = 123;
-    static final int RC_REQUEST = 10001;
+    static final int ADBLOCK_REQUEST = 10001;
+    static final int PREMIUM_SERVERS_REQUEST = 10002;
     public static Server connectedServer = null;
     IabHelper iapHelper;
     public static final String IAP_TAG = "IAP";
@@ -52,6 +53,7 @@ public class BaseActivity extends AppCompatActivity {
     static String adblockSKU;
     static String moreServersSKU;
     static String currentSKU;
+    static int currentRequest;
 
     static DBHelper dbHelper;
 
@@ -128,13 +130,14 @@ public class BaseActivity extends AppCompatActivity {
         getUserEmailFromAndroidAccounts();
         iapHelper.flagEndAsync();
         iapHelper.launchPurchaseFlow(this,
-                currentSKU, RC_REQUEST,
+                currentSKU, currentRequest,
                 mPurchaseFinishedListener,
                 gmail + currentSKU);
     }
 
-    void checkPermissions(String sku) {
+    void checkPermissions(String sku, int request) {
         currentSKU = sku;
+        currentRequest = request;
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -236,7 +239,7 @@ public class BaseActivity extends AppCompatActivity {
                 menu.getItem(i).setVisible(false);
 
             if (premiumServers && menu.getItem(i).getItemId() == R.id.actionGetMoreServers)
-                menu.getItem(i).setVisible(false);
+                menu.getItem(i).setTitle(getString(R.string.current_servers_list));
         }
 
         return useMenu();
@@ -268,10 +271,36 @@ public class BaseActivity extends AppCompatActivity {
 
                 return true;
             case R.id.actionGetMoreServers:
-                checkPermissions(moreServersSKU);
+                if (premiumServers) {
+                    startActivity(new Intent(this, ServersInfo.class));
+                } else {
+                    checkPermissions(moreServersSKU, PREMIUM_SERVERS_REQUEST);
+                }
+
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case PREMIUM_SERVERS_REQUEST:
+                    Log.d(IAP_TAG, "onActivityResult(" + requestCode + "," + resultCode + "," + data);
+
+                    if (iapHelper == null) return;
+
+                    if (iapHelper.handleActivityResult(requestCode, resultCode, data)) {
+                        Log.d(IAP_TAG, "onActivityResult handled by IABUtil.");
+                        Intent intent = new Intent(getApplicationContext(), LoaderActivity.class);
+                        intent.putExtra("firstPremiumLoad", true);
+                        startActivity(intent);
+                        finish();
+                    }
+                    break;
+            }
+        }
     }
 }

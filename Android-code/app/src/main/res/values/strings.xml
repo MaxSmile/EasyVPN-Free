@@ -34,6 +34,11 @@
     <string name="action_current_connection">Current connection</string>
     <string name="random_connection">Random connection</string>
     <string name="total_servers">%1$d servers available in the local database now</string>
+    <string name="loading_additional_servers">The loading of additional servers</string>
+    <string name="current_servers_list">Current servers list</string>
+    <string name="you_have_servers"><b>You have servers:</b></string>
+    <string name="info_basic">%1$d basic</string>
+    <string name="info_additional">%1$d additional</string>
     <string name="share_text">
         Easy VPN Free! Fastest, Unlimited and 100% Free!
         \nMore than 22 countries to connect and unblock all blocked websites.

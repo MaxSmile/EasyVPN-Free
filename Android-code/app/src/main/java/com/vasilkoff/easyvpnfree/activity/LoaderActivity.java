@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Bundle;
 
+import android.view.View;
 import android.widget.TextView;
 
 import com.androidnetworking.AndroidNetworking;
@@ -19,8 +20,6 @@ import com.vasilkoff.easyvpnfree.R;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-
-
 
 public class LoaderActivity extends BaseActivity {
 
@@ -51,6 +50,9 @@ public class LoaderActivity extends BaseActivity {
 
         progressBar = (NumberProgressBar)findViewById(R.id.number_progress_bar);
         commentsText = (TextView)findViewById(R.id.commentsText);
+
+        if (getIntent().getBooleanExtra("firstPremiumLoad", false))
+            ((TextView)findViewById(R.id.loaderPremiumText)).setVisibility(View.VISIBLE);
 
         progressBar.setMax(100);
 
@@ -168,9 +170,11 @@ public class LoaderActivity extends BaseActivity {
         if (reader != null) {
             try {
                 int startLine = 2;
+                int premium = 0;
 
                 if (premiumServers && premiumStage) {
                     startLine = 0;
+                    premium = 1;
                 } else {
                     dbHelper.clearTable();
                 }
@@ -179,7 +183,7 @@ public class LoaderActivity extends BaseActivity {
                 String line = null;
                 while ((line = reader.readLine()) != null) {
                     if (counter >= startLine) {
-                        dbHelper.putLine(line);
+                        dbHelper.putLine(line, premium);
                     }
                     counter++;
                     if (!premiumServers || !premiumStage) {

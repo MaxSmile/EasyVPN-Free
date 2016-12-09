@@ -21,4 +21,6 @@
 
     <color name="totalServers">#ffffff</color>
 
+    <color name="infoServersList">#1c3f61</color>
+
 </resources>

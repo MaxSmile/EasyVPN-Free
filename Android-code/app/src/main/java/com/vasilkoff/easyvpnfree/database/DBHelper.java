@@ -20,7 +20,7 @@ import java.util.Random;
 
 public class DBHelper  extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "Records.db";
     public static final String TABLE_SERVERS = "servers";
     private static final String TAG = "DBHelper";
@@ -41,6 +41,7 @@ public class DBHelper  extends SQLiteOpenHelper {
     private static final String KEY_OPERATOR = "operator";
     private static final String KEY_MESSAGE = "message";
     private static final String KEY_CONFIG_DATA = "configData";
+    private static final String KEY_PREMIUM = "premium";
 
 
     public DBHelper(Context context) {
@@ -66,6 +67,7 @@ public class DBHelper  extends SQLiteOpenHelper {
                 + KEY_OPERATOR + " text,"
                 + KEY_MESSAGE + " text,"
                 + KEY_CONFIG_DATA + " text,"
+                + KEY_PREMIUM + " integer,"
                 + "UNIQUE ("
                 + KEY_HOST_NAME
                 + ") ON CONFLICT REPLACE"
@@ -84,7 +86,7 @@ public class DBHelper  extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void putLine(String line) {
+    public void putLine(String line, int premium) {
         String[] data = line.split(",");
         if (data.length == 15) {
             SQLiteDatabase db = this.getWritableDatabase();
@@ -105,6 +107,7 @@ public class DBHelper  extends SQLiteOpenHelper {
             contentValues.put(KEY_OPERATOR, data[12]);
             contentValues.put(KEY_MESSAGE, data[13]);
             contentValues.put(KEY_CONFIG_DATA, data[14]);
+            contentValues.put(KEY_PREMIUM, premium);
 
             db.insert(TABLE_SERVERS, null, contentValues);
             db.close();
@@ -114,7 +117,33 @@ public class DBHelper  extends SQLiteOpenHelper {
     public long getCount() {
         SQLiteDatabase db = this.getWritableDatabase();
         SQLiteStatement statement = db.compileStatement("SELECT COUNT(*) FROM " + TABLE_SERVERS);
-        return statement.simpleQueryForLong();
+        long count = statement.simpleQueryForLong();
+        db.close();
+        return count;
+    }
+
+    public long getCountBasic() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteStatement statement = db.compileStatement("SELECT COUNT(*) FROM "
+                + TABLE_SERVERS
+                + " WHERE "
+                + KEY_PREMIUM
+                + " = 0");
+        long count = statement.simpleQueryForLong();
+        db.close();
+        return count;
+    }
+
+    public long getCountAdditional() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteStatement statement = db.compileStatement("SELECT COUNT(*) FROM "
+                + TABLE_SERVERS
+                + " WHERE "
+                + KEY_PREMIUM
+                + " = 1");
+        long count = statement.simpleQueryForLong();
+        db.close();
+        return count;
     }
 
     public List<String> getCountries() {
@@ -162,6 +191,7 @@ public class DBHelper  extends SQLiteOpenHelper {
     }
 
     public Server getGoodRandomServer() {
+        List<Server> serverListExcellent = new ArrayList<Server>();
         List<Server> serverListGood = new ArrayList<Server>();
         List<Server> serverListBad = new ArrayList<Server>();
         SQLiteDatabase db = this.getWritableDatabase();
@@ -178,7 +208,7 @@ public class DBHelper  extends SQLiteOpenHelper {
                 }
 
                 if (speed > 10000000 && ping < 30 && (sessions != 0 && sessions < 100)) {
-                    serverListGood.add(parseServer(cursor));
+                    serverListExcellent.add(parseServer(cursor));
                 } else if (speed < 1000000 || ping > 100 || (sessions == 0 || sessions > 150)) {
                     serverListBad.add(parseServer(cursor));
                 } else {
@@ -194,7 +224,9 @@ public class DBHelper  extends SQLiteOpenHelper {
         db.close();
 
         Random random = new Random();
-        if (serverListGood.size() > 0) {
+        if (serverListExcellent.size() > 0) {
+            return serverListExcellent.get(random.nextInt(serverListExcellent.size()));
+        } else if (serverListGood.size() > 0) {
             return serverListGood.get(random.nextInt(serverListGood.size()));
         } else if (serverListBad.size() > 0) {
             return serverListBad.get(random.nextInt(serverListBad.size()));

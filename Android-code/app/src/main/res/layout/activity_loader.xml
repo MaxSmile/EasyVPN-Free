@@ -10,14 +10,24 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.vasilkoff.easyvpnfree.activity.LoaderActivity">
 
-
     <LinearLayout
         android:orientation="vertical"
         android:layout_gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:id="@+id/linearLayout">
+
+        <TextView
+            android:id="@+id/loaderPremiumText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading_additional_servers"
+            android:layout_gravity="center"
+            android:textAllCaps="true"
+            android:layout_marginBottom="20dp"
+            android:visibility="gone"/>
 
         <com.daimajia.numberprogressbar.NumberProgressBar
             android:id="@+id/number_progress_bar"
@@ -31,6 +41,5 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
-
 
 </RelativeLayout>
