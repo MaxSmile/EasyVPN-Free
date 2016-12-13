@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,8 +61,8 @@ public class ServerActivity extends BaseActivity {
     private Button unblockCheck;
     private CheckBox adbBlockCheck;
     private Button serverConnect;
-
     private TextView lastLog;
+    private ProgressBar connectingProgress;
 
     private static boolean filterAds = false;
     private static boolean defaultFilterAds = true;
@@ -97,6 +98,8 @@ public class ServerActivity extends BaseActivity {
                     defaultFilterAds = isChecked;
             }
         });
+
+        connectingProgress = (ProgressBar) findViewById(R.id.serverConnectingProgress);
 
         ((ImageView) findViewById(R.id.serverFlag))
                 .setImageResource(
@@ -188,6 +191,7 @@ public class ServerActivity extends BaseActivity {
         switch (status) {
             case LEVEL_CONNECTED:
                 statusConnection = true;
+                connectingProgress.setVisibility(View.GONE);
                 serverConnect.setText(getString(R.string.server_btn_disconnect));
                 break;
             case LEVEL_NOTCONNECTED:
@@ -199,10 +203,12 @@ public class ServerActivity extends BaseActivity {
     }
 
     private void prepareVpn() {
+        connectingProgress.setVisibility(View.VISIBLE);
         if (loadVpnProfile()) {
             serverConnect.setText(getString(R.string.server_btn_disconnect));
             startVpn();
         } else {
+            connectingProgress.setVisibility(View.GONE);
             Toast.makeText(this, getString(R.string.server_error_loading_profile), Toast.LENGTH_SHORT).show();
         }
     }
@@ -251,6 +257,7 @@ public class ServerActivity extends BaseActivity {
 
     private void stopVpn() {
         statusConnection = true;
+        connectingProgress.setVisibility(View.GONE);
         adbBlockCheck.setEnabled(availableFilterAds);
         lastLog.setText(R.string.server_not_connected);
         serverConnect.setText(getString(R.string.server_btn_connect));
