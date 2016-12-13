@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Easy VPN Free</string>
+    <string name="action_settings">Settings</string>
     <string name="home_btn_choose_country">Choose country</string>
     <string name="home_pop_up_title_choose_country">Choose country</string>
     <string name="server_btn_connect">Connect</string>
@@ -39,6 +40,12 @@
     <string name="you_have_servers"><b>You have servers:</b></string>
     <string name="info_basic">%1$d basic</string>
     <string name="info_additional">%1$d additional</string>
+    <string name="connect_on_start">Connect on start</string>
+    <string name="connect_on_start_summary">Connect when application is started</string>
+    <string name="choose_country_priority">Choose country priority</string>
+    <string name="choose_country_priority_summary">If not enabled then use random connection</string>
+    <string name="choose_country">Choose country</string>
+    <string name="error_random_country">Server with priority country %1$s is not available</string>
     <string name="share_text">
         Easy VPN Free! Fastest, Unlimited and 100% Free!
         \nMore than 22 countries to connect and unblock all blocked websites.

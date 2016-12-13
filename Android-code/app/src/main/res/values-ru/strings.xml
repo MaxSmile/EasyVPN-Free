@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Easy VPN Free</string>
+    <string name="action_settings">Настройки</string>
     <string name="home_btn_choose_country">Выберите страну</string>
     <string name="home_pop_up_title_choose_country">Выберите страну</string>
     <string name="server_btn_connect">Подключить</string>
@@ -34,6 +35,12 @@
     <string name="you_have_servers"><b>Вам доступно серверов:</b></string>
     <string name="info_basic">%1$d базовых</string>
     <string name="info_additional">%1$d дополнительных</string>
+    <string name="connect_on_start">Подключение на старте</string>
+    <string name="connect_on_start_summary">Подключение при запуске приложения</string>
+    <string name="choose_country_priority">Выберите приоритет страны</string>
+    <string name="choose_country_priority_summary">Если не включена, то использовать случайное соединение</string>
+    <string name="choose_country">Выберите страну</string>
+    <string name="error_random_country">Сервер с приоритетом страны %1$s не доступен</string>
     <string name="share_text">
         Easy VPN Free! Самый быстрый, без ограничений и 100% бесплатный!
         \nБолее 22 стран для подключения и разблокировка всех заблокированных сайтов.

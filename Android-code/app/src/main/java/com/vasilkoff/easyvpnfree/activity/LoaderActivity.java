@@ -16,6 +16,7 @@ import com.androidnetworking.interfaces.DownloadProgressListener;
 import com.daimajia.numberprogressbar.NumberProgressBar;
 
 import com.vasilkoff.easyvpnfree.R;
+import com.vasilkoff.easyvpnfree.model.Server;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -81,9 +82,22 @@ public class LoaderActivity extends BaseActivity {
                         updateHandler.sendMessageDelayed(end,500);
                     } break;
                     case SWITCH_TO_RESULT: {
-                        Intent myIntent = new Intent(LoaderActivity.this, HomeActivity.class);
-                        startActivity(myIntent);
-                        finish();
+                        if (sharedPreferences.getBoolean("connectOnStart", false)) {
+                            Server randomServer = getRandomServer();
+                            if (randomServer != null) {
+                                Intent intent = new Intent(LoaderActivity.this, ServerActivity.class);
+                                intent.putExtra(Server.class.getCanonicalName(), randomServer);
+                                intent.putExtra("randomConnection", true);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                startActivity(new Intent(LoaderActivity.this, HomeActivity.class));
+                                finish();
+                            }
+                        } else {
+                            startActivity(new Intent(LoaderActivity.this, HomeActivity.class));
+                            finish();
+                        }
                     }
                 }
                 return true;

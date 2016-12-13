@@ -250,6 +250,7 @@ public class ServerActivity extends BaseActivity {
     }
 
     private void stopVpn() {
+        statusConnection = true;
         adbBlockCheck.setEnabled(availableFilterAds);
         lastLog.setText(R.string.server_not_connected);
         serverConnect.setText(getString(R.string.server_btn_connect));
@@ -382,7 +383,7 @@ public class ServerActivity extends BaseActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             if (!statusConnection) {
-                Server randomServer = dbHelper.getGoodRandomServer();
+                Server randomServer = getRandomServer();
                 if (randomServer != null) {
                     Intent intent = new Intent(getApplicationContext(), ServerActivity.class);
                     intent.putExtra(Server.class.getCanonicalName(), randomServer);
