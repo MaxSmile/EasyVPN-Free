@@ -12,6 +12,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.Menu;
@@ -29,6 +30,7 @@ import com.vasilkoff.easyvpnfree.util.iap.IabResult;
 import com.vasilkoff.easyvpnfree.util.iap.Inventory;
 import com.vasilkoff.easyvpnfree.util.iap.Purchase;
 
+import java.util.Random;
 import java.util.regex.Pattern;
 
 /**
@@ -39,7 +41,7 @@ public class BaseActivity extends AppCompatActivity {
 
     private DrawerLayout fullLayout;
     private Toolbar toolbar;
-    static final int REQUEST_CODE_ASK_PERMISSIONS = 123;
+
     static final int ADBLOCK_REQUEST = 10001;
     static final int PREMIUM_SERVERS_REQUEST = 10002;
     public static Server connectedServer = null;
@@ -48,14 +50,16 @@ public class BaseActivity extends AppCompatActivity {
     static final String TEST_ITEM_SKU = "android.test.purchased";
     static final String ADBLOCK_ITEM_SKU = "adblock";
     static final String MORE_SERVERS_ITEM_SKU = "more_servers";
-    static String gmail = "";
+    static String key = "";
 
     static boolean availableFilterAds = false;
     static boolean premiumServers = false;
     static String adblockSKU;
     static String moreServersSKU;
     static String currentSKU;
-    static int currentRequest;
+
+    int widthWindow ;
+    int heightWindow;
 
     static DBHelper dbHelper;
     SharedPreferences sharedPreferences;
@@ -94,6 +98,12 @@ public class BaseActivity extends AppCompatActivity {
 
         dbHelper = new DBHelper(this);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+        widthWindow = dm.widthPixels;
+        heightWindow = dm.heightPixels;
     }
 
     @Override
@@ -130,63 +140,26 @@ public class BaseActivity extends AppCompatActivity {
         iapHelper.queryInventoryAsync(mGotInventoryListener);
     }
 
-    private void launchPurchase() {
-        getUserEmailFromAndroidAccounts();
+    void launchPurchase(String sku, int request) {
+        currentSKU = sku;
+        String base64EncodedPublicKey = getString(R.string.base64EncodedPublicKey);
+        Random random = new Random();
+        key = base64EncodedPublicKey.substring(random.nextInt(base64EncodedPublicKey.length() - 2));
+
         iapHelper.flagEndAsync();
         iapHelper.launchPurchaseFlow(this,
-                currentSKU, currentRequest,
+                sku, request,
                 mPurchaseFinishedListener,
-                gmail + currentSKU);
+                key + sku);
     }
 
-    void checkPermissions(String sku, int request) {
-        currentSKU = sku;
-        currentRequest = request;
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(new String[]{Manifest.permission.GET_ACCOUNTS},
-                        REQUEST_CODE_ASK_PERMISSIONS);
-            }
-            return;
-        }
-
-        launchPurchase();
-    }
-
-    void getUserEmailFromAndroidAccounts() {
-        Pattern gmailPattern = Patterns.EMAIL_ADDRESS;
-        Account[] accounts = AccountManager.get(this).getAccounts();
-        for (Account account : accounts) {
-            if (gmailPattern.matcher(account.name).matches()) {
-                gmail = account.name;
-            }
-        }
-    }
 
     /** Verifies the developer payload of a purchase. */
     boolean verifyDeveloperPayload(Purchase p, String sku) {
         String responsePayload = p.getDeveloperPayload();
-        String computedPayload = gmail + sku;
+        String computedPayload = key + sku;
 
         return responsePayload != null && responsePayload.equals(computedPayload);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case REQUEST_CODE_ASK_PERMISSIONS:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Permission Granted
-                    launchPurchase();
-                } else {
-                    // Permission Denied
-                    Toast.makeText(this, getString(R.string.feature_not_available_without_perm), Toast.LENGTH_LONG).show();
-                }
-                break;
-            default:
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
     }
 
     IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
@@ -212,7 +185,7 @@ public class BaseActivity extends AppCompatActivity {
                 Log.d(IAP_TAG, "Oh noes, there was a problem.");
                 return;
             } else {
-                if (purchase.getSku().equals(adblockSKU) && verifyDeveloperPayload(purchase, adblockSKU)) {
+                if (purchase.getSku().equals(currentSKU) && verifyDeveloperPayload(purchase, currentSKU)) {
                     availableFilterAds = true;
                 }
             }
@@ -277,7 +250,7 @@ public class BaseActivity extends AppCompatActivity {
                 if (premiumServers) {
                     startActivity(new Intent(this, ServersInfo.class));
                 } else {
-                    checkPermissions(moreServersSKU, PREMIUM_SERVERS_REQUEST);
+                    launchPurchase(moreServersSKU, PREMIUM_SERVERS_REQUEST);
                 }
                 return true;
             case R.id.action_settings:

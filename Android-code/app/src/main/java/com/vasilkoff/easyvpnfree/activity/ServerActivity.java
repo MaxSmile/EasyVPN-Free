@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.net.VpnService;
 import android.os.AsyncTask;
@@ -20,11 +21,15 @@ import android.os.SystemClock;
 import android.util.Base64;
 import android.util.Log;
 
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,11 +68,13 @@ public class ServerActivity extends BaseActivity {
     private Button serverConnect;
     private TextView lastLog;
     private ProgressBar connectingProgress;
+    private PopupWindow popupWindow;
+    private LinearLayout parentLayout;
 
     private static boolean filterAds = false;
     private static boolean defaultFilterAds = true;
 
-    private boolean randomConnection;
+    private boolean fastConnection;
 
     private boolean statusConnection = false;
 
@@ -76,7 +83,9 @@ public class ServerActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server);
 
-        randomConnection = getIntent().getBooleanExtra("randomConnection", false);
+        parentLayout = (LinearLayout) findViewById(R.id.serverParentLayout);
+
+        fastConnection = getIntent().getBooleanExtra("fastConnection", false);
         currentServer = (Server)getIntent().getParcelableExtra(Server.class.getCanonicalName());
         if (currentServer == null)
             currentServer = connectedServer;
@@ -85,7 +94,7 @@ public class ServerActivity extends BaseActivity {
         unblockCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkPermissions(adblockSKU, ADBLOCK_REQUEST);
+                launchPurchase(adblockSKU, ADBLOCK_REQUEST);
             }
         });
 
@@ -168,7 +177,7 @@ public class ServerActivity extends BaseActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        if (randomConnection) {
+        if (fastConnection) {
             startActivity(new Intent(getApplicationContext(), HomeActivity.class));
             finish();
         } else {
@@ -192,6 +201,7 @@ public class ServerActivity extends BaseActivity {
             case LEVEL_CONNECTED:
                 statusConnection = true;
                 connectingProgress.setVisibility(View.GONE);
+                chooseAction();
                 serverConnect.setText(getString(R.string.server_btn_disconnect));
                 break;
             case LEVEL_NOTCONNECTED:
@@ -316,7 +326,7 @@ public class ServerActivity extends BaseActivity {
         } else {
             serverConnect.setText(getString(R.string.server_btn_connect));
 
-            if (randomConnection) {
+            if (fastConnection) {
                 new WaitConnectionAsync().execute();
                 prepareVpn();
             }
@@ -359,7 +369,56 @@ public class ServerActivity extends BaseActivity {
         }
     }
 
+    private void chooseAction() {
+        LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.pop_up_success_conected,null);
 
+        popupWindow = new PopupWindow(
+                view,
+                (int)(widthWindow * 0.8f),
+                (int)(heightWindow * 0.45f)
+        );
+
+        popupWindow.setOutsideTouchable(false);
+        popupWindow.setFocusable(true);
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+
+        ((Button)view.findViewById(R.id.successPopUpBtnPlayMarket)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String appPackageName = getPackageName();
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                } catch (android.content.ActivityNotFoundException anfe) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + appPackageName)));
+                }
+            }
+        });
+        ((Button)view.findViewById(R.id.successPopUpBtnBrowser)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity( new Intent( Intent.ACTION_VIEW, Uri.parse("http://google.com")));
+            }
+        });
+        ((Button)view.findViewById(R.id.successPopUpBtnDesktop)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent startMain = new Intent(Intent.ACTION_MAIN);
+                startMain.addCategory(Intent.CATEGORY_HOME);
+                startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(startMain);
+            }
+        });
+        ((Button)view.findViewById(R.id.successPopUpBtnClose)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+
+
+        popupWindow.showAtLocation(parentLayout, Gravity.CENTER,0, 0);
+    }
 
     private ServiceConnection mConnection = new ServiceConnection() {
 
@@ -382,7 +441,7 @@ public class ServerActivity extends BaseActivity {
     {
         @Override
         protected Void doInBackground(Void... params) {
-            SystemClock.sleep(15000);
+            SystemClock.sleep(30000);
             return null;
         }
 
@@ -394,7 +453,7 @@ public class ServerActivity extends BaseActivity {
                 if (randomServer != null) {
                     Intent intent = new Intent(getApplicationContext(), ServerActivity.class);
                     intent.putExtra(Server.class.getCanonicalName(), randomServer);
-                    intent.putExtra("randomConnection", true);
+                    intent.putExtra("fastConnection", true);
                     startActivity(intent);
                     finish();
                 }

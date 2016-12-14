@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/info_servers_bg">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/success_pop_up_title"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:textSize="15sp"
+            android:textColor="@color/buttonBg"/>
+        <Button
+            android:id="@+id/successPopUpBtnPlayMarket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/open_playmarket"
+            style="@style/buttonsPopUp"/>
+        <Button
+            android:id="@+id/successPopUpBtnBrowser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/open_browser"
+            style="@style/buttonsPopUp"/>
+        <Button
+            android:id="@+id/successPopUpBtnDesktop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/show_my_desktop"
+            style="@style/buttonsPopUp"/>
+        <Button
+            android:id="@+id/successPopUpBtnClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/stay_to_try_something_else"
+            style="@style/buttonsPopUp"/>
+    </LinearLayout>
+
+</RelativeLayout>
