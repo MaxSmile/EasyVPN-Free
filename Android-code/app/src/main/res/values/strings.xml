@@ -33,7 +33,7 @@
     <string name="unblock">Purchase ads filtering</string>
     <string name="what_is_my_ip">What is my IP?</string>
     <string name="action_current_connection">Current connection</string>
-    <string name="random_connection">Random connection</string>
+    <string name="random_connection">Quick connection</string>
     <string name="total_servers">%1$d servers available in the local database now</string>
     <string name="loading_additional_servers">The loading of additional servers</string>
     <string name="current_servers_list">Current servers list</string>
@@ -46,9 +46,9 @@
     <string name="choose_country_priority_summary">If not enabled then use random connection</string>
     <string name="choose_country">Choose country</string>
     <string name="error_random_country">Server with priority country %1$s is not available</string>
-    <string name="success_pop_up_title">You are successful connected! Let\'s try it out ?</string>
+    <string name="success_pop_up_title"><b>You are successful connected! Let\'s try it out?</b></string>
     <string name="open_playmarket">Open PlayMarket</string>
-    <string name="open_browser">Open Browser</string>
+    <string name="open_browser">Open browser</string>
     <string name="show_my_desktop">Show my desktop</string>
     <string name="stay_to_try_something_else">Stay to try something else</string>
     <string name="share_text">

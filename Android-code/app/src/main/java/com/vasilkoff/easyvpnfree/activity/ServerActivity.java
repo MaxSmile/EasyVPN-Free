@@ -74,7 +74,7 @@ public class ServerActivity extends BaseActivity {
     private static boolean filterAds = false;
     private static boolean defaultFilterAds = true;
 
-    private boolean randomConnection;
+    private boolean fastConnection;
 
     private boolean statusConnection = false;
 
@@ -85,7 +85,7 @@ public class ServerActivity extends BaseActivity {
 
         parentLayout = (LinearLayout) findViewById(R.id.serverParentLayout);
 
-        randomConnection = getIntent().getBooleanExtra("randomConnection", false);
+        fastConnection = getIntent().getBooleanExtra("fastConnection", false);
         currentServer = (Server)getIntent().getParcelableExtra(Server.class.getCanonicalName());
         if (currentServer == null)
             currentServer = connectedServer;
@@ -94,7 +94,7 @@ public class ServerActivity extends BaseActivity {
         unblockCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkPermissions(adblockSKU, ADBLOCK_REQUEST);
+                launchPurchase(adblockSKU, ADBLOCK_REQUEST);
             }
         });
 
@@ -177,7 +177,7 @@ public class ServerActivity extends BaseActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        if (randomConnection) {
+        if (fastConnection) {
             startActivity(new Intent(getApplicationContext(), HomeActivity.class));
             finish();
         } else {
@@ -326,7 +326,7 @@ public class ServerActivity extends BaseActivity {
         } else {
             serverConnect.setText(getString(R.string.server_btn_connect));
 
-            if (randomConnection) {
+            if (fastConnection) {
                 new WaitConnectionAsync().execute();
                 prepareVpn();
             }
@@ -386,7 +386,12 @@ public class ServerActivity extends BaseActivity {
         ((Button)view.findViewById(R.id.successPopUpBtnPlayMarket)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store")));
+                final String appPackageName = getPackageName();
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                } catch (android.content.ActivityNotFoundException anfe) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + appPackageName)));
+                }
             }
         });
         ((Button)view.findViewById(R.id.successPopUpBtnBrowser)).setOnClickListener(new View.OnClickListener() {
@@ -436,7 +441,7 @@ public class ServerActivity extends BaseActivity {
     {
         @Override
         protected Void doInBackground(Void... params) {
-            SystemClock.sleep(15000);
+            SystemClock.sleep(30000);
             return null;
         }
 
@@ -448,7 +453,7 @@ public class ServerActivity extends BaseActivity {
                 if (randomServer != null) {
                     Intent intent = new Intent(getApplicationContext(), ServerActivity.class);
                     intent.putExtra(Server.class.getCanonicalName(), randomServer);
-                    intent.putExtra("randomConnection", true);
+                    intent.putExtra("fastConnection", true);
                     startActivity(intent);
                     finish();
                 }

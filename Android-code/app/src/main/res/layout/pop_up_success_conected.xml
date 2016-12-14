@@ -16,6 +16,7 @@
             android:text="@string/success_pop_up_title"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
+            android:textSize="15sp"
             android:textColor="@color/buttonBg"/>
         <Button
             android:id="@+id/successPopUpBtnPlayMarket"

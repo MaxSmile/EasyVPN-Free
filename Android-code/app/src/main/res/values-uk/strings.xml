@@ -41,6 +41,11 @@
     <string name="choose_country_priority_summary">Якщо не включена, то використовувати випадкове з"єднання</string>
     <string name="choose_country">Виберіть країну</string>
     <string name="error_random_country">Сервер с пріоритетом країни %1$s не доступний</string>
+    <string name="success_pop_up_title"><b>Ви успішно підключені! Давайте спробуємо це?</b></string>
+    <string name="open_playmarket">Відкрить PlayMarket</string>
+    <string name="open_browser">Відкрить браузер</string>
+    <string name="show_my_desktop">Показати ваш рабочий стіл</string>
+    <string name="stay_to_try_something_else">Залишитися і спробувати що-небудь інше</string>
     <string name="share_text">
         Easy VPN Free! Найшвидший, без обмежень і 100% безкоштовний!
         \nБільше ніж 22 країни для піключення і розблокування всіх заблокований сайтів.
