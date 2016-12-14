@@ -51,8 +51,6 @@ public class HomeActivity extends BaseActivity {
 
     public static final String EXTRA_COUNTRY = "country";
     private PopupWindow popupWindow;
-    private int widthWindow ;
-    private int heightWindow;
     private RelativeLayout homeContextRL;
 
     private List<String> countryList;
@@ -65,14 +63,7 @@ public class HomeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
-
-        widthWindow = dm.widthPixels;
-        heightWindow = dm.heightPixels;
-
         homeContextRL = (RelativeLayout) findViewById(R.id.homeContextRL);
-
         countryList = dbHelper.getCountries();
 
         String totalServers = String.format(getResources().getString(R.string.total_servers), dbHelper.getCount());

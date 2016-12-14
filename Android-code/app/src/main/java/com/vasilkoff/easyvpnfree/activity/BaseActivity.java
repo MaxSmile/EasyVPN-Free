@@ -12,6 +12,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.Menu;
@@ -57,6 +58,9 @@ public class BaseActivity extends AppCompatActivity {
     static String currentSKU;
     static int currentRequest;
 
+    int widthWindow ;
+    int heightWindow;
+
     static DBHelper dbHelper;
     SharedPreferences sharedPreferences;
 
@@ -94,6 +98,12 @@ public class BaseActivity extends AppCompatActivity {
 
         dbHelper = new DBHelper(this);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+        widthWindow = dm.widthPixels;
+        heightWindow = dm.heightPixels;
     }
 
     @Override

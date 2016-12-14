@@ -46,6 +46,11 @@
     <string name="choose_country_priority_summary">If not enabled then use random connection</string>
     <string name="choose_country">Choose country</string>
     <string name="error_random_country">Server with priority country %1$s is not available</string>
+    <string name="success_pop_up_title">You are successful connected! Let\'s try it out ?</string>
+    <string name="open_playmarket">Open PlayMarket</string>
+    <string name="open_browser">Open Browser</string>
+    <string name="show_my_desktop">Show my desktop</string>
+    <string name="stay_to_try_something_else">Stay to try something else</string>
     <string name="share_text">
         Easy VPN Free! Fastest, Unlimited and 100% Free!
         \nMore than 22 countries to connect and unblock all blocked websites.

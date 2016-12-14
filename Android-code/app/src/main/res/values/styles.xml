@@ -33,4 +33,16 @@
         <item name="android:textColor">@color/buttonText</item>
     </style>
 
+    <style name="buttonsPopUp" >
+        <item name="android:background">@drawable/button_bg</item>
+        <item name="android:textColor">@color/buttonText</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:minHeight">35dp</item>
+        <item name="android:minWidth">250dp</item>
+    </style>
+
 </resources>
