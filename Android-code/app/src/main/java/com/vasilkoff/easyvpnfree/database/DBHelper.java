@@ -190,12 +190,22 @@ public class DBHelper  extends SQLiteOpenHelper {
         return serverList;
     }
 
-    public Server getGoodRandomServer() {
+    public Server getGoodRandomServer(String country) {
         List<Server> serverListExcellent = new ArrayList<Server>();
         List<Server> serverListGood = new ArrayList<Server>();
         List<Server> serverListBad = new ArrayList<Server>();
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_SERVERS, null);
+        Cursor cursor;
+        if (country != null) {
+            cursor = db.rawQuery("SELECT * FROM "
+                    + TABLE_SERVERS
+                    + " WHERE "
+                    + KEY_COUNTRY_LONG
+                    + " = ?", new String[] {country});
+        } else {
+            cursor = db.rawQuery("SELECT * FROM " + TABLE_SERVERS, null);
+        }
+
 
         if (cursor.moveToFirst()) {
             do {

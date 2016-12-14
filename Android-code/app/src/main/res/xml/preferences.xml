@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:title="@string/connect_on_start"
+        android:defaultValue="false"
+        android:summary="@string/connect_on_start_summary"
+        android:key="connectOnStart"/>
+    <CheckBoxPreference
+        android:title="@string/choose_country_priority"
+        android:defaultValue="false"
+        android:summary="@string/choose_country_priority_summary"
+        android:key="countryPriority"/>
+    <ListPreference
+        android:dependency="countryPriority"
+        android:title="@string/choose_country"
+        android:key="selectedCountry"/>
+</PreferenceScreen>

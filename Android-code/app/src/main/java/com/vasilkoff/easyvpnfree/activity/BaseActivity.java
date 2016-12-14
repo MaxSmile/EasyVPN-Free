@@ -4,8 +4,10 @@ import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -56,6 +58,7 @@ public class BaseActivity extends AppCompatActivity {
     static int currentRequest;
 
     static DBHelper dbHelper;
+    SharedPreferences sharedPreferences;
 
     @Override
     public void setContentView(int layoutResID)
@@ -90,6 +93,7 @@ public class BaseActivity extends AppCompatActivity {
         }
 
         dbHelper = new DBHelper(this);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
     }
 
     @Override
@@ -268,7 +272,6 @@ public class BaseActivity extends AppCompatActivity {
             case R.id.actionCurrentServer:
                 if (connectedServer != null)
                     startActivity(new Intent(this, ServerActivity.class));
-
                 return true;
             case R.id.actionGetMoreServers:
                 if (premiumServers) {
@@ -276,7 +279,9 @@ public class BaseActivity extends AppCompatActivity {
                 } else {
                     checkPermissions(moreServersSKU, PREMIUM_SERVERS_REQUEST);
                 }
-
+                return true;
+            case R.id.action_settings:
+                startActivity(new Intent(this, MyPreferencesActivity.class));
                 return true;
         }
 
@@ -302,5 +307,16 @@ public class BaseActivity extends AppCompatActivity {
                     break;
             }
         }
+    }
+
+    public Server getRandomServer() {
+        Server randomServer;
+        if (sharedPreferences.getBoolean("countryPriority", false)) {
+            String selectedCountry = sharedPreferences.getString("selectedCountry", null);
+            randomServer = dbHelper.getGoodRandomServer(selectedCountry);
+        } else {
+            randomServer = dbHelper.getGoodRandomServer(null);
+        }
+        return randomServer;
     }
 }
