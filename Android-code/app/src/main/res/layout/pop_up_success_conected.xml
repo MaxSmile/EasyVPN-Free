@@ -15,7 +15,9 @@
             android:layout_height="wrap_content"
             android:text="@string/success_pop_up_title"
             android:layout_gravity="center"
+            android:gravity="center"
             android:layout_marginTop="10dp"
+            android:padding="10dp"
             android:textSize="15sp"
             android:textColor="@color/buttonBg"/>
         <Button

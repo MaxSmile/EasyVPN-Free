@@ -30,7 +30,7 @@
     <string name="more_servers">Get more servers</string>
     <string name="feature_not_available">This feature temporarily is not available</string>
     <string name="feature_not_available_without_perm">Without account information this feature is not available</string>
-    <string name="unblock">Purchase ads filtering</string>
+    <string name="unblock">Ads filtering</string>
     <string name="what_is_my_ip">What is my IP?</string>
     <string name="action_current_connection">Current connection</string>
     <string name="random_connection">Quick connection</string>
@@ -46,7 +46,8 @@
     <string name="choose_country_priority_summary">If not enabled then use random connection</string>
     <string name="choose_country">Choose country</string>
     <string name="error_random_country">Server with priority country %1$s is not available</string>
-    <string name="success_pop_up_title"><b>You are successful connected! Let\'s try it out?</b></string>
+    <string name="success_pop_up_title"><b>You are successfuly connected!
+        \n Let\'s try it out?</b></string>
     <string name="open_playmarket">Open PlayMarket</string>
     <string name="open_browser">Open browser</string>
     <string name="show_my_desktop">Show my desktop</string>
