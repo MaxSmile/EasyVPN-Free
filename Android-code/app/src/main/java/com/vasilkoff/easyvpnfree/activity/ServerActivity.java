@@ -176,6 +176,7 @@ public class ServerActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        statusConnection = true;
 
         if (fastConnection) {
             startActivity(new Intent(getApplicationContext(), HomeActivity.class));
@@ -375,7 +376,7 @@ public class ServerActivity extends BaseActivity {
 
         popupWindow = new PopupWindow(
                 view,
-                (int)(widthWindow * 0.8f),
+                (int)(widthWindow * 0.9f),
                 (int)(heightWindow * 0.45f)
         );
 

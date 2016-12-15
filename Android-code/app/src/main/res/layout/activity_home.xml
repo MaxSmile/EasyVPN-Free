@@ -32,6 +32,7 @@
             android:minHeight="40dp"
             android:onClick="homeOnClick"
             android:padding="5dp"
+            android:minWidth="180dp"
             android:layout_marginBottom="10dp"/>
 
         <Button
@@ -41,14 +42,16 @@
             android:layout_height="wrap_content"
             style="@style/buttons"
             android:minHeight="40dp"
-            android:minWidth="160dp"
+            android:minWidth="180dp"
             android:onClick="homeOnClick"
             android:padding="5dp" />
         <TextView
             android:id="@+id/homeTotalServers"
             android:textColor="@color/totalServers"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"/>
 
     </LinearLayout>
 

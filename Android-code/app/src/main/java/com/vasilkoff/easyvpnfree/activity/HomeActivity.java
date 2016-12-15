@@ -161,7 +161,7 @@ public class HomeActivity extends BaseActivity {
         startActivity(intent);
     }
 
-     private void initServerOnMap(Layers layers) {
+    private void initServerOnMap(Layers layers) {
         Type listType = new TypeToken<ArrayList<Country>>(){}.getType();
         countryLatLonList =  new Gson().fromJson(LoadData.fromFile(COUNTRY_FILE_NAME, this), listType);
 
