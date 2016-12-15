@@ -42,7 +42,7 @@
         <item name="android:textAllCaps">false</item>
         <item name="android:padding">5dp</item>
         <item name="android:minHeight">35dp</item>
-        <item name="android:minWidth">250dp</item>
+        <item name="android:width">250dp</item>
     </style>
 
 </resources>
