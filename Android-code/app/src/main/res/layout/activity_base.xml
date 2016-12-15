@@ -17,12 +17,15 @@
             app:titleTextColor="@color/toolbarTitle"
             app:titleMarginStart="20dp"
             app:contentInsetStart="10dp"
-            app:logo="@drawable/ic_app_small">
+            app:logo="@drawable/ic_app_small"/>
 
-        </android.support.v7.widget.Toolbar>
         <FrameLayout
             android:id="@+id/activity_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+            <ListView
+                android:id="@android:id/list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
     </LinearLayout>
 </android.support.v4.widget.DrawerLayout>
