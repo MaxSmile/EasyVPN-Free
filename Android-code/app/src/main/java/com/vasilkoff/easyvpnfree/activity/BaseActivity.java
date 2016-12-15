@@ -73,6 +73,7 @@ public class BaseActivity extends AppCompatActivity {
         super.setContentView(fullLayout);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         if (useToolbar()) {
             setSupportActionBar(toolbar);
         } else {
