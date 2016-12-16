@@ -23,8 +23,8 @@ android {
         applicationId "com.vasilkoff.easyvpnfree"
         minSdkVersion 17
         targetSdkVersion 24
-        versionCode 24
-        versionName "1.3"
+        versionCode 26
+        versionName "1.4"
         setProperty("archivesBaseName", "easyvpnfree-$versionName-$versionCode")
     }
 
@@ -37,9 +37,9 @@ android {
             minifyEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            ndk {
-                abiFilters "armeabi-v7a", "armeabi", "arm64-v8a" // includes ARM SO files only, so no x86 SO file
-            }
+//            ndk {
+//                abiFilters "armeabi-v7a", "armeabi", "arm64-v8a" // includes ARM SO files only, so no x86 SO file
+//            }
         }
         debug {
             ext.enableCrashlytics = false
