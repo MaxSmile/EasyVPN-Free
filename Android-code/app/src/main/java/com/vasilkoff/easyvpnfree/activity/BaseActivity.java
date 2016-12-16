@@ -21,10 +21,13 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.vasilkoff.easyvpnfree.BuildConfig;
 import com.vasilkoff.easyvpnfree.R;
 import com.vasilkoff.easyvpnfree.database.DBHelper;
 import com.vasilkoff.easyvpnfree.model.Server;
+import com.vasilkoff.easyvpnfree.util.Stopwatch;
 import com.vasilkoff.easyvpnfree.util.iap.IabHelper;
 import com.vasilkoff.easyvpnfree.util.iap.IabResult;
 import com.vasilkoff.easyvpnfree.util.iap.Inventory;
@@ -303,5 +306,10 @@ public class BaseActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+    }
+
+    public static void sendTouchButton(String button) {
+        Answers.getInstance().logCustom(new CustomEvent("Touches buttons ")
+                .putCustomAttribute("Button", button));
     }
 }

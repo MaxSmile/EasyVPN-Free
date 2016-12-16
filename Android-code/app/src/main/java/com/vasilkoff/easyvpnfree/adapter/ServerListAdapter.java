@@ -88,6 +88,7 @@ public class ServerListAdapter extends BaseAdapter {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                BaseActivity.sendTouchButton("detailsServer");
                 Intent intent = new Intent(context, ServerActivity.class);
                 intent.putExtra(Server.class.getCanonicalName(), server);
                 context.startActivity(intent);

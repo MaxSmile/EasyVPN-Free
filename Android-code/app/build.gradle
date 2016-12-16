@@ -41,9 +41,6 @@ android {
 //                abiFilters "armeabi-v7a", "armeabi", "arm64-v8a" // includes ARM SO files only, so no x86 SO file
 //            }
         }
-        debug {
-            ext.enableCrashlytics = false
-        }
     }
 }
 
