@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <CheckBoxPreference
+        android:title="@string/automatic_switching"
+        android:defaultValue="true"
+        android:summary="@string/automatic_switching_summary"
+        android:key="automaticSwitching"/>
+    <CheckBoxPreference
         android:title="@string/connect_on_start"
         android:defaultValue="false"
         android:summary="@string/connect_on_start_summary"

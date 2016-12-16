@@ -190,22 +190,10 @@ public class DBHelper  extends SQLiteOpenHelper {
         return serverList;
     }
 
-    public Server getGoodRandomServer(String country) {
+    private Server parseGoodRandomServer(Cursor cursor) {
         List<Server> serverListExcellent = new ArrayList<Server>();
         List<Server> serverListGood = new ArrayList<Server>();
         List<Server> serverListBad = new ArrayList<Server>();
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor;
-        if (country != null) {
-            cursor = db.rawQuery("SELECT * FROM "
-                    + TABLE_SERVERS
-                    + " WHERE "
-                    + KEY_COUNTRY_LONG
-                    + " = ?", new String[] {country});
-        } else {
-            cursor = db.rawQuery("SELECT * FROM " + TABLE_SERVERS, null);
-        }
-
 
         if (cursor.moveToFirst()) {
             do {
@@ -229,9 +217,7 @@ public class DBHelper  extends SQLiteOpenHelper {
         } else {
             Log.d(TAG ,"0 rows");
         }
-
         cursor.close();
-        db.close();
 
         Random random = new Random();
         if (serverListExcellent.size() > 0) {
@@ -243,6 +229,36 @@ public class DBHelper  extends SQLiteOpenHelper {
         }
 
         return null;
+    }
+
+    public Server getSimilarServer(String country, String ip) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM "
+                + TABLE_SERVERS
+                + " WHERE "
+                + KEY_COUNTRY_LONG
+                + " = ? AND "
+                + KEY_IP
+                + " <> ?", new String[] {country, ip});
+
+
+        return parseGoodRandomServer(cursor);
+    }
+
+    public Server getGoodRandomServer(String country) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor;
+        if (country != null) {
+            cursor = db.rawQuery("SELECT * FROM "
+                    + TABLE_SERVERS
+                    + " WHERE "
+                    + KEY_COUNTRY_LONG
+                    + " = ?", new String[] {country});
+        } else {
+            cursor = db.rawQuery("SELECT * FROM " + TABLE_SERVERS, null);
+        }
+
+        return parseGoodRandomServer(cursor);
     }
 
     private Server parseServer(Cursor cursor) {

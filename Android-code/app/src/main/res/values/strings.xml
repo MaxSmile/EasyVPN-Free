@@ -52,6 +52,11 @@
     <string name="open_browser">Open browser</string>
     <string name="show_my_desktop">Show my desktop</string>
     <string name="stay_to_try_something_else">Stay to try something else</string>
+    <string name="automatic_switching">Automatic switching</string>
+    <string name="automatic_switching_summary">Automatic switching to the same country server after 30s</string>
+    <string name="try_another_server_text">You want try another server from %1$s?</string>
+    <string name="try_another_server_ok">Yes</string>
+    <string name="try_another_server_no">No</string>
     <string name="share_text">
         Easy VPN Free! Fastest, Unlimited and 100% Free!
         \nMore than 22 countries to connect and unblock all blocked websites.

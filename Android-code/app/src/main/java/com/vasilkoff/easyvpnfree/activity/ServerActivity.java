@@ -5,6 +5,7 @@ import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
@@ -18,6 +19,7 @@ import android.os.Bundle;
 
 
 import android.os.SystemClock;
+import android.support.v7.app.AlertDialog;
 import android.util.Base64;
 import android.util.Log;
 
@@ -74,7 +76,9 @@ public class ServerActivity extends BaseActivity {
     private static boolean filterAds = false;
     private static boolean defaultFilterAds = true;
 
+    private boolean autoConnection;
     private boolean fastConnection;
+    private Server autoServer;
 
     private boolean statusConnection = false;
 
@@ -85,6 +89,7 @@ public class ServerActivity extends BaseActivity {
 
         parentLayout = (LinearLayout) findViewById(R.id.serverParentLayout);
 
+        autoConnection = getIntent().getBooleanExtra("autoConnection", false);
         fastConnection = getIntent().getBooleanExtra("fastConnection", false);
         currentServer = (Server)getIntent().getParcelableExtra(Server.class.getCanonicalName());
         if (currentServer == null)
@@ -216,6 +221,7 @@ public class ServerActivity extends BaseActivity {
     private void prepareVpn() {
         connectingProgress.setVisibility(View.VISIBLE);
         if (loadVpnProfile()) {
+            new WaitConnectionAsync().execute();
             serverConnect.setText(getString(R.string.server_btn_disconnect));
             startVpn();
         } else {
@@ -323,15 +329,11 @@ public class ServerActivity extends BaseActivity {
                 serverConnect.setText(getString(R.string.server_btn_connect));
                 lastLog.setText(R.string.server_not_connected);
             }
-
         } else {
             serverConnect.setText(getString(R.string.server_btn_connect));
-
-            if (fastConnection) {
-                new WaitConnectionAsync().execute();
+            if (autoConnection) {
                 prepareVpn();
             }
-
         }
     }
 
@@ -450,15 +452,36 @@ public class ServerActivity extends BaseActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             if (!statusConnection) {
-                Server randomServer = getRandomServer();
-                if (randomServer != null) {
-                    Intent intent = new Intent(getApplicationContext(), ServerActivity.class);
-                    intent.putExtra(Server.class.getCanonicalName(), randomServer);
-                    intent.putExtra("fastConnection", true);
-                    startActivity(intent);
-                    finish();
+                if (fastConnection) {
+                    newConnecting(getRandomServer(), true, true);
+                } else if (sharedPreferences.getBoolean("automaticSwitching", true)){
+                    autoServer = dbHelper.getSimilarServer(currentServer.getCountryLong(), currentServer.getIp());
+                    if (autoServer != null)
+                        showAlert();
                 }
             }
         }
+    }
+
+    private void showAlert() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        String message = String.format(getResources().getString(R.string.try_another_server_text), currentServer.getCountryLong());
+        builder.setMessage(message)
+                .setPositiveButton(getString(R.string.try_another_server_ok),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                newConnecting(autoServer, false, true);
+                                dialog.cancel();
+                            }
+                        })
+                .setNegativeButton(getString(R.string.try_another_server_no),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                new WaitConnectionAsync().execute();
+                                dialog.cancel();
+                            }
+                        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }

@@ -110,11 +110,7 @@ public class HomeActivity extends BaseActivity {
             case R.id.homeBtnRandomConnection:
                 Server randomServer = getRandomServer();
                 if (randomServer != null) {
-                    Intent intent = new Intent(this, ServerActivity.class);
-                    intent.putExtra(Server.class.getCanonicalName(), randomServer);
-                    intent.putExtra("fastConnection", true);
-                    startActivity(intent);
-                    finish();
+                    newConnecting(randomServer, true, true);
                 } else {
                     String randomError = String.format(getResources().getString(R.string.error_random_country), sharedPreferences.getString("selectedCountry", null));
                     Toast.makeText(this, randomError, Toast.LENGTH_LONG).show();

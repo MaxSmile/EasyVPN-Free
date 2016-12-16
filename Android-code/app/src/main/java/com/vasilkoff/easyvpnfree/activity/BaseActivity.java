@@ -293,4 +293,15 @@ public class BaseActivity extends AppCompatActivity {
         }
         return randomServer;
     }
+
+    public void newConnecting(Server server, boolean fastConnection, boolean autoConnection) {
+        if (server != null) {
+            Intent intent = new Intent(this, ServerActivity.class);
+            intent.putExtra(Server.class.getCanonicalName(), server);
+            intent.putExtra("fastConnection", fastConnection);
+            intent.putExtra("autoConnection", autoConnection);
+            startActivity(intent);
+            finish();
+        }
+    }
 }
