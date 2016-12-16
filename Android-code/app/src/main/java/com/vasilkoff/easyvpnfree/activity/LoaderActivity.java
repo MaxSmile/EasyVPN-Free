@@ -13,10 +13,13 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.DownloadListener;
 import com.androidnetworking.interfaces.DownloadProgressListener;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.daimajia.numberprogressbar.NumberProgressBar;
 
 import com.vasilkoff.easyvpnfree.R;
 import com.vasilkoff.easyvpnfree.model.Server;
+import com.vasilkoff.easyvpnfree.util.Stopwatch;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -43,6 +46,7 @@ public class LoaderActivity extends BaseActivity {
     private final String PREMIUM_FILE_NAME = "premiumServers.csv";
 
     private int percentDownload = 0;
+    private Stopwatch stopwatch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,14 +86,14 @@ public class LoaderActivity extends BaseActivity {
                         updateHandler.sendMessageDelayed(end,500);
                     } break;
                     case SWITCH_TO_RESULT: {
+
+                        Answers.getInstance().logCustom(new CustomEvent("Time servers loading")
+                                .putCustomAttribute("Time servers loading", stopwatch.getElapsedTime()));
+
                         if (sharedPreferences.getBoolean("connectOnStart", false)) {
                             Server randomServer = getRandomServer();
                             if (randomServer != null) {
-                                Intent intent = new Intent(LoaderActivity.this, ServerActivity.class);
-                                intent.putExtra(Server.class.getCanonicalName(), randomServer);
-                                intent.putExtra("fastConnection", true);
-                                startActivity(intent);
-                                finish();
+                                newConnecting(randomServer, true, true);
                             } else {
                                 startActivity(new Intent(LoaderActivity.this, HomeActivity.class));
                                 finish();
@@ -125,6 +129,7 @@ public class LoaderActivity extends BaseActivity {
     }
 
     private void downloadCSVFile(String url, String fileName) {
+        stopwatch = new Stopwatch();
         AndroidNetworking.download(url, getCacheDir().getPath(), fileName)
                 .setTag("downloadCSV")
                 .setPriority(Priority.MEDIUM)

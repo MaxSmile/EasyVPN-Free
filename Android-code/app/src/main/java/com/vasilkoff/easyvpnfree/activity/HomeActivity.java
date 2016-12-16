@@ -21,6 +21,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
+import com.crashlytics.android.answers.CustomEvent;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.vasilkoff.easyvpnfree.R;
@@ -45,6 +48,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.fabric.sdk.android.Fabric;
+
 public class HomeActivity extends BaseActivity {
 
     private MapView mapView;
@@ -66,7 +71,11 @@ public class HomeActivity extends BaseActivity {
         homeContextRL = (RelativeLayout) findViewById(R.id.homeContextRL);
         countryList = dbHelper.getCountries();
 
-        String totalServers = String.format(getResources().getString(R.string.total_servers), dbHelper.getCount());
+        long totalServ = dbHelper.getCount();
+        Answers.getInstance().logCustom(new CustomEvent("Total servers")
+                .putCustomAttribute("Total servers", totalServ));
+
+        String totalServers = String.format(getResources().getString(R.string.total_servers), totalServ);
         ((TextView) findViewById(R.id.homeTotalServers)).setText(totalServers);
 
         initMap();
@@ -105,9 +114,11 @@ public class HomeActivity extends BaseActivity {
     public void homeOnClick(View view) {
         switch (view.getId()) {
             case R.id.homeBtnChooseCountry:
+                sendTouchButton("homeBtnChooseCountry");
                 chooseCountry();
                 break;
             case R.id.homeBtnRandomConnection:
+                sendTouchButton("homeBtnRandomConnection");
                 Server randomServer = getRandomServer();
                 if (randomServer != null) {
                     newConnecting(randomServer, true, true);
