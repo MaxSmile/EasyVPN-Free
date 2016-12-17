@@ -40,6 +40,7 @@ import android.widget.Toast;
 import com.vasilkoff.easyvpnfree.R;
 import com.vasilkoff.easyvpnfree.model.Server;
 import com.vasilkoff.easyvpnfree.util.ConnectUtil;
+import com.vasilkoff.easyvpnfree.util.TotalTraffic;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -59,6 +60,7 @@ public class ServerActivity extends BaseActivity {
 
     private static final int START_VPN_PROFILE = 70;
     private BroadcastReceiver br;
+    private BroadcastReceiver trafficReceiver;
     public final static String BROADCAST_ACTION = "de.blinkt.openvpn.VPN_STATUS";
 
     protected OpenVPNService mService;
@@ -72,6 +74,8 @@ public class ServerActivity extends BaseActivity {
     private ProgressBar connectingProgress;
     private PopupWindow popupWindow;
     private LinearLayout parentLayout;
+    private TextView trafficInTotally;
+    private TextView trafficOutTotally;
 
     private static boolean filterAds = false;
     private static boolean defaultFilterAds = true;
@@ -92,8 +96,15 @@ public class ServerActivity extends BaseActivity {
         autoConnection = getIntent().getBooleanExtra("autoConnection", false);
         fastConnection = getIntent().getBooleanExtra("fastConnection", false);
         currentServer = (Server)getIntent().getParcelableExtra(Server.class.getCanonicalName());
-        if (currentServer == null)
-            currentServer = connectedServer;
+
+        if (currentServer == null) {
+            if (connectedServer != null) {
+                currentServer = connectedServer;
+            } else {
+                startActivity(new Intent(this, HomeActivity.class));
+            }
+        }
+
 
         unblockCheck = (Button) findViewById(R.id.serverUnblockCheck);
         unblockCheck.setOnClickListener(new View.OnClickListener() {
@@ -115,6 +126,16 @@ public class ServerActivity extends BaseActivity {
         });
 
         connectingProgress = (ProgressBar) findViewById(R.id.serverConnectingProgress);
+
+        String totalIn = String.format(getResources().getString(R.string.traffic_in),
+                TotalTraffic.getTotalTraffic().get(0));
+        trafficInTotally = (TextView) findViewById(R.id.serverTrafficInTotally);
+        trafficInTotally.setText(totalIn);
+
+        String totalOut = String.format(getResources().getString(R.string.traffic_out),
+                TotalTraffic.getTotalTraffic().get(1));
+        trafficOutTotally = (TextView) findViewById(R.id.serverTrafficOutTotally);
+        trafficOutTotally.setText(totalOut);
 
         ((ImageView) findViewById(R.id.serverFlag))
                 .setImageResource(
@@ -138,6 +159,7 @@ public class ServerActivity extends BaseActivity {
         speedValue = new BigDecimal(speedValue).setScale(3, RoundingMode.UP).doubleValue();
         String speed = String.valueOf(speedValue) + " " + getString(R.string.mbps);
         ((TextView) findViewById(R.id.serverSpeed)).setText(speed);
+
 
         lastLog = (TextView) findViewById(R.id.serverStatus);
         lastLog.setText(R.string.server_not_connected);
@@ -164,6 +186,31 @@ public class ServerActivity extends BaseActivity {
         };
 
         registerReceiver(br, new IntentFilter(BROADCAST_ACTION));
+
+        trafficReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (checkStatus()) {
+                    String in = String.format(getResources().getString(R.string.traffic_in),
+                            intent.getStringExtra(TotalTraffic.DOWNLOAD_SESSION));
+                    ((TextView) findViewById(R.id.serverTrafficIn)).setText(in);
+
+                    String out = String.format(getResources().getString(R.string.traffic_out),
+                            intent.getStringExtra(TotalTraffic.UPLOAD_SESSION));
+                    ((TextView) findViewById(R.id.serverTrafficOut)).setText(out);
+
+                    String inTotall = String.format(getResources().getString(R.string.traffic_in),
+                            intent.getStringExtra(TotalTraffic.DOWNLOAD_ALL));
+                    trafficInTotally.setText(inTotall);
+
+                    String outTotall = String.format(getResources().getString(R.string.traffic_out),
+                            intent.getStringExtra(TotalTraffic.UPLOAD_ALL));
+                    trafficOutTotally.setText(outTotall);
+                }
+            }
+        };
+
+        registerReceiver(trafficReceiver, new IntentFilter(TotalTraffic.TRAFFIC_ACTION));
 
         checkAvailableFilter();
     }
@@ -350,6 +397,7 @@ public class ServerActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(br);
+        unregisterReceiver(trafficReceiver);
     }
 
     @Override

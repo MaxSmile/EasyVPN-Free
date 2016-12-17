@@ -49,6 +49,9 @@
     <string name="try_another_server_text">Ви хочете спробувати інший сервер із %1$s?</string>
     <string name="try_another_server_ok">Так</string>
     <string name="try_another_server_no">Ні</string>
+    <string name="traffic_in">Завантажено: %1$s</string>
+    <string name="traffic_out">Відправлено: %1$s</string>
+    <string name="traffic_totally"><b>Всього через додаток</b></string>
     <string name="share_text">
         Easy VPN Free! Найшвидший, без обмежень і 100% безкоштовний!
         \nБільше ніж 22 країни для піключення і розблокування всіх заблокований сайтів.
