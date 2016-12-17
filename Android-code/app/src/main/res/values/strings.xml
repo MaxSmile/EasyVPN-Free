@@ -57,6 +57,9 @@
     <string name="try_another_server_text">You want try another server from %1$s?</string>
     <string name="try_another_server_ok">Yes</string>
     <string name="try_another_server_no">No</string>
+    <string name="traffic_in">Downloaded: %1$s</string>
+    <string name="traffic_out">Uploaded: %1$s</string>
+    <string name="traffic_totally"><b>Totally through the application</b></string>
     <string name="share_text">
         Easy VPN Free! Fastest, Unlimited and 100% Free!
         \nMore than 22 countries to connect and unblock all blocked websites.
