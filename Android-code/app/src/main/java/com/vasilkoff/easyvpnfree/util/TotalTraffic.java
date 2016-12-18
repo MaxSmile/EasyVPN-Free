@@ -22,15 +22,15 @@ public class TotalTraffic {
     public static String UPLOAD_SESSION = "upload_session";
 
 
-    public static void calcTraffic(Context context, long in, long out, String diffInStr, String diffOutStr) {
-        List<String> totalTraffic = getTotalTraffic(in, out);
+    public static void calcTraffic(Context context, long in, long out, long diffIn, long diffOut) {
+        List<String> totalTraffic = getTotalTraffic(diffIn, diffOut);
 
         Intent traffic = new Intent();
         traffic.setAction(TRAFFIC_ACTION);
         traffic.putExtra(DOWNLOAD_ALL, totalTraffic.get(0));
-        traffic.putExtra(DOWNLOAD_SESSION , diffInStr);
+        traffic.putExtra(DOWNLOAD_SESSION , OpenVPNService.humanReadableByteCount(in, false));
         traffic.putExtra(UPLOAD_ALL , totalTraffic.get(1));
-        traffic.putExtra(UPLOAD_SESSION , diffOutStr);
+        traffic.putExtra(UPLOAD_SESSION , OpenVPNService.humanReadableByteCount(out, false));
         context.sendBroadcast(traffic);
     }
 
@@ -48,8 +48,8 @@ public class TotalTraffic {
         outTotal = outTotal + out;
         PropertiesService.setUploaded(outTotal);
 
-        totalTraffic.add(OpenVPNService.humanReadableByteCount(inTotal, true));
-        totalTraffic.add(OpenVPNService.humanReadableByteCount(outTotal, true));
+        totalTraffic.add(OpenVPNService.humanReadableByteCount(inTotal, false));
+        totalTraffic.add(OpenVPNService.humanReadableByteCount(outTotal, false));
 
         return totalTraffic;
     }

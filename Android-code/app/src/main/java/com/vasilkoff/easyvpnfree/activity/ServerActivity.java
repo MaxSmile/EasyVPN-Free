@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.net.VpnService;
 import android.os.AsyncTask;
 import android.os.IBinder;
+import android.view.ViewGroup.LayoutParams;
 
 import android.os.Bundle;
 
@@ -104,7 +105,6 @@ public class ServerActivity extends BaseActivity {
                 startActivity(new Intent(this, HomeActivity.class));
             }
         }
-
 
         unblockCheck = (Button) findViewById(R.id.serverUnblockCheck);
         unblockCheck.setOnClickListener(new View.OnClickListener() {
@@ -337,6 +337,7 @@ public class ServerActivity extends BaseActivity {
 
     private void startVpn() {
         connectedServer = currentServer;
+        hideCurrentConnection = true;
         adbBlockCheck.setEnabled(false);
 
         Intent intent = VpnService.prepare(this);
@@ -360,6 +361,10 @@ public class ServerActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        if (connectedServer != null && currentServer.getIp().equals(connectedServer.getIp())) {
+            hideCurrentConnection = true;
+        }
 
         if (getIntent().getAction() != null)
             stopVpn();
@@ -429,8 +434,8 @@ public class ServerActivity extends BaseActivity {
 
         popupWindow = new PopupWindow(
                 view,
-                (int)(widthWindow * 0.9f),
-                (int)(heightWindow * 0.45f)
+                LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT
         );
 
         popupWindow.setOutsideTouchable(false);
@@ -499,7 +504,7 @@ public class ServerActivity extends BaseActivity {
     {
         @Override
         protected Void doInBackground(Void... params) {
-            SystemClock.sleep(30000);
+            SystemClock.sleep(120000);
             return null;
         }
 
