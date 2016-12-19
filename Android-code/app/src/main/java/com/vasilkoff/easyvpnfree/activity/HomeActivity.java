@@ -26,12 +26,14 @@ import com.crashlytics.android.answers.ContentViewEvent;
 import com.crashlytics.android.answers.CustomEvent;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.vasilkoff.easyvpnfree.BuildConfig;
 import com.vasilkoff.easyvpnfree.R;
 
 import com.vasilkoff.easyvpnfree.model.Country;
 import com.vasilkoff.easyvpnfree.model.Server;
 import com.vasilkoff.easyvpnfree.util.BitmapGenerator;
 import com.vasilkoff.easyvpnfree.util.LoadData;
+import com.vasilkoff.easyvpnfree.util.PropertiesService;
 import com.vasilkoff.easyvpnfree.util.map.MapCreator;
 import com.vasilkoff.easyvpnfree.util.map.MyMarker;
 
@@ -72,7 +74,8 @@ public class HomeActivity extends BaseActivity {
         countryList = dbHelper.getCountries();
 
         long totalServ = dbHelper.getCount();
-        Answers.getInstance().logCustom(new CustomEvent("Total servers")
+        if (!BuildConfig.DEBUG)
+            Answers.getInstance().logCustom(new CustomEvent("Total servers")
                 .putCustomAttribute("Total servers", totalServ));
 
         String totalServers = String.format(getResources().getString(R.string.total_servers), totalServ);
@@ -123,7 +126,7 @@ public class HomeActivity extends BaseActivity {
                 if (randomServer != null) {
                     newConnecting(randomServer, true, true);
                 } else {
-                    String randomError = String.format(getResources().getString(R.string.error_random_country), sharedPreferences.getString("selectedCountry", null));
+                    String randomError = String.format(getResources().getString(R.string.error_random_country), PropertiesService.getSelectedCountry());
                     Toast.makeText(this, randomError, Toast.LENGTH_LONG).show();
                 }
                 break;

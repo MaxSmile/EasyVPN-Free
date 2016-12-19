@@ -17,8 +17,10 @@ import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.daimajia.numberprogressbar.NumberProgressBar;
 
+import com.vasilkoff.easyvpnfree.BuildConfig;
 import com.vasilkoff.easyvpnfree.R;
 import com.vasilkoff.easyvpnfree.model.Server;
+import com.vasilkoff.easyvpnfree.util.PropertiesService;
 import com.vasilkoff.easyvpnfree.util.Stopwatch;
 
 import java.io.BufferedReader;
@@ -86,11 +88,11 @@ public class LoaderActivity extends BaseActivity {
                         updateHandler.sendMessageDelayed(end,500);
                     } break;
                     case SWITCH_TO_RESULT: {
-
-                        Answers.getInstance().logCustom(new CustomEvent("Time servers loading")
+                        if (!BuildConfig.DEBUG)
+                            Answers.getInstance().logCustom(new CustomEvent("Time servers loading")
                                 .putCustomAttribute("Time servers loading", stopwatch.getElapsedTime()));
 
-                        if (sharedPreferences.getBoolean("connectOnStart", false)) {
+                        if (PropertiesService.getConnectOnStart()) {
                             Server randomServer = getRandomServer();
                             if (randomServer != null) {
                                 newConnecting(randomServer, true, true);

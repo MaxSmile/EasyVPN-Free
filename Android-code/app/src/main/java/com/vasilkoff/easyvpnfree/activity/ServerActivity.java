@@ -41,6 +41,7 @@ import android.widget.Toast;
 import com.vasilkoff.easyvpnfree.R;
 import com.vasilkoff.easyvpnfree.model.Server;
 import com.vasilkoff.easyvpnfree.util.ConnectUtil;
+import com.vasilkoff.easyvpnfree.util.PropertiesService;
 import com.vasilkoff.easyvpnfree.util.TotalTraffic;
 
 import java.io.ByteArrayInputStream;
@@ -403,6 +404,9 @@ public class ServerActivity extends BaseActivity {
         super.onDestroy();
         unregisterReceiver(br);
         unregisterReceiver(trafficReceiver);
+        if ( popupWindow!=null && popupWindow.isShowing() ){
+            popupWindow.dismiss();
+        }
     }
 
     @Override
@@ -481,6 +485,7 @@ public class ServerActivity extends BaseActivity {
 
 
         popupWindow.showAtLocation(parentLayout, Gravity.CENTER,0, 0);
+
     }
 
     private ServiceConnection mConnection = new ServiceConnection() {
@@ -504,7 +509,11 @@ public class ServerActivity extends BaseActivity {
     {
         @Override
         protected Void doInBackground(Void... params) {
-            SystemClock.sleep(120000);
+            try {
+                TimeUnit.SECONDS.sleep(PropertiesService.getAutomaticSwitchingSeconds());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             return null;
         }
 
@@ -514,7 +523,7 @@ public class ServerActivity extends BaseActivity {
             if (!statusConnection) {
                 if (fastConnection) {
                     newConnecting(getRandomServer(), true, true);
-                } else if (sharedPreferences.getBoolean("automaticSwitching", true)){
+                } else if (PropertiesService.getAutomaticSwitching()){
                     autoServer = dbHelper.getSimilarServer(currentServer.getCountryLong(), currentServer.getIp());
                     if (autoServer != null)
                         showAlert();

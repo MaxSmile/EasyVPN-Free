@@ -25,8 +25,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:background="@drawable/server_info_bg"
-                android:paddingBottom="10dp"
-                android:layout_marginBottom="10dp">
+                android:padding="10dp">
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"

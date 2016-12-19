@@ -53,7 +53,11 @@
     <string name="show_my_desktop">Show my desktop</string>
     <string name="stay_to_try_something_else">Stay to try something else</string>
     <string name="automatic_switching">Automatic switching</string>
-    <string name="automatic_switching_summary">Automatic switching to the same country server after 30s</string>
+    <string name="automatic_switching_category">Automatic switching</string>
+    <string name="automatic_switching_set_seconds">Set seconds</string>
+    <string name="automatic_switching_summary">Automatic switching to the same country server after some seconds</string>
+    <string name="choose_country_priority_category">Country priority</string>
+    <string name="connect_on_start_category">Auto start on boot</string>
     <string name="try_another_server_text">You want try another server from %1$s?</string>
     <string name="try_another_server_ok">Yes</string>
     <string name="try_another_server_no">No</string>
