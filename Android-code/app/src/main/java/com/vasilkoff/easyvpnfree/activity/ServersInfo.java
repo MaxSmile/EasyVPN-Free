@@ -3,6 +3,7 @@ package com.vasilkoff.easyvpnfree.activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.vasilkoff.easyvpnfree.R;
@@ -20,7 +21,12 @@ public class ServersInfo extends AppCompatActivity {
 
         int widthWindow = dm.widthPixels;
         int heightWindow = dm.heightPixels;
-        getWindow().setLayout((int)(widthWindow * 0.7), (int)(heightWindow * 0.3));
+
+        if (getResources().getConfiguration().orientation == 1) {
+            getWindow().setLayout((int)(widthWindow * 0.7), (int)(heightWindow * 0.3));
+        } else {
+            getWindow().setLayout((int)(widthWindow * 0.4), (int)(heightWindow * 0.5));
+        }
 
         DBHelper dbHelper = new DBHelper(this);
 

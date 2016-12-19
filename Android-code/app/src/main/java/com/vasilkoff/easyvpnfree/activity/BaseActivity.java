@@ -48,6 +48,7 @@ public class BaseActivity extends AppCompatActivity {
     static final int ADBLOCK_REQUEST = 10001;
     static final int PREMIUM_SERVERS_REQUEST = 10002;
     public static Server connectedServer = null;
+    boolean hideCurrentConnection = false;
     IabHelper iapHelper;
     public static final String IAP_TAG = "IAP";
     static final String TEST_ITEM_SKU = "android.test.purchased";
@@ -211,12 +212,14 @@ public class BaseActivity extends AppCompatActivity {
         return true;
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
         for (int i = 0; i < menu.size(); i++) {
-            if (menu.getItem(i).getItemId() == R.id.actionCurrentServer && connectedServer == null)
+            if (menu.getItem(i).getItemId() == R.id.actionCurrentServer
+                    && (connectedServer == null || hideCurrentConnection))
                 menu.getItem(i).setVisible(false);
 
             if (premiumServers && menu.getItem(i).getItemId() == R.id.actionGetMoreServers)

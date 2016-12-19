@@ -39,6 +39,7 @@ import com.vasilkoff.easyvpnfree.R;
 import com.vasilkoff.easyvpnfree.activity.HomeActivity;
 import com.vasilkoff.easyvpnfree.activity.ServerActivity;
 import com.vasilkoff.easyvpnfree.model.Server;
+import com.vasilkoff.easyvpnfree.util.TotalTraffic;
 
 
 import java.io.IOException;
@@ -968,6 +969,7 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
 
     @Override
     public void updateByteCount(long in, long out, long diffIn, long diffOut) {
+        TotalTraffic.calcTraffic(this, in, out, diffIn, diffOut);
         if (mDisplayBytecount) {
             String netstat = String.format(getString(R.string.statusline_bytecount),
                     humanReadableByteCount(in, false),
@@ -978,6 +980,7 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
             boolean lowpriority = !mNotificationAlwaysVisible;
             showNotification(netstat, null, lowpriority, mConnecttime, LEVEL_CONNECTED);
         }
+
 
     }
 
