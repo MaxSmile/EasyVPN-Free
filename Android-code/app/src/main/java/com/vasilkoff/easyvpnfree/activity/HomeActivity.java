@@ -26,6 +26,7 @@ import com.crashlytics.android.answers.ContentViewEvent;
 import com.crashlytics.android.answers.CustomEvent;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.vasilkoff.easyvpnfree.BuildConfig;
 import com.vasilkoff.easyvpnfree.R;
 
 import com.vasilkoff.easyvpnfree.model.Country;
@@ -72,7 +73,8 @@ public class HomeActivity extends BaseActivity {
         countryList = dbHelper.getCountries();
 
         long totalServ = dbHelper.getCount();
-        Answers.getInstance().logCustom(new CustomEvent("Total servers")
+        if (!BuildConfig.DEBUG)
+            Answers.getInstance().logCustom(new CustomEvent("Total servers")
                 .putCustomAttribute("Total servers", totalServ));
 
         String totalServers = String.format(getResources().getString(R.string.total_servers), totalServ);

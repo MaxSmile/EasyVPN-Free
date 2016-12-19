@@ -403,6 +403,9 @@ public class ServerActivity extends BaseActivity {
         super.onDestroy();
         unregisterReceiver(br);
         unregisterReceiver(trafficReceiver);
+        if ( popupWindow!=null && popupWindow.isShowing() ){
+            popupWindow.dismiss();
+        }
     }
 
     @Override
@@ -481,6 +484,7 @@ public class ServerActivity extends BaseActivity {
 
 
         popupWindow.showAtLocation(parentLayout, Gravity.CENTER,0, 0);
+
     }
 
     private ServiceConnection mConnection = new ServiceConnection() {

@@ -312,7 +312,8 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public static void sendTouchButton(String button) {
-        Answers.getInstance().logCustom(new CustomEvent("Touches buttons ")
+        if (!BuildConfig.DEBUG)
+            Answers.getInstance().logCustom(new CustomEvent("Touches buttons ")
                 .putCustomAttribute("Button", button));
     }
 }
