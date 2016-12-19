@@ -27,6 +27,7 @@ import com.vasilkoff.easyvpnfree.BuildConfig;
 import com.vasilkoff.easyvpnfree.R;
 import com.vasilkoff.easyvpnfree.database.DBHelper;
 import com.vasilkoff.easyvpnfree.model.Server;
+import com.vasilkoff.easyvpnfree.util.PropertiesService;
 import com.vasilkoff.easyvpnfree.util.Stopwatch;
 import com.vasilkoff.easyvpnfree.util.iap.IabHelper;
 import com.vasilkoff.easyvpnfree.util.iap.IabResult;
@@ -66,7 +67,6 @@ public class BaseActivity extends AppCompatActivity {
     int heightWindow;
 
     static DBHelper dbHelper;
-    SharedPreferences sharedPreferences;
 
     @Override
     public void setContentView(int layoutResID)
@@ -102,7 +102,6 @@ public class BaseActivity extends AppCompatActivity {
         }
 
         dbHelper = new DBHelper(this);
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -291,9 +290,8 @@ public class BaseActivity extends AppCompatActivity {
 
     public Server getRandomServer() {
         Server randomServer;
-        if (sharedPreferences.getBoolean("countryPriority", false)) {
-            String selectedCountry = sharedPreferences.getString("selectedCountry", null);
-            randomServer = dbHelper.getGoodRandomServer(selectedCountry);
+        if (PropertiesService.getCountryPriority()) {
+            randomServer = dbHelper.getGoodRandomServer(PropertiesService.getSelectedCountry());
         } else {
             randomServer = dbHelper.getGoodRandomServer(null);
         }

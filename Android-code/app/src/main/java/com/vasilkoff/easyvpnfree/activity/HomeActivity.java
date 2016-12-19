@@ -33,6 +33,7 @@ import com.vasilkoff.easyvpnfree.model.Country;
 import com.vasilkoff.easyvpnfree.model.Server;
 import com.vasilkoff.easyvpnfree.util.BitmapGenerator;
 import com.vasilkoff.easyvpnfree.util.LoadData;
+import com.vasilkoff.easyvpnfree.util.PropertiesService;
 import com.vasilkoff.easyvpnfree.util.map.MapCreator;
 import com.vasilkoff.easyvpnfree.util.map.MyMarker;
 
@@ -125,7 +126,7 @@ public class HomeActivity extends BaseActivity {
                 if (randomServer != null) {
                     newConnecting(randomServer, true, true);
                 } else {
-                    String randomError = String.format(getResources().getString(R.string.error_random_country), sharedPreferences.getString("selectedCountry", null));
+                    String randomError = String.format(getResources().getString(R.string.error_random_country), PropertiesService.getSelectedCountry());
                     Toast.makeText(this, randomError, Toast.LENGTH_LONG).show();
                 }
                 break;

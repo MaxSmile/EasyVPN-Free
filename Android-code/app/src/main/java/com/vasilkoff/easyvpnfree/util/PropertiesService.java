@@ -2,6 +2,7 @@ package com.vasilkoff.easyvpnfree.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import com.vasilkoff.easyvpnfree.App;
 
@@ -12,13 +13,17 @@ import com.vasilkoff.easyvpnfree.App;
 public class PropertiesService {
 
     private static SharedPreferences prefs;
-    private static final String SHARED_PREFERENCES_NAME = "properties";
     private static final String DOWNLOADED_DATA_KEY = "downloaded_data";
     private static final String UPLOADED_DATA_KEY = "uploaded_data";
+    private static final String AUTOMATIC_SWITCHING = "automaticSwitching";
+    private static final String COUNTRY_PRIORITY = "countryPriority";
+    private static final String CONNECT_ON_START = "connectOnStart";
+    private static final String AUTOMATIC_SWITCHING_SECONDS = "automaticSwitchingSeconds";
+    private static final String SELECTED_COUNTRY = "selectedCountry";
 
     private synchronized static SharedPreferences getPrefs(){
         if (prefs == null) {
-            prefs = App.getInstance().getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+            prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
         }
         return prefs;
     }
@@ -38,4 +43,26 @@ public class PropertiesService {
     public static void setUploaded(long count){
         getPrefs().edit().putLong(UPLOADED_DATA_KEY, count).apply();
     }
+
+    public static boolean getConnectOnStart(){
+        return getPrefs().getBoolean(CONNECT_ON_START, false);
+    }
+
+    public static boolean getAutomaticSwitching(){
+        return getPrefs().getBoolean(AUTOMATIC_SWITCHING, true);
+    }
+
+    public static int getAutomaticSwitchingSeconds(){
+        return getPrefs().getInt(AUTOMATIC_SWITCHING_SECONDS, 120);
+    }
+
+    public static boolean getCountryPriority(){
+        return getPrefs().getBoolean(COUNTRY_PRIORITY, false);
+    }
+
+    public static String getSelectedCountry(){
+        return getPrefs().getString(SELECTED_COUNTRY, null);
+    }
+
+
 }
