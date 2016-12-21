@@ -23,7 +23,7 @@ public class ServersListActivity extends BaseActivity {
 
         String country = getIntent().getStringExtra(HomeActivity.EXTRA_COUNTRY);
         ListView listView = (ListView) findViewById(R.id.list);
-        final List<Server> serverList = dbHelper.getServersByCountry(country);
+        final List<Server> serverList = dbHelper.getServersByCountryCode(country);
         listView.setAdapter(new ServerListAdapter(this, serverList));
     }
 

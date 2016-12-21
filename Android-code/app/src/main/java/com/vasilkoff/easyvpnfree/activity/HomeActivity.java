@@ -48,7 +48,9 @@ import org.mapsforge.map.layer.overlay.Marker;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -60,7 +62,7 @@ public class HomeActivity extends BaseActivity {
     private PopupWindow popupWindow;
     private RelativeLayout homeContextRL;
 
-    private List<String> countryList;
+    private List<Country> countryList;
     private final String COUNTRY_FILE_NAME = "countries.json";
 
     private List<Country> countryLatLonList = null;
@@ -71,7 +73,7 @@ public class HomeActivity extends BaseActivity {
         setContentView(R.layout.activity_home);
 
         homeContextRL = (RelativeLayout) findViewById(R.id.homeContextRL);
-        countryList = dbHelper.getCountries();
+        countryList = dbHelper.getUniqueCountries();
 
         long totalServ = dbHelper.getCount();
         if (!BuildConfig.DEBUG)
@@ -138,19 +140,33 @@ public class HomeActivity extends BaseActivity {
         LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.pop_up_choose_country,null);
 
-        popupWindow = new PopupWindow(
-                view,
-                (int)(widthWindow * 0.8f),
-                (int)(heightWindow * 0.7f)
-        );
+        if (getResources().getConfiguration().orientation == 1) {
+            popupWindow = new PopupWindow(
+                    view,
+                    (int)(widthWindow * 0.8f),
+                    (int)(heightWindow * 0.7f)
+            );
+        } else {
+            popupWindow = new PopupWindow(
+                    view,
+                    (int)(widthWindow * 0.6f),
+                    (int)(heightWindow * 0.8f)
+            );
+        }
+
 
         popupWindow.setOutsideTouchable(false);
         popupWindow.setFocusable(true);
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
 
+        final List<String> countryListName = new ArrayList<String>();
+        for (Country country : countryList) {
+            countryListName.add(country.getCountryName());
+        }
+
         ListView lvCountry = (ListView) view.findViewById(R.id.homeCountryList);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, countryList);
+                android.R.layout.simple_list_item_1, countryListName);
 
         lvCountry.setAdapter(adapter);
         lvCountry.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -158,16 +174,15 @@ public class HomeActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 popupWindow.dismiss();
                 onSelectCountry(countryList.get(position));
-
             }
         });
 
         popupWindow.showAtLocation(homeContextRL, Gravity.CENTER,0, 0);
     }
 
-    private void onSelectCountry(String country) {
+    private void onSelectCountry(Country country) {
         Intent intent = new Intent(getApplicationContext(), ServersListActivity.class);
-        intent.putExtra(EXTRA_COUNTRY, country);
+        intent.putExtra(EXTRA_COUNTRY, country.getCountryCode());
         startActivity(intent);
     }
 
@@ -175,20 +190,19 @@ public class HomeActivity extends BaseActivity {
         Type listType = new TypeToken<ArrayList<Country>>(){}.getType();
         countryLatLonList =  new Gson().fromJson(LoadData.fromFile(COUNTRY_FILE_NAME, this), listType);
 
-        for (String countryName : countryList) {
+        for (Country countryUnique : countryList) {
             for (Country country : countryLatLonList) {
-                if (countryName.equals(country.getCountryName())) {
-
+                if (countryUnique.getCountryCode().equals(country.getCountryCode())) {
                     LatLong position = new LatLong(country.getCapitalLatitude(), country.getCapitalLongitude());
                     Bitmap bitmap = AndroidGraphicFactory.convertToBitmap(ContextCompat.getDrawable(this, R.drawable.ic_server_full));
 
-                    MyMarker countryMarker = new MyMarker(position, bitmap, 0, -bitmap.getHeight() / 2, countryName) {
+                    MyMarker countryMarker = new MyMarker(position, bitmap, 0, -bitmap.getHeight() / 2, country) {
                         @Override
                         public boolean onTap(LatLong geoPoint, Point viewPosition,
                                              Point tapPoint) {
 
                             if (contains(viewPosition, tapPoint)) {
-                                onSelectCountry((String)getRelationObject());
+                                onSelectCountry((Country)getRelationObject());
                                 return true;
                             }
                             return false;
@@ -197,7 +211,7 @@ public class HomeActivity extends BaseActivity {
 
                     layers.add(countryMarker);
 
-                    Drawable drawable = new BitmapDrawable(getResources(), BitmapGenerator.getTextAsBitmap(countryName, 20, ContextCompat.getColor(this,R.color.mapNameCountry)));
+                    Drawable drawable = new BitmapDrawable(getResources(), BitmapGenerator.getTextAsBitmap(country.getCountryName(), 20, ContextCompat.getColor(this,R.color.mapNameCountry)));
                     Bitmap bitmapName = AndroidGraphicFactory.convertToBitmap(drawable);
 
                     Marker countryNameMarker = new Marker(position, bitmapName, 0, bitmapName.getHeight() / 3);

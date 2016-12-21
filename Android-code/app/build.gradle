@@ -23,7 +23,7 @@ android {
         applicationId "com.vasilkoff.easyvpnfree"
         minSdkVersion 17
         targetSdkVersion 24
-        versionCode 29
+        versionCode 30
         versionName "1.4"
         setProperty("archivesBaseName", "easyvpnfree-$versionName-$versionCode")
     }

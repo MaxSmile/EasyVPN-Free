@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
+import com.vasilkoff.easyvpnfree.model.Country;
 import com.vasilkoff.easyvpnfree.model.Server;
 
 import java.util.ArrayList;
@@ -70,7 +71,7 @@ public class DBHelper  extends SQLiteOpenHelper {
                 + KEY_PREMIUM + " integer,"
                 + "UNIQUE ("
                 + KEY_HOST_NAME
-                + ") ON CONFLICT REPLACE"
+                + ") ON CONFLICT IGNORE"
                 + ")");
     }
 
@@ -146,11 +147,13 @@ public class DBHelper  extends SQLiteOpenHelper {
         return count;
     }
 
-    public List<String> getCountries() {
-        List<String> countryList = new ArrayList<String>();
+    public List<Country> getUniqueCountries() {
+        List<Country> countryList = new ArrayList<Country>();
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT DISTINCT "
                 + KEY_COUNTRY_LONG
+                + ","
+                + KEY_COUNTRY_SHORT
                 + " FROM "
                 + TABLE_SERVERS
                 + " ORDER BY "
@@ -159,7 +162,7 @@ public class DBHelper  extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                countryList.add(cursor.getString(0));
+                countryList.add(new Country(cursor.getString(0), null, 0, 0, cursor.getString(1)));
             } while (cursor.moveToNext());
         } else {
             Log.d(TAG ,"0 rows");
@@ -171,10 +174,10 @@ public class DBHelper  extends SQLiteOpenHelper {
         return countryList;
     }
 
-    public List<Server> getServersByCountry(String country) {
+    public List<Server> getServersByCountryCode(String country) {
         List<Server> serverList = new ArrayList<Server>();
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.query(TABLE_SERVERS, null, KEY_COUNTRY_LONG + "=?", new String[]{country}, null, null, null);
+        Cursor cursor = db.query(TABLE_SERVERS, null, KEY_COUNTRY_SHORT + "=?", new String[]{country}, null, null, null);
 
         if (cursor.moveToFirst()) {
             do {
