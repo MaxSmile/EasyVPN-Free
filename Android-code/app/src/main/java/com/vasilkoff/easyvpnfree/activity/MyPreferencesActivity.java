@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.vasilkoff.easyvpnfree.R;
 import com.vasilkoff.easyvpnfree.database.DBHelper;
+import com.vasilkoff.easyvpnfree.model.Country;
 
 import java.util.List;
 
@@ -45,11 +46,11 @@ public class MyPreferencesActivity extends PreferenceActivity {
             addPreferencesFromResource(R.xml.preferences);
 
             DBHelper dbHelper = new DBHelper(getActivity().getApplicationContext());
-            List<String> countryList = dbHelper.getCountries();
+            List<Country> countryList = dbHelper.getUniqueCountries();
             CharSequence entries[] = new CharSequence[countryList.size()];
 
             for (int i = 0; i < countryList.size(); i++) {
-                entries[i] = countryList.get(i);
+                entries[i] = countryList.get(i).getCountryName();
             }
 
             ListPreference listPreference = (ListPreference) findPreference("selectedCountry");

@@ -78,6 +78,8 @@ public class ServerActivity extends BaseActivity {
     private LinearLayout parentLayout;
     private TextView trafficInTotally;
     private TextView trafficOutTotally;
+    private TextView trafficIn;
+    private TextView trafficOut;
 
     private static boolean filterAds = false;
     private static boolean defaultFilterAds = true;
@@ -87,6 +89,7 @@ public class ServerActivity extends BaseActivity {
     private Server autoServer;
 
     private boolean statusConnection = false;
+    private boolean firstData = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +140,11 @@ public class ServerActivity extends BaseActivity {
                 TotalTraffic.getTotalTraffic().get(1));
         trafficOutTotally = (TextView) findViewById(R.id.serverTrafficOutTotally);
         trafficOutTotally.setText(totalOut);
+
+        trafficIn = (TextView) findViewById(R.id.serverTrafficIn);
+        trafficIn.setText("");
+        trafficOut = (TextView) findViewById(R.id.serverTrafficOut);
+        trafficOut.setText("");
 
         ((ImageView) findViewById(R.id.serverFlag))
                 .setImageResource(
@@ -192,21 +200,27 @@ public class ServerActivity extends BaseActivity {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (checkStatus()) {
-                    String in = String.format(getResources().getString(R.string.traffic_in),
-                            intent.getStringExtra(TotalTraffic.DOWNLOAD_SESSION));
-                    ((TextView) findViewById(R.id.serverTrafficIn)).setText(in);
+                    String in = "";
+                    String out = "";
+                    if (firstData) {
+                        firstData = false;
+                    } else {
+                        in = String.format(getResources().getString(R.string.traffic_in),
+                                intent.getStringExtra(TotalTraffic.DOWNLOAD_SESSION));
+                        out = String.format(getResources().getString(R.string.traffic_out),
+                                intent.getStringExtra(TotalTraffic.UPLOAD_SESSION));
+                    }
 
-                    String out = String.format(getResources().getString(R.string.traffic_out),
-                            intent.getStringExtra(TotalTraffic.UPLOAD_SESSION));
-                    ((TextView) findViewById(R.id.serverTrafficOut)).setText(out);
+                    trafficIn.setText(in);
+                    trafficOut.setText(out);
 
-                    String inTotall = String.format(getResources().getString(R.string.traffic_in),
+                    String inTotal = String.format(getResources().getString(R.string.traffic_in),
                             intent.getStringExtra(TotalTraffic.DOWNLOAD_ALL));
-                    trafficInTotally.setText(inTotall);
+                    trafficInTotally.setText(inTotal);
 
-                    String outTotall = String.format(getResources().getString(R.string.traffic_out),
+                    String outTotal = String.format(getResources().getString(R.string.traffic_out),
                             intent.getStringExtra(TotalTraffic.UPLOAD_ALL));
-                    trafficOutTotally.setText(outTotall);
+                    trafficOutTotally.setText(outTotal);
                 }
             }
         };
@@ -237,7 +251,7 @@ public class ServerActivity extends BaseActivity {
             finish();
         } else {
             Intent intent = new Intent(getApplicationContext(), ServersListActivity.class);
-            intent.putExtra(HomeActivity.EXTRA_COUNTRY, currentServer.getCountryLong());
+            intent.putExtra(HomeActivity.EXTRA_COUNTRY, currentServer.getCountryShort());
             startActivity(intent);
             finish();
         }
@@ -388,7 +402,12 @@ public class ServerActivity extends BaseActivity {
         } else {
             serverConnect.setText(getString(R.string.server_btn_connect));
             if (autoConnection) {
-                prepareVpn();
+                if (currentServer != null) {
+                    prepareVpn();
+                } else {
+                    startActivity(new Intent(this,HomeActivity.class));
+                }
+
             }
         }
     }
