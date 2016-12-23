@@ -15,7 +15,7 @@
     </style>
 
     <style name="serverDetails" >
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">13sp</item>
         <item name="android:layout_gravity">center</item>
     </style>
 

@@ -21,13 +21,13 @@
     <string name="csv_file_error_parsing">Проблема с парсингом файла...</string>
     <string name="network_error">Ошибка сети...</string>
     <string name="successfully_loaded">Загрузка завершена...</string>
-    <string name="network_error_message">Интернет недоступный, подключитесь к сети и попробуйте снова.</string>
-    <string name="blocking_ads">Фильтровать рекламу</string>
+    <string name="network_error_message">Интернет подключение отсутствует, подключитесь к сети и попробуйте снова.</string>
+    <string name="blocking_ads">Блокировать рекламу</string>
     <string name="more_servers">Больше серверов</string>
     <string name="feature_not_available">Эта функция временно недоступна</string>
     <string name="feature_not_available_without_perm">Без информации об учетной записи эта функция недоступна</string>
-    <string name="unblock">Купить фильтрование рекламы</string>
-    <string name="what_is_my_ip">Какой мой IP?</string>
+    <string name="unblock">Купить блокировку рекламы</string>
+    <string name="what_is_my_ip">Какой у меня IP?</string>
     <string name="action_current_connection">Текущее соединение</string>
     <string name="random_connection">Быстрое соединение</string>
     <string name="total_servers">На текщий момент, в локальной базе данных, доступно %1$d серверов</string>
@@ -39,14 +39,14 @@
     <string name="connect_on_start">Подключение на старте</string>
     <string name="connect_on_start_summary">Подключение при запуске приложения</string>
     <string name="choose_country_priority">Выберите приоритет страны</string>
-    <string name="choose_country_priority_summary">Если не включена, то использовать случайное соединение</string>
+    <string name="choose_country_priority_summary">Если не включена, то использовать соединение с любым сервером</string>
     <string name="choose_country">Выберите страну</string>
     <string name="error_random_country">Сервер с приоритетом страны %1$s не доступен</string>
-    <string name="success_pop_up_title"><b>Вы успешно подключены! Давайте попробуем это?</b></string>
+    <string name="success_pop_up_title"><b>Вы успешно подключены! Что дальше?</b></string>
     <string name="open_playmarket">Открыть PlayMarket</string>
     <string name="open_browser">Открыть браузер</string>
     <string name="show_my_desktop">Показать ваш рабочий стол</string>
-    <string name="stay_to_try_something_else">Попробовать что-то другое</string>
+    <string name="stay_to_try_something_else">Остатся в приложении</string>
     <string name="try_another_server_text">Вы хотите попробовать другой сервер из %1$s?</string>
     <string name="try_another_server_ok">Да</string>
     <string name="try_another_server_no">Нет</string>
@@ -54,7 +54,7 @@
     <string name="traffic_out">Отправлено: %1$s</string>
     <string name="traffic_totally"><b>Всего через приложение</b></string>
     <string name="share_text">
-        Easy VPN Free! Открытый исходный код, без ограничений и 100% бесплатный!
+        Easy VPN Free! Открытый исходный код, без каких либо ограничений!
         \nБолее 22 стран для подключения и разблокировка всех заблокированных сайтов.
         \n\nhttps://play.google.com/store/apps/details?id=com.vasilkoff.easyvpnfree
     </string>
