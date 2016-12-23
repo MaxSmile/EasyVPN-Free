@@ -45,7 +45,7 @@
     <string name="success_pop_up_title"><b>Вы успешно подключены! Что дальше?</b></string>
     <string name="open_playmarket">Открыть PlayMarket</string>
     <string name="open_browser">Открыть браузер</string>
-    <string name="show_my_desktop">Показать ваш рабочий стол</string>
+    <string name="show_my_desktop">Показать рабочий стол</string>
     <string name="stay_to_try_something_else">Остатся в приложении</string>
     <string name="try_another_server_text">Вы хотите попробовать другой сервер из %1$s?</string>
     <string name="try_another_server_ok">Да</string>
