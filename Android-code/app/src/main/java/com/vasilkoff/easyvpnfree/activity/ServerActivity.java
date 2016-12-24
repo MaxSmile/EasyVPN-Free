@@ -19,7 +19,6 @@ import android.view.ViewGroup.LayoutParams;
 import android.os.Bundle;
 
 
-import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
 import android.util.Base64;
 import android.util.Log;
@@ -65,7 +64,7 @@ public class ServerActivity extends BaseActivity {
     private BroadcastReceiver trafficReceiver;
     public final static String BROADCAST_ACTION = "de.blinkt.openvpn.VPN_STATUS";
 
-    protected OpenVPNService mService;
+    private static OpenVPNService mVPNService;
     private VpnProfile vpnProfile;
 
     private Server currentServer = null;
@@ -87,9 +86,13 @@ public class ServerActivity extends BaseActivity {
     private boolean autoConnection;
     private boolean fastConnection;
     private Server autoServer;
+    private static Server lastConnectedServer;
 
     private boolean statusConnection = false;
     private boolean firstData = true;
+
+    private WaitConnectionAsync waitConnection;
+    private boolean inBackground;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +109,7 @@ public class ServerActivity extends BaseActivity {
             if (connectedServer != null) {
                 currentServer = connectedServer;
             } else {
-                startActivity(new Intent(this, HomeActivity.class));
+                currentServer = lastConnectedServer;
             }
         }
 
@@ -187,10 +190,7 @@ public class ServerActivity extends BaseActivity {
         br = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (checkStatus()) {
-                    changeServerStatus(VpnStatus.ConnectionStatus.valueOf(intent.getStringExtra("status")));
-                    lastLog.setText(VpnStatus.getLastCleanLogMessage(getApplicationContext()));
-                }
+                receiveStatus(context, intent);
             }
         };
 
@@ -199,35 +199,56 @@ public class ServerActivity extends BaseActivity {
         trafficReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (checkStatus()) {
-                    String in = "";
-                    String out = "";
-                    if (firstData) {
-                        firstData = false;
-                    } else {
-                        in = String.format(getResources().getString(R.string.traffic_in),
-                                intent.getStringExtra(TotalTraffic.DOWNLOAD_SESSION));
-                        out = String.format(getResources().getString(R.string.traffic_out),
-                                intent.getStringExtra(TotalTraffic.UPLOAD_SESSION));
-                    }
-
-                    trafficIn.setText(in);
-                    trafficOut.setText(out);
-
-                    String inTotal = String.format(getResources().getString(R.string.traffic_in),
-                            intent.getStringExtra(TotalTraffic.DOWNLOAD_ALL));
-                    trafficInTotally.setText(inTotal);
-
-                    String outTotal = String.format(getResources().getString(R.string.traffic_out),
-                            intent.getStringExtra(TotalTraffic.UPLOAD_ALL));
-                    trafficOutTotally.setText(outTotal);
-                }
+                receiveTraffic(context, intent);
             }
         };
 
         registerReceiver(trafficReceiver, new IntentFilter(TotalTraffic.TRAFFIC_ACTION));
 
         checkAvailableFilter();
+    }
+
+    private void receiveTraffic(Context context, Intent intent) {
+        if (checkStatus()) {
+            String in = "";
+            String out = "";
+            if (firstData) {
+                firstData = false;
+            } else {
+                in = String.format(getResources().getString(R.string.traffic_in),
+                        intent.getStringExtra(TotalTraffic.DOWNLOAD_SESSION));
+                out = String.format(getResources().getString(R.string.traffic_out),
+                        intent.getStringExtra(TotalTraffic.UPLOAD_SESSION));
+            }
+
+            trafficIn.setText(in);
+            trafficOut.setText(out);
+
+            String inTotal = String.format(getResources().getString(R.string.traffic_in),
+                    intent.getStringExtra(TotalTraffic.DOWNLOAD_ALL));
+            trafficInTotally.setText(inTotal);
+
+            String outTotal = String.format(getResources().getString(R.string.traffic_out),
+                    intent.getStringExtra(TotalTraffic.UPLOAD_ALL));
+            trafficOutTotally.setText(outTotal);
+        }
+    }
+
+    private void receiveStatus(Context context, Intent intent) {
+        if (checkStatus()) {
+            changeServerStatus(VpnStatus.ConnectionStatus.valueOf(intent.getStringExtra("status")));
+            lastLog.setText(VpnStatus.getLastCleanLogMessage(getApplicationContext()));
+        }
+
+        if (intent.getStringExtra("detailstatus").equals("NOPROCESS")) {
+            try {
+                TimeUnit.SECONDS.sleep(1);
+                if (!VpnStatus.isVPNActive())
+                    prepareStopVPN();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void checkAvailableFilter() {
@@ -244,17 +265,8 @@ public class ServerActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        statusConnection = true;
-
-        if (fastConnection) {
-            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-            finish();
-        } else {
-            Intent intent = new Intent(getApplicationContext(), ServersListActivity.class);
-            intent.putExtra(HomeActivity.EXTRA_COUNTRY, currentServer.getCountryShort());
-            startActivity(intent);
-            finish();
-        }
+        if (waitConnection != null)
+            waitConnection.cancel(false);
     }
 
     private boolean checkStatus() {
@@ -270,7 +282,10 @@ public class ServerActivity extends BaseActivity {
             case LEVEL_CONNECTED:
                 statusConnection = true;
                 connectingProgress.setVisibility(View.GONE);
-                chooseAction();
+
+                if (!inBackground)
+                    chooseAction();
+
                 serverConnect.setText(getString(R.string.server_btn_disconnect));
                 break;
             case LEVEL_NOTCONNECTED:
@@ -278,13 +293,16 @@ public class ServerActivity extends BaseActivity {
                 break;
             default:
                 serverConnect.setText(getString(R.string.server_btn_disconnect));
+                statusConnection = false;
+                connectingProgress.setVisibility(View.VISIBLE);
         }
     }
 
     private void prepareVpn() {
         connectingProgress.setVisibility(View.VISIBLE);
         if (loadVpnProfile()) {
-            new WaitConnectionAsync().execute();
+            waitConnection = new WaitConnectionAsync();
+            waitConnection.execute();
             serverConnect.setText(getString(R.string.server_btn_disconnect));
             startVpn();
         } else {
@@ -337,21 +355,28 @@ public class ServerActivity extends BaseActivity {
         return true;
     }
 
-    private void stopVpn() {
-        statusConnection = true;
+    private void prepareStopVPN() {
+        statusConnection = false;
+        if (waitConnection != null)
+            waitConnection.cancel(false);
         connectingProgress.setVisibility(View.GONE);
         adbBlockCheck.setEnabled(availableFilterAds);
         lastLog.setText(R.string.server_not_connected);
         serverConnect.setText(getString(R.string.server_btn_connect));
         connectedServer = null;
+    }
+
+    private void stopVpn() {
+        prepareStopVPN();
         ProfileManager.setConntectedVpnProfileDisconnected(this);
-        if (mService != null && mService.getManagement() != null)
-            mService.getManagement().stopVPN(false);
+        if (mVPNService != null && mVPNService.getManagement() != null)
+            mVPNService.getManagement().stopVPN(false);
 
     }
 
     private void startVpn() {
         connectedServer = currentServer;
+        lastConnectedServer = currentServer;
         hideCurrentConnection = true;
         adbBlockCheck.setEnabled(false);
 
@@ -376,13 +401,11 @@ public class ServerActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        inBackground = false;
 
         if (connectedServer != null && currentServer.getIp().equals(connectedServer.getIp())) {
             hideCurrentConnection = true;
         }
-
-        if (getIntent().getAction() != null)
-            stopVpn();
 
         Intent intent = new Intent(this, OpenVPNService.class);
         intent.setAction(OpenVPNService.START_SERVICE);
@@ -402,12 +425,7 @@ public class ServerActivity extends BaseActivity {
         } else {
             serverConnect.setText(getString(R.string.server_btn_connect));
             if (autoConnection) {
-                if (currentServer != null) {
-                    prepareVpn();
-                } else {
-                    startActivity(new Intent(this,HomeActivity.class));
-                }
-
+                prepareVpn();
             }
         }
     }
@@ -415,6 +433,7 @@ public class ServerActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        inBackground = true;
         unbindService(mConnection);
     }
 
@@ -423,7 +442,7 @@ public class ServerActivity extends BaseActivity {
         super.onDestroy();
         unregisterReceiver(br);
         unregisterReceiver(trafficReceiver);
-        if ( popupWindow!=null && popupWindow.isShowing() ){
+        if ( popupWindow != null && popupWindow.isShowing() ){
             popupWindow.dismiss();
         }
     }
@@ -514,12 +533,12 @@ public class ServerActivity extends BaseActivity {
                                        IBinder service) {
             // We've bound to LocalService, cast the IBinder and get LocalService instance
             OpenVPNService.LocalBinder binder = (OpenVPNService.LocalBinder) service;
-            mService = binder.getService();
+            mVPNService = binder.getService();
         }
 
         @Override
         public void onServiceDisconnected(ComponentName arg0) {
-            mService = null;
+            mVPNService = null;
         }
 
     };
@@ -541,10 +560,10 @@ public class ServerActivity extends BaseActivity {
             super.onPostExecute(aVoid);
             if (!statusConnection) {
                 if (fastConnection) {
-                    newConnecting(getRandomServer(), true, true);
+                    newConnecting(getRandomServer(), true, true, true);
                 } else if (PropertiesService.getAutomaticSwitching()){
                     autoServer = dbHelper.getSimilarServer(currentServer.getCountryLong(), currentServer.getIp());
-                    if (autoServer != null)
+                    if (autoServer != null && !inBackground)
                         showAlert();
                 }
             }
@@ -558,14 +577,17 @@ public class ServerActivity extends BaseActivity {
                 .setPositiveButton(getString(R.string.try_another_server_ok),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                newConnecting(autoServer, false, true);
+                                newConnecting(autoServer, false, true, true);
                                 dialog.cancel();
                             }
                         })
                 .setNegativeButton(getString(R.string.try_another_server_no),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                new WaitConnectionAsync().execute();
+                                if (!statusConnection) {
+                                    waitConnection = new WaitConnectionAsync();
+                                    waitConnection.execute();
+                                }
                                 dialog.cancel();
                             }
                         });

@@ -1,5 +1,7 @@
 package com.vasilkoff.easyvpnfree.activity;
+
 import android.content.Intent;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,20 +16,22 @@ import java.util.List;
 import de.blinkt.openvpn.core.VpnStatus;
 
 public class ServersListActivity extends BaseActivity {
+    private ServerListAdapter serverListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_servers_list);
 
-        if (!VpnStatus.isVPNActive()) {
+        if (!VpnStatus.isVPNActive())
             connectedServer = null;
-        }
 
         String country = getIntent().getStringExtra(HomeActivity.EXTRA_COUNTRY);
         final ListView listView = (ListView) findViewById(R.id.list);
         final List<Server> serverList = dbHelper.getServersByCountryCode(country);
-        listView.setAdapter(new ServerListAdapter(this, serverList));
+        serverListAdapter = new ServerListAdapter(this, serverList);
+
+        listView.setAdapter(serverListAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -40,4 +44,10 @@ public class ServersListActivity extends BaseActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        serverListAdapter.notifyDataSetChanged();
+        invalidateOptionsMenu();
+    }
 }

@@ -86,6 +86,12 @@ public class HomeActivity extends BaseActivity {
         initMap();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        invalidateOptionsMenu();
+    }
+
     private void initMap() {
         AndroidGraphicFactory.createInstance(getApplication());
         mapView = new MapView(this);
@@ -126,7 +132,7 @@ public class HomeActivity extends BaseActivity {
                 sendTouchButton("homeBtnRandomConnection");
                 Server randomServer = getRandomServer();
                 if (randomServer != null) {
-                    newConnecting(randomServer, true, true);
+                    newConnecting(randomServer, true, true, false);
                 } else {
                     String randomError = String.format(getResources().getString(R.string.error_random_country), PropertiesService.getSelectedCountry());
                     Toast.makeText(this, randomError, Toast.LENGTH_LONG).show();

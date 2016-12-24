@@ -19,15 +19,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.LoaderActivity" />
+        <activity
+            android:name=".activity.LoaderActivity"
+            android:noHistory="true"/>
         <activity android:name=".activity.HomeActivity">
 
         </activity>
-        <activity
-            android:name=".activity.ServersListActivity"
-            android:noHistory="true" />
-        <activity android:name=".activity.ServerActivity" />
-        <activity android:name=".activity.AboutActivity" />
+        <activity android:name=".activity.ServersListActivity"/>
+        <activity android:name=".activity.ServerActivity"/>
+        <activity android:name=".activity.AboutActivity"/>
         <activity
             android:name=".activity.ServersInfo"
             android:theme="@style/AppTheme.PopUp"/>
