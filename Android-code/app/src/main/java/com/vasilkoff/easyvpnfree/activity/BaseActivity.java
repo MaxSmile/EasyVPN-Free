@@ -37,6 +37,8 @@ import com.vasilkoff.easyvpnfree.util.iap.Purchase;
 import java.util.Random;
 import java.util.regex.Pattern;
 
+import de.blinkt.openvpn.core.VpnStatus;
+
 /**
  * Created by Kusenko on 20.10.2016.
  */
@@ -218,7 +220,7 @@ public class BaseActivity extends AppCompatActivity {
 
         for (int i = 0; i < menu.size(); i++) {
             if (menu.getItem(i).getItemId() == R.id.actionCurrentServer
-                    && (connectedServer == null || hideCurrentConnection))
+                    && (connectedServer == null || hideCurrentConnection || !VpnStatus.isVPNActive()))
                 menu.getItem(i).setVisible(false);
 
             if (premiumServers && menu.getItem(i).getItemId() == R.id.actionGetMoreServers)
@@ -298,14 +300,15 @@ public class BaseActivity extends AppCompatActivity {
         return randomServer;
     }
 
-    public void newConnecting(Server server, boolean fastConnection, boolean autoConnection) {
+    public void newConnecting(Server server, boolean fastConnection, boolean autoConnection, boolean finish) {
         if (server != null) {
             Intent intent = new Intent(this, ServerActivity.class);
             intent.putExtra(Server.class.getCanonicalName(), server);
             intent.putExtra("fastConnection", fastConnection);
             intent.putExtra("autoConnection", autoConnection);
             startActivity(intent);
-            finish();
+            if (finish)
+                finish();
         }
     }
 

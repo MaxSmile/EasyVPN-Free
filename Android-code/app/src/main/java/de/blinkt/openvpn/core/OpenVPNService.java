@@ -36,9 +36,7 @@ import com.vasilkoff.easyvpnfree.BuildConfig;
 
 
 import com.vasilkoff.easyvpnfree.R;
-import com.vasilkoff.easyvpnfree.activity.HomeActivity;
 import com.vasilkoff.easyvpnfree.activity.ServerActivity;
-import com.vasilkoff.easyvpnfree.model.Server;
 import com.vasilkoff.easyvpnfree.util.TotalTraffic;
 
 
@@ -255,9 +253,10 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
 
             }
 
-            Intent disconnectVPN = new Intent(this, ServerActivity.class);
+            Intent disconnectVPN = new Intent(this, OpenVPNService.class);
             disconnectVPN.setAction(DISCONNECT_VPN);
-            PendingIntent disconnectPendingIntent = PendingIntent.getActivity(this, 0, disconnectVPN, 0);
+            PendingIntent disconnectPendingIntent = PendingIntent.getService(
+                    this, 0, disconnectVPN, 0);
 
             nbuilder.addAction(R.drawable.ic_menu_close_clear_cancel,
                     getString(R.string.cancel_connection), disconnectPendingIntent);
@@ -288,7 +287,7 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
     PendingIntent getLogPendingIntent() {
         // Let the configure Button show the Log
         Intent intent = new Intent(getBaseContext(), ServerActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         PendingIntent startLW = PendingIntent.getActivity(this, 0, intent, 0);
         return startLW;
     }
@@ -342,6 +341,12 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
 
         guiHandler = new Handler(getMainLooper());
 
+
+        if (intent != null && DISCONNECT_VPN.equals(intent.getAction())) {
+            if (mManagement != null)
+                mManagement.stopVPN(false);
+            return START_NOT_STICKY;
+        }
 
         if (intent != null && PAUSE_VPN.equals(intent.getAction())) {
             if (mDeviceStateReceiver != null)
