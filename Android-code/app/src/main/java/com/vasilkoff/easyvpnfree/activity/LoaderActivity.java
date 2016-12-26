@@ -115,6 +115,7 @@ public class LoaderActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        sendViewedActivity("Loader");
         downloadCSVFile(BASE_URL, BASE_FILE_NAME);
     }
 

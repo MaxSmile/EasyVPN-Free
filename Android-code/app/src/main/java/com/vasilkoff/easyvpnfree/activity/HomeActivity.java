@@ -32,6 +32,7 @@ import com.vasilkoff.easyvpnfree.R;
 import com.vasilkoff.easyvpnfree.model.Country;
 import com.vasilkoff.easyvpnfree.model.Server;
 import com.vasilkoff.easyvpnfree.util.BitmapGenerator;
+import com.vasilkoff.easyvpnfree.util.CountriesNames;
 import com.vasilkoff.easyvpnfree.util.LoadData;
 import com.vasilkoff.easyvpnfree.util.PropertiesService;
 import com.vasilkoff.easyvpnfree.util.map.MapCreator;
@@ -89,6 +90,7 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        sendViewedActivity("Home");
         invalidateOptionsMenu();
     }
 
@@ -167,7 +169,9 @@ public class HomeActivity extends BaseActivity {
 
         final List<String> countryListName = new ArrayList<String>();
         for (Country country : countryList) {
-            countryListName.add(country.getCountryName());
+            String localeCountryName = localeCountries.get(country.getCountryCode()) != null ?
+                    localeCountries.get(country.getCountryCode()) : country.getCountryName();
+            countryListName.add(localeCountryName);
         }
 
         ListView lvCountry = (ListView) view.findViewById(R.id.homeCountryList);
@@ -202,7 +206,7 @@ public class HomeActivity extends BaseActivity {
                     LatLong position = new LatLong(country.getCapitalLatitude(), country.getCapitalLongitude());
                     Bitmap bitmap = AndroidGraphicFactory.convertToBitmap(ContextCompat.getDrawable(this, R.drawable.ic_server_full));
 
-                    MyMarker countryMarker = new MyMarker(position, bitmap, 0, -bitmap.getHeight() / 2, country) {
+                    MyMarker countryMarker = new MyMarker(position, bitmap, 0, 0, country) {
                         @Override
                         public boolean onTap(LatLong geoPoint, Point viewPosition,
                                              Point tapPoint) {
@@ -217,10 +221,13 @@ public class HomeActivity extends BaseActivity {
 
                     layers.add(countryMarker);
 
-                    Drawable drawable = new BitmapDrawable(getResources(), BitmapGenerator.getTextAsBitmap(country.getCountryName(), 20, ContextCompat.getColor(this,R.color.mapNameCountry)));
+                    String localeCountryName = localeCountries.get(country.getCountryCode()) != null ?
+                            localeCountries.get(country.getCountryCode()) : country.getCountryName();
+
+                    Drawable drawable = new BitmapDrawable(getResources(), BitmapGenerator.getTextAsBitmap(localeCountryName, 20, ContextCompat.getColor(this,R.color.mapNameCountry)));
                     Bitmap bitmapName = AndroidGraphicFactory.convertToBitmap(drawable);
 
-                    Marker countryNameMarker = new Marker(position, bitmapName, 0, bitmapName.getHeight() / 3);
+                    Marker countryNameMarker = new Marker(position, bitmapName, 0, bitmap.getHeight() / 2);
 
                     layers.add(countryNameMarker);
                 }

@@ -31,7 +31,7 @@ public class AboutActivity extends BaseActivity {
             e.printStackTrace();
         }
 
-
+        sendViewedActivity("About");
 
     }
 }

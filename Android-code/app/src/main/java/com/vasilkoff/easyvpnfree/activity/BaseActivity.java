@@ -27,6 +27,7 @@ import com.vasilkoff.easyvpnfree.BuildConfig;
 import com.vasilkoff.easyvpnfree.R;
 import com.vasilkoff.easyvpnfree.database.DBHelper;
 import com.vasilkoff.easyvpnfree.model.Server;
+import com.vasilkoff.easyvpnfree.util.CountriesNames;
 import com.vasilkoff.easyvpnfree.util.PropertiesService;
 import com.vasilkoff.easyvpnfree.util.Stopwatch;
 import com.vasilkoff.easyvpnfree.util.iap.IabHelper;
@@ -34,6 +35,7 @@ import com.vasilkoff.easyvpnfree.util.iap.IabResult;
 import com.vasilkoff.easyvpnfree.util.iap.Inventory;
 import com.vasilkoff.easyvpnfree.util.iap.Purchase;
 
+import java.util.Map;
 import java.util.Random;
 import java.util.regex.Pattern;
 
@@ -69,6 +71,7 @@ public class BaseActivity extends AppCompatActivity {
     int heightWindow;
 
     static DBHelper dbHelper;
+    Map<String, String> localeCountries;
 
     @Override
     public void setContentView(int layoutResID)
@@ -110,6 +113,8 @@ public class BaseActivity extends AppCompatActivity {
 
         widthWindow = dm.widthPixels;
         heightWindow = dm.heightPixels;
+
+        localeCountries = CountriesNames.getCountries();
     }
 
     @Override
@@ -213,6 +218,10 @@ public class BaseActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -244,6 +253,7 @@ public class BaseActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), AboutActivity.class));
                 return true;
             case R.id.actionShare:
+                sendTouchButton("Share");
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text));
@@ -258,10 +268,12 @@ public class BaseActivity extends AppCompatActivity {
                 if (premiumServers) {
                     startActivity(new Intent(this, ServersInfo.class));
                 } else {
+                    sendTouchButton("GetMoreServers");
                     launchPurchase(moreServersSKU, PREMIUM_SERVERS_REQUEST);
                 }
                 return true;
             case R.id.action_settings:
+                sendTouchButton("Settings");
                 startActivity(new Intent(this, MyPreferencesActivity.class));
                 return true;
         }
@@ -314,7 +326,13 @@ public class BaseActivity extends AppCompatActivity {
 
     public static void sendTouchButton(String button) {
         if (!BuildConfig.DEBUG)
-            Answers.getInstance().logCustom(new CustomEvent("Touches buttons ")
+            Answers.getInstance().logCustom(new CustomEvent("Touches buttons")
                 .putCustomAttribute("Button", button));
+    }
+
+    public static void sendViewedActivity(String activity) {
+        if (!BuildConfig.DEBUG)
+            Answers.getInstance().logCustom(new CustomEvent("Viewed activity")
+                    .putCustomAttribute("activity", activity));
     }
 }

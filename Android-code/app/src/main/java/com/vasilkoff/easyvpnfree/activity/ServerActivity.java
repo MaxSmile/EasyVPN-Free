@@ -37,10 +37,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
+import com.vasilkoff.easyvpnfree.BuildConfig;
 import com.vasilkoff.easyvpnfree.R;
 import com.vasilkoff.easyvpnfree.model.Server;
 import com.vasilkoff.easyvpnfree.util.ConnectUtil;
 import com.vasilkoff.easyvpnfree.util.PropertiesService;
+import com.vasilkoff.easyvpnfree.util.Stopwatch;
 import com.vasilkoff.easyvpnfree.util.TotalTraffic;
 
 import java.io.ByteArrayInputStream;
@@ -93,6 +97,7 @@ public class ServerActivity extends BaseActivity {
 
     private WaitConnectionAsync waitConnection;
     private boolean inBackground;
+    private static Stopwatch stopwatch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,7 +160,9 @@ public class ServerActivity extends BaseActivity {
                         "drawable",
                         getPackageName()));
 
-        ((TextView) findViewById(R.id.serverCountry)).setText(currentServer.getCountryLong());
+        String localeCountryName = localeCountries.get(currentServer.getCountryShort()) != null ?
+                localeCountries.get(currentServer.getCountryShort()) : currentServer.getCountryLong();
+        ((TextView) findViewById(R.id.serverCountry)).setText(localeCountryName);
         ((TextView) findViewById(R.id.serverIP)).setText(currentServer.getIp());
         ((TextView) findViewById(R.id.serverSessions)).setText(currentServer.getNumVpnSessions());
         ((ImageView) findViewById(R.id.serverImageConnect))
@@ -356,6 +363,12 @@ public class ServerActivity extends BaseActivity {
     }
 
     private void prepareStopVPN() {
+        if (!BuildConfig.DEBUG)
+            Answers.getInstance().logCustom(new CustomEvent("Connection info")
+                    .putCustomAttribute("Server", connectedServer.getCountryLong())
+                    .putCustomAttribute("Download", trafficIn.getText().toString())
+                    .putCustomAttribute("Time", stopwatch.getElapsedTime()));
+
         statusConnection = false;
         if (waitConnection != null)
             waitConnection.cancel(false);
@@ -367,7 +380,7 @@ public class ServerActivity extends BaseActivity {
     }
 
     private void stopVpn() {
-        prepareStopVPN();
+        //prepareStopVPN();
         ProfileManager.setConntectedVpnProfileDisconnected(this);
         if (mVPNService != null && mVPNService.getManagement() != null)
             mVPNService.getManagement().stopVPN(false);
@@ -375,6 +388,7 @@ public class ServerActivity extends BaseActivity {
     }
 
     private void startVpn() {
+        stopwatch = new Stopwatch();
         connectedServer = currentServer;
         lastConnectedServer = currentServer;
         hideCurrentConnection = true;
@@ -401,6 +415,7 @@ public class ServerActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        sendViewedActivity("Server");
         inBackground = false;
 
         if (connectedServer != null && currentServer.getIp().equals(connectedServer.getIp())) {
