@@ -272,8 +272,14 @@ public class ServerActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+
         if (waitConnection != null)
             waitConnection.cancel(false);
+
+        if (isTaskRoot()) {
+            startActivity(new Intent(this, HomeActivity.class));
+            finish();
+        }
     }
 
     private boolean checkStatus() {
@@ -627,8 +633,7 @@ public class ServerActivity extends BaseActivity {
                 if (fastConnection) {
                     newConnecting(getRandomServer(), true, true, true);
                 } else if (PropertiesService.getAutomaticSwitching()){
-                    autoServer = dbHelper.getSimilarServer(currentServer.getCountryLong(), currentServer.getIp());
-                    if (autoServer != null && !inBackground)
+                    if (!inBackground)
                         showAlert();
                 }
             }
@@ -642,8 +647,14 @@ public class ServerActivity extends BaseActivity {
                 .setPositiveButton(getString(R.string.try_another_server_ok),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                newConnecting(autoServer, false, true, true);
                                 dialog.cancel();
+                                stopVpn();
+                                autoServer = dbHelper.getSimilarServer(currentServer.getCountryLong(), currentServer.getIp());
+                                if (autoServer != null) {
+                                    newConnecting(autoServer, false, true, true);
+                                } else {
+                                    onBackPressed();
+                                }
                             }
                         })
                 .setNegativeButton(getString(R.string.try_another_server_no),

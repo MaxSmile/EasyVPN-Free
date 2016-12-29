@@ -10,6 +10,8 @@ import android.view.View;
 import com.vasilkoff.easyvpnfree.R;
 import com.vasilkoff.easyvpnfree.database.DBHelper;
 import com.vasilkoff.easyvpnfree.model.Country;
+import com.vasilkoff.easyvpnfree.util.CountriesNames;
+import com.vasilkoff.easyvpnfree.util.PropertiesService;
 
 import java.util.List;
 
@@ -47,17 +49,24 @@ public class MyPreferencesActivity extends PreferenceActivity {
 
             DBHelper dbHelper = new DBHelper(getActivity().getApplicationContext());
             List<Country> countryList = dbHelper.getUniqueCountries();
+            CharSequence entriesValues[] = new CharSequence[countryList.size()];
             CharSequence entries[] = new CharSequence[countryList.size()];
 
+
             for (int i = 0; i < countryList.size(); i++) {
-                entries[i] = countryList.get(i).getCountryName();
+                entriesValues[i] = countryList.get(i).getCountryName();
+                String localeCountryName = CountriesNames.getCountries().get(countryList.get(i).getCountryCode()) != null ?
+                        CountriesNames.getCountries().get(countryList.get(i).getCountryCode()) :
+                        countryList.get(i).getCountryName();
+                entries[i] = localeCountryName;
             }
 
             ListPreference listPreference = (ListPreference) findPreference("selectedCountry");
             if (listPreference != null && entries.length > 0) {
                 listPreference.setEntries(entries);
-                listPreference.setEntryValues(entries);
-                listPreference.setValueIndex(0);
+                listPreference.setEntryValues(entriesValues);
+                if (PropertiesService.getSelectedCountry() == null)
+                    listPreference.setValueIndex(0);
             }
         }
     }
