@@ -367,11 +367,19 @@ public class ServerActivity extends BaseActivity {
     }
 
     private void prepareStopVPN() {
-        if (!BuildConfig.DEBUG)
-            Answers.getInstance().logCustom(new CustomEvent("Connection info")
-                    .putCustomAttribute("Server", connectedServer.getCountryLong())
-                    .putCustomAttribute("Download", trafficIn.getText().toString())
-                    .putCustomAttribute("Time", stopwatch.getElapsedTime()));
+        if (!BuildConfig.DEBUG) {
+            try {
+                String download = trafficIn.getText().toString();
+                download = download.substring(download.lastIndexOf(":") + 2);
+
+                Answers.getInstance().logCustom(new CustomEvent("Connection info")
+                        .putCustomAttribute("Country", connectedServer.getCountryLong())
+                        .putCustomAttribute("Download", download)
+                        .putCustomAttribute("Time", stopwatch.getElapsedTime()));
+            } catch (Exception e) {
+
+            }
+        }
 
         statusConnection = false;
         if (waitConnection != null)
