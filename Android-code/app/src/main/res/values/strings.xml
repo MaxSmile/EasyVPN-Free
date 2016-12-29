@@ -64,6 +64,13 @@
     <string name="traffic_in">Downloaded: %1$s</string>
     <string name="traffic_out">Uploaded: %1$s</string>
     <string name="traffic_totally"><b>Totally through the application</b></string>
+    <string name="rating_title"><b>Thanks for using Easy VPN Free!</b></string>
+    <string name="rating_sure">Sure</string>
+    <string name="rating_not">Not really</string>
+    <string name="rating_text">We are trying to make the app better!
+        \nWould you like to show your support
+        \nby rating us?
+    </string>
     <string name="share_text">
         Easy VPN Free! Open source, Unlimited and 100% Free!
         \nMore than 22 countries to connect and unblock all blocked websites.

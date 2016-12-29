@@ -30,6 +30,7 @@ import com.vasilkoff.easyvpnfree.model.Server;
 import com.vasilkoff.easyvpnfree.util.CountriesNames;
 import com.vasilkoff.easyvpnfree.util.PropertiesService;
 import com.vasilkoff.easyvpnfree.util.Stopwatch;
+import com.vasilkoff.easyvpnfree.util.TotalTraffic;
 import com.vasilkoff.easyvpnfree.util.iap.IabHelper;
 import com.vasilkoff.easyvpnfree.util.iap.IabResult;
 import com.vasilkoff.easyvpnfree.util.iap.Inventory;
@@ -115,6 +116,12 @@ public class BaseActivity extends AppCompatActivity {
         heightWindow = dm.heightPixels;
 
         localeCountries = CountriesNames.getCountries();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        TotalTraffic.saveTotal();
     }
 
     @Override
