@@ -55,7 +55,9 @@
     <string name="automatic_switching">Automatic switching</string>
     <string name="automatic_switching_category">Automatic switching</string>
     <string name="automatic_switching_set_seconds">Set seconds</string>
-    <string name="automatic_switching_summary">Automatic switching to the same country server after some seconds</string>
+    <string name="automatic_switching_summary">Automatic switching to the same country server after some seconds,
+        if this connecting impossible.
+    </string>
     <string name="choose_country_priority_category">Country priority</string>
     <string name="connect_on_start_category">Auto start on boot</string>
     <string name="try_another_server_text">You want try another server from %1$s?</string>

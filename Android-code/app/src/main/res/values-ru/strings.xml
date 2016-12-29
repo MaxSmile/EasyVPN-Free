@@ -65,4 +65,12 @@
         \nБолее 22 стран для подключения и разблокировка всех заблокированных сайтов.
         \n\nhttps://play.google.com/store/apps/details?id=com.vasilkoff.easyvpnfree
     </string>
+    <string name="automatic_switching">Автоматическое переключение</string>
+    <string name="automatic_switching_category">Автоматическое переключение</string>
+    <string name="automatic_switching_set_seconds">Установка секунд</string>
+    <string name="automatic_switching_summary">Автоматическое переключение на сервер из той же страны через несколько секунд,
+        если текущее подключение невозможно
+    </string>
+    <string name="choose_country_priority_category">Приоритет страны</string>
+    <string name="connect_on_start_category">Подключение на старте</string>
 </resources>
