@@ -2,6 +2,8 @@ package com.vasilkoff.easyvpnfree;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.res.Configuration;
+
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
 
@@ -19,6 +21,8 @@ public class App extends Application {
 
         instance = this;
     }
+
+
 
     @Override
     protected void attachBaseContext(Context base) {

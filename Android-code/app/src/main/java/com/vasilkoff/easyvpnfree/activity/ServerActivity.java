@@ -363,20 +363,29 @@ public class ServerActivity extends BaseActivity {
     }
 
     private void prepareStopVPN() {
-        if (!BuildConfig.DEBUG)
-            Answers.getInstance().logCustom(new CustomEvent("Connection info")
-                    .putCustomAttribute("Server", connectedServer.getCountryLong())
-                    .putCustomAttribute("Download", trafficIn.getText().toString())
-                    .putCustomAttribute("Time", stopwatch.getElapsedTime()));
+        if (!BuildConfig.DEBUG) {
+            try {
+                Answers.getInstance().logCustom(new CustomEvent("Connection info")
+                        .putCustomAttribute("Server", connectedServer.getCountryLong())
+                        .putCustomAttribute("Download", trafficIn.getText().toString())
+                        .putCustomAttribute("Time", stopwatch.getElapsedTime()));
 
-        statusConnection = false;
-        if (waitConnection != null)
-            waitConnection.cancel(false);
-        connectingProgress.setVisibility(View.GONE);
-        adbBlockCheck.setEnabled(availableFilterAds);
-        lastLog.setText(R.string.server_not_connected);
-        serverConnect.setText(getString(R.string.server_btn_connect));
-        connectedServer = null;
+
+                statusConnection = false;
+                if (waitConnection != null)
+                    waitConnection.cancel(false);
+                connectingProgress.setVisibility(View.GONE);
+                adbBlockCheck.setEnabled(availableFilterAds);
+                lastLog.setText(R.string.server_not_connected);
+                serverConnect.setText(getString(R.string.server_btn_connect));
+                connectedServer = null;
+
+            } catch (Exception e) {
+                Answers.getInstance().logCustom(new CustomEvent("Exceptions")
+                        .putCustomAttribute("Exception", e.toString()));
+            }
+        }
+
     }
 
     private void stopVpn() {
