@@ -21,6 +21,9 @@ public class TotalTraffic {
     public static final String UPLOAD_ALL = "upload_all";
     public static final String UPLOAD_SESSION = "upload_session";
 
+    public static long inTotal;
+    public static long outTotal;
+
 
     public static void calcTraffic(Context context, long in, long out, long diffIn, long diffOut) {
         List<String> totalTraffic = getTotalTraffic(diffIn, diffOut);
@@ -41,17 +44,28 @@ public class TotalTraffic {
 
     public static List<String> getTotalTraffic(long in, long out) {
         List<String> totalTraffic = new ArrayList<String>();
-        long inTotal =  PropertiesService.getDownloaded();
-        long outTotal =  PropertiesService.getUploaded();
+
+        if (inTotal == 0)
+            inTotal = PropertiesService.getDownloaded();
+
+        if (outTotal == 0)
+            outTotal = PropertiesService.getUploaded();
 
         inTotal = inTotal + in;
-        PropertiesService.setDownloaded(inTotal );
         outTotal = outTotal + out;
-        PropertiesService.setUploaded(outTotal);
 
         totalTraffic.add(OpenVPNService.humanReadableByteCount(inTotal, false));
         totalTraffic.add(OpenVPNService.humanReadableByteCount(outTotal, false));
 
         return totalTraffic;
     }
+
+    public static void saveTotal() {
+        if (inTotal != 0)
+            PropertiesService.setDownloaded(inTotal);
+
+        if (outTotal != 0)
+            PropertiesService.setUploaded(outTotal);
+    }
+
 }
