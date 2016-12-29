@@ -23,4 +23,6 @@
 
     <color name="infoServersList">#1c3f61</color>
 
+    <color name="ratingNot">#A7A7A7</color>
+
 </resources>

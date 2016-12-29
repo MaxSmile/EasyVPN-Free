@@ -20,6 +20,7 @@ public class PropertiesService {
     private static final String CONNECT_ON_START = "connectOnStart";
     private static final String AUTOMATIC_SWITCHING_SECONDS = "automaticSwitchingSeconds";
     private static final String SELECTED_COUNTRY = "selectedCountry";
+    private static final String SHOW_RATING = "show_rating";
 
     private synchronized static SharedPreferences getPrefs(){
         if (prefs == null) {
@@ -62,6 +63,14 @@ public class PropertiesService {
 
     public static String getSelectedCountry(){
         return getPrefs().getString(SELECTED_COUNTRY, null);
+    }
+
+    public static boolean getShowRating(){
+        return getPrefs().getBoolean(SHOW_RATING, true);
+    }
+
+    public static void setShowRating(boolean showRating){
+        getPrefs().edit().putBoolean(SHOW_RATING, showRating).apply();
     }
 
 

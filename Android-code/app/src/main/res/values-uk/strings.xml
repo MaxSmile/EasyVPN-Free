@@ -53,6 +53,13 @@
     <string name="traffic_in">Завантажено: %1$s</string>
     <string name="traffic_out">Відправлено: %1$s</string>
     <string name="traffic_totally"><b>Всього через додаток</b></string>
+    <string name="rating_title"><b>Дякуємо Вам за використання Easy VPN Free!</b></string>
+    <string name="rating_sure">Звичайно</string>
+    <string name="rating_not">На справді, ні</string>
+    <string name="rating_text">Ми намагаємося зробити додаток краще!
+        \nВи хочете, щоб показати свою підтримку,
+        \nоцінить нас?
+    </string>
     <string name="share_text">
         Easy VPN Free! Відкритий вихідний код, без обмежень і 100% безкоштовний!
         \nБільше ніж 22 країни для піключення і розблокування всіх заблокований сайтів.

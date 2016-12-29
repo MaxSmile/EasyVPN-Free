@@ -290,8 +290,12 @@ public class ServerActivity extends BaseActivity {
                 statusConnection = true;
                 connectingProgress.setVisibility(View.GONE);
 
-                if (!inBackground)
+                if (PropertiesService.getDownloaded() >= 104857600 && PropertiesService.getShowRating()) {
+                    PropertiesService.setShowRating(false);
+                    showRating();
+                } else if (!inBackground) {
                     chooseAction();
+                }
 
                 serverConnect.setText(getString(R.string.server_btn_disconnect));
                 break;
@@ -365,27 +369,26 @@ public class ServerActivity extends BaseActivity {
     private void prepareStopVPN() {
         if (!BuildConfig.DEBUG) {
             try {
+                String download = trafficIn.getText().toString();
+                download = download.substring(download.lastIndexOf(":") + 2);
+
                 Answers.getInstance().logCustom(new CustomEvent("Connection info")
-                        .putCustomAttribute("Server", connectedServer.getCountryLong())
-                        .putCustomAttribute("Download", trafficIn.getText().toString())
+                        .putCustomAttribute("Country", connectedServer.getCountryLong())
+                        .putCustomAttribute("Download", download)
                         .putCustomAttribute("Time", stopwatch.getElapsedTime()));
-
-
-                statusConnection = false;
-                if (waitConnection != null)
-                    waitConnection.cancel(false);
-                connectingProgress.setVisibility(View.GONE);
-                adbBlockCheck.setEnabled(availableFilterAds);
-                lastLog.setText(R.string.server_not_connected);
-                serverConnect.setText(getString(R.string.server_btn_connect));
-                connectedServer = null;
-
             } catch (Exception e) {
-                Answers.getInstance().logCustom(new CustomEvent("Exceptions")
-                        .putCustomAttribute("Exception", e.toString()));
+
             }
         }
 
+        statusConnection = false;
+        if (waitConnection != null)
+            waitConnection.cancel(false);
+        connectingProgress.setVisibility(View.GONE);
+        adbBlockCheck.setEnabled(availableFilterAds);
+        lastLog.setText(R.string.server_not_connected);
+        serverConnect.setText(getString(R.string.server_btn_connect));
+        connectedServer = null;
     }
 
     private void stopVpn() {
@@ -424,6 +427,7 @@ public class ServerActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
         sendViewedActivity("Server");
         inBackground = false;
 
@@ -541,6 +545,43 @@ public class ServerActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 sendTouchButton("successPopUpBtnClose");
+                popupWindow.dismiss();
+            }
+        });
+
+
+        popupWindow.showAtLocation(parentLayout, Gravity.CENTER,0, 0);
+
+    }
+
+    private void showRating() {
+        LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.pop_up_rating,null);
+
+        popupWindow = new PopupWindow(
+                view,
+                LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT
+        );
+
+        popupWindow.setOutsideTouchable(false);
+        popupWindow.setFocusable(true);
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+
+        ((Button)view.findViewById(R.id.ratingBtnSure)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String appPackageName = getPackageName();
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                } catch (android.content.ActivityNotFoundException anfe) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + appPackageName)));
+                }
+            }
+        });
+        ((Button)view.findViewById(R.id.ratingBtnNot)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 popupWindow.dismiss();
             }
         });
