@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/info_servers_bg">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/recond_like"
+            android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rating_title"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textSize="15sp"
+            android:textColor="@color/buttonBg"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rating_text"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textSize="15sp"
+            android:textColor="@color/buttonBg"/>
+        <Button
+            android:id="@+id/ratingBtnSure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rating_sure"
+            style="@style/buttonsPopUp"/>
+        <Button
+            android:id="@+id/ratingBtnNot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rating_not"
+            android:background="@null"
+            android:textColor="@color/ratingNot"
+            android:textAllCaps="false"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+</RelativeLayout>
