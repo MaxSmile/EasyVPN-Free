@@ -434,7 +434,6 @@ public class ServerActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
-        sendViewedActivity("Server");
         inBackground = false;
 
         if (connectedServer != null && currentServer.getIp().equals(connectedServer.getIp())) {
@@ -577,6 +576,7 @@ public class ServerActivity extends BaseActivity {
         ((Button)view.findViewById(R.id.ratingBtnSure)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                popupWindow.dismiss();
                 final String appPackageName = getPackageName();
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));

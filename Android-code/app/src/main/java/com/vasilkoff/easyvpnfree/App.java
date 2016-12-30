@@ -6,12 +6,16 @@ import android.content.res.Configuration;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
 
 import io.fabric.sdk.android.Fabric;
 
 public class App extends Application {
 
     private static App instance;
+    private Tracker mTracker;
+    private static final String PROPERTY_ID = "UA-89622148-1";
 
     @Override
     public void onCreate() {
@@ -22,7 +26,13 @@ public class App extends Application {
         instance = this;
     }
 
-
+    synchronized public Tracker getDefaultTracker() {
+        if (mTracker == null) {
+            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+            mTracker = analytics.newTracker(PROPERTY_ID);
+        }
+        return mTracker;
+    }
 
     @Override
     protected void attachBaseContext(Context base) {

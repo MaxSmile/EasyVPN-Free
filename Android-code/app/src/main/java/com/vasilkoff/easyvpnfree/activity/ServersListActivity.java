@@ -47,7 +47,6 @@ public class ServersListActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        sendViewedActivity("ServersList");
         serverListAdapter.notifyDataSetChanged();
         invalidateOptionsMenu();
     }

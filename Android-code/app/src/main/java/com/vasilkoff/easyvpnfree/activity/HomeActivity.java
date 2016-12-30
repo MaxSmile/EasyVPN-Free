@@ -6,7 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 
-import android.util.DisplayMetrics;
+
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +22,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.ContentViewEvent;
+
 import com.crashlytics.android.answers.CustomEvent;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.vasilkoff.easyvpnfree.BuildConfig;
@@ -32,7 +33,7 @@ import com.vasilkoff.easyvpnfree.R;
 import com.vasilkoff.easyvpnfree.model.Country;
 import com.vasilkoff.easyvpnfree.model.Server;
 import com.vasilkoff.easyvpnfree.util.BitmapGenerator;
-import com.vasilkoff.easyvpnfree.util.CountriesNames;
+
 import com.vasilkoff.easyvpnfree.util.LoadData;
 import com.vasilkoff.easyvpnfree.util.PropertiesService;
 import com.vasilkoff.easyvpnfree.util.map.MapCreator;
@@ -49,11 +50,11 @@ import org.mapsforge.map.layer.overlay.Marker;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import io.fabric.sdk.android.Fabric;
+import java.util.List;
+
+
+
 
 public class HomeActivity extends BaseActivity {
 
@@ -90,7 +91,6 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        sendViewedActivity("Home");
         invalidateOptionsMenu();
     }
 

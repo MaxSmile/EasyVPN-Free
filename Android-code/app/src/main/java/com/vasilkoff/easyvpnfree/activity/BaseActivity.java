@@ -23,6 +23,9 @@ import android.widget.Toast;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.vasilkoff.easyvpnfree.App;
 import com.vasilkoff.easyvpnfree.BuildConfig;
 import com.vasilkoff.easyvpnfree.R;
 import com.vasilkoff.easyvpnfree.database.DBHelper;
@@ -74,6 +77,8 @@ public class BaseActivity extends AppCompatActivity {
     static DBHelper dbHelper;
     Map<String, String> localeCountries;
 
+    static Tracker mTracker;
+
     @Override
     public void setContentView(int layoutResID)
     {
@@ -116,6 +121,9 @@ public class BaseActivity extends AppCompatActivity {
         heightWindow = dm.heightPixels;
 
         localeCountries = CountriesNames.getCountries();
+
+        App application = (App) getApplication();
+        mTracker = application.getDefaultTracker();
     }
 
     @Override
@@ -228,6 +236,12 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        mTracker.setScreenName(getClass().getSimpleName());
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
+        if (!BuildConfig.DEBUG)
+            Answers.getInstance().logCustom(new CustomEvent("Viewed activity")
+                    .putCustomAttribute("activity", getClass().getSimpleName()));
     }
 
     @Override
@@ -335,11 +349,10 @@ public class BaseActivity extends AppCompatActivity {
         if (!BuildConfig.DEBUG)
             Answers.getInstance().logCustom(new CustomEvent("Touches buttons")
                 .putCustomAttribute("Button", button));
-    }
 
-    public static void sendViewedActivity(String activity) {
-        if (!BuildConfig.DEBUG)
-            Answers.getInstance().logCustom(new CustomEvent("Viewed activity")
-                    .putCustomAttribute("activity", activity));
+        mTracker.send(new HitBuilders.EventBuilder()
+            .setCategory("Touches buttons")
+            .setAction(button)
+            .build());
     }
 }
