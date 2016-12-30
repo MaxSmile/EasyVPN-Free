@@ -272,8 +272,14 @@ public class ServerActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+
         if (waitConnection != null)
             waitConnection.cancel(false);
+
+        if (isTaskRoot()) {
+            startActivity(new Intent(this, HomeActivity.class));
+            finish();
+        }
     }
 
     private boolean checkStatus() {
@@ -428,7 +434,6 @@ public class ServerActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
-        sendViewedActivity("Server");
         inBackground = false;
 
         if (connectedServer != null && currentServer.getIp().equals(connectedServer.getIp())) {
@@ -571,6 +576,7 @@ public class ServerActivity extends BaseActivity {
         ((Button)view.findViewById(R.id.ratingBtnSure)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                popupWindow.dismiss();
                 final String appPackageName = getPackageName();
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
@@ -625,10 +631,10 @@ public class ServerActivity extends BaseActivity {
             super.onPostExecute(aVoid);
             if (!statusConnection) {
                 if (fastConnection) {
+                    stopVpn();
                     newConnecting(getRandomServer(), true, true, true);
                 } else if (PropertiesService.getAutomaticSwitching()){
-                    autoServer = dbHelper.getSimilarServer(currentServer.getCountryLong(), currentServer.getIp());
-                    if (autoServer != null && !inBackground)
+                    if (!inBackground)
                         showAlert();
                 }
             }
@@ -637,13 +643,18 @@ public class ServerActivity extends BaseActivity {
 
     private void showAlert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        String message = String.format(getResources().getString(R.string.try_another_server_text), currentServer.getCountryLong());
-        builder.setMessage(message)
+        builder.setMessage(getString(R.string.try_another_server_text))
                 .setPositiveButton(getString(R.string.try_another_server_ok),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                newConnecting(autoServer, false, true, true);
                                 dialog.cancel();
+                                stopVpn();
+                                autoServer = dbHelper.getSimilarServer(currentServer.getCountryLong(), currentServer.getIp());
+                                if (autoServer != null) {
+                                    newConnecting(autoServer, false, true, true);
+                                } else {
+                                    onBackPressed();
+                                }
                             }
                         })
                 .setNegativeButton(getString(R.string.try_another_server_no),

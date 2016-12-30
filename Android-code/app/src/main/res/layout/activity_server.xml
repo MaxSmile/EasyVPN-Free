@@ -32,7 +32,7 @@
                     android:layout_height="wrap_content">
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="1"
+                        android:layout_weight="2"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
                         <TextView
@@ -58,7 +58,7 @@
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="2"
+                        android:layout_weight="3"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
                         <ImageView
@@ -86,7 +86,7 @@
                             <TextView
                                 android:id="@+id/serverSpeed"
                                 android:layout_width="0dp"
-                                android:layout_weight="2"
+                                android:layout_weight="1"
                                 android:layout_height="wrap_content"
                                 style="@style/serverDetails"/>
                         </LinearLayout>
@@ -104,7 +104,7 @@
                             <TextView
                                 android:id="@+id/serverSessions"
                                 android:layout_width="0dp"
-                                android:layout_weight="2"
+                                android:layout_weight="1"
                                 android:layout_height="wrap_content"
                                 style="@style/serverDetails"/>
                         </LinearLayout>
@@ -122,7 +122,7 @@
                             <TextView
                                 android:id="@+id/serverPing"
                                 android:layout_width="0dp"
-                                android:layout_weight="2"
+                                android:layout_weight="1"
                                 android:layout_height="wrap_content"
                                 style="@style/serverDetails"/>
                         </LinearLayout>

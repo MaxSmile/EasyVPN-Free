@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "1067063466316",
+    "project_id": "easy-vpn-free"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1067063466316:android:4ff3282175fe4450",
+        "android_client_info": {
+          "package_name": "com.vasilkoff.easyvpnfree"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIDrdo6WD-2RE5dNYGV2XIFcc7qhN9A80"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-89622148-1"
+          }
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

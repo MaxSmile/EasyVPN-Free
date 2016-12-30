@@ -47,7 +47,7 @@
     <string name="open_browser">Открыть браузер</string>
     <string name="show_my_desktop">Показать рабочий стол</string>
     <string name="stay_to_try_something_else">Остатся в приложении</string>
-    <string name="try_another_server_text">Вы хотите попробовать другой сервер из %1$s?</string>
+    <string name="try_another_server_text">Вы хотите попробовать другой сервер?</string>
     <string name="try_another_server_ok">Да</string>
     <string name="try_another_server_no">Нет</string>
     <string name="traffic_in">Загружено: %1$s</string>
@@ -65,4 +65,12 @@
         \nБолее 22 стран для подключения и разблокировка всех заблокированных сайтов.
         \n\nhttps://play.google.com/store/apps/details?id=com.vasilkoff.easyvpnfree
     </string>
+    <string name="automatic_switching">Автоматическое переключение</string>
+    <string name="automatic_switching_category">Автоматическое переключение</string>
+    <string name="automatic_switching_set_seconds">Установка секунд</string>
+    <string name="automatic_switching_summary">Автоматическое переключение на сервер из той же страны через несколько секунд,
+        если текущее подключение невозможно
+    </string>
+    <string name="choose_country_priority_category">Приоритет страны</string>
+    <string name="connect_on_start_category">Подключение на старте</string>
 </resources>

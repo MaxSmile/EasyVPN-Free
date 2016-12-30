@@ -30,8 +30,5 @@ public class AboutActivity extends BaseActivity {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-
-        sendViewedActivity("About");
-
     }
 }
