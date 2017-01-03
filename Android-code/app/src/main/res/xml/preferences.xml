@@ -22,6 +22,7 @@
             android:key="connectOnStart"/>
     </PreferenceCategory>
     <PreferenceCategory
+        android:key="countryPriorityCategory"
         android:title="@string/choose_country_priority_category">
         <CheckBoxPreference
             android:title="@string/choose_country_priority"
