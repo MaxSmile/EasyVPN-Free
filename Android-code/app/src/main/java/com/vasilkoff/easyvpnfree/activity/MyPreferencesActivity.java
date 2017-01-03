@@ -3,6 +3,7 @@ package com.vasilkoff.easyvpnfree.activity;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.vasilkoff.easyvpnfree.model.Country;
 import com.vasilkoff.easyvpnfree.util.CountriesNames;
 import com.vasilkoff.easyvpnfree.util.PropertiesService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.vasilkoff.easyvpnfree.R.id.toolbar;
@@ -58,7 +60,6 @@ public class MyPreferencesActivity extends PreferenceActivity {
             CharSequence entriesValues[] = new CharSequence[countryList.size()];
             CharSequence entries[] = new CharSequence[countryList.size()];
 
-
             for (int i = 0; i < countryList.size(); i++) {
                 entriesValues[i] = countryList.get(i).getCountryName();
                 String localeCountryName = CountriesNames.getCountries().get(countryList.get(i).getCountryCode()) != null ?
@@ -68,7 +69,10 @@ public class MyPreferencesActivity extends PreferenceActivity {
             }
 
             ListPreference listPreference = (ListPreference) findPreference("selectedCountry");
-            if (listPreference != null && entries.length > 0) {
+            if (entries.length == 0) {
+                PreferenceCategory countryPriorityCategory = (PreferenceCategory) findPreference("countryPriorityCategory");
+                getPreferenceScreen().removePreference(countryPriorityCategory);
+            } else {
                 listPreference.setEntries(entries);
                 listPreference.setEntryValues(entriesValues);
                 if (PropertiesService.getSelectedCountry() == null)
