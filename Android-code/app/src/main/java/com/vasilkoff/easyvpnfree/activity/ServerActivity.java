@@ -128,8 +128,6 @@ public class ServerActivity extends BaseActivity {
 
         registerReceiver(trafficReceiver, new IntentFilter(TotalTraffic.TRAFFIC_ACTION));
 
-        currentServer = null;
-
         if (currentServer == null) {
             if (connectedServer != null) {
                 currentServer = connectedServer;

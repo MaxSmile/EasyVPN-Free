@@ -102,8 +102,6 @@ public class BaseActivity extends AppCompatActivity {
             }
         }
 
-        initPurchaseHelper();
-
         if (BuildConfig.DEBUG) {
             moreServersSKU = TEST_ITEM_SKU;
             adblockSKU = TEST_ITEM_SKU;
@@ -163,7 +161,9 @@ public class BaseActivity extends AppCompatActivity {
 
     private void checkPurchase() {
         iapHelper.flagEndAsync();
-        iapHelper.queryInventoryAsync(mGotInventoryListener);
+        if(iapHelper.isSetupDone() && !iapHelper.isAsyncInProgress()) {
+            iapHelper.queryInventoryAsync(mGotInventoryListener);
+        }
     }
 
     void launchPurchase(String sku, int request) {
@@ -236,6 +236,8 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        initPurchaseHelper();
+
         mTracker.setScreenName(getClass().getSimpleName());
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
