@@ -110,11 +110,32 @@ public class ServerActivity extends BaseActivity {
         fastConnection = getIntent().getBooleanExtra("fastConnection", false);
         currentServer = (Server)getIntent().getParcelableExtra(Server.class.getCanonicalName());
 
+        br = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                receiveStatus(context, intent);
+            }
+        };
+
+        registerReceiver(br, new IntentFilter(BROADCAST_ACTION));
+
+        trafficReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                receiveTraffic(context, intent);
+            }
+        };
+
+        registerReceiver(trafficReceiver, new IntentFilter(TotalTraffic.TRAFFIC_ACTION));
+
+        currentServer = null;
+
         if (currentServer == null) {
             if (connectedServer != null) {
                 currentServer = connectedServer;
             } else {
-                currentServer = lastConnectedServer;
+                onBackPressed();
+                return;
             }
         }
 
@@ -194,23 +215,7 @@ public class ServerActivity extends BaseActivity {
             serverConnect.setText(getString(R.string.server_btn_connect));
         }
 
-        br = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                receiveStatus(context, intent);
-            }
-        };
 
-        registerReceiver(br, new IntentFilter(BROADCAST_ACTION));
-
-        trafficReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                receiveTraffic(context, intent);
-            }
-        };
-
-        registerReceiver(trafficReceiver, new IntentFilter(TotalTraffic.TRAFFIC_ACTION));
 
         checkAvailableFilter();
     }
