@@ -137,7 +137,7 @@ public class LoaderActivity extends BaseActivity {
                 .setDownloadProgressListener(new DownloadProgressListener() {
                     @Override
                     public void onProgress(long bytesDownloaded, long totalBytes) {
-                        if(totalBytes < 0) {
+                        if(totalBytes <= 0) {
                             // when we dont know the file size, assume it is 1200000 bytes :)
                             totalBytes = 1200000;
                         }

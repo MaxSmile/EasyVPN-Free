@@ -177,6 +177,9 @@ public class DBHelper  extends SQLiteOpenHelper {
     public List<Server> getServersByCountryCode(String country) {
         List<Server> serverList = new ArrayList<Server>();
         SQLiteDatabase db = this.getWritableDatabase();
+        if (country == null)
+            country = "";
+
         Cursor cursor = db.query(TABLE_SERVERS, null, KEY_COUNTRY_SHORT + "=?", new String[]{country}, null, null, null);
 
         if (cursor.moveToFirst()) {

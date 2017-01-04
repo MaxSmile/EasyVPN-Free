@@ -441,7 +441,9 @@ public class ServerActivity extends BaseActivity {
 
         if (connectedServer != null && currentServer.getIp().equals(connectedServer.getIp())) {
             hideCurrentConnection = true;
+            invalidateOptionsMenu();
         }
+
 
         Intent intent = new Intent(this, OpenVPNService.class);
         intent.setAction(OpenVPNService.START_SERVICE);
