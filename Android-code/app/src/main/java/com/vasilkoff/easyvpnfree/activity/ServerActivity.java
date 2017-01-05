@@ -90,7 +90,6 @@ public class ServerActivity extends BaseActivity {
     private boolean autoConnection;
     private boolean fastConnection;
     private Server autoServer;
-    private static Server lastConnectedServer;
 
     private boolean statusConnection = false;
     private boolean firstData = true;
@@ -105,6 +104,26 @@ public class ServerActivity extends BaseActivity {
         setContentView(R.layout.activity_server);
 
         parentLayout = (LinearLayout) findViewById(R.id.serverParentLayout);
+        unblockCheck = (Button) findViewById(R.id.serverUnblockCheck);
+        adbBlockCheck = (CheckBox) findViewById(R.id.serverBlockingCheck);
+        connectingProgress = (ProgressBar) findViewById(R.id.serverConnectingProgress);
+        lastLog = (TextView) findViewById(R.id.serverStatus);
+        serverConnect = (Button) findViewById(R.id.serverConnect);
+
+        String totalIn = String.format(getResources().getString(R.string.traffic_in),
+                TotalTraffic.getTotalTraffic().get(0));
+        trafficInTotally = (TextView) findViewById(R.id.serverTrafficInTotally);
+        trafficInTotally.setText(totalIn);
+
+        String totalOut = String.format(getResources().getString(R.string.traffic_out),
+                TotalTraffic.getTotalTraffic().get(1));
+        trafficOutTotally = (TextView) findViewById(R.id.serverTrafficOutTotally);
+        trafficOutTotally.setText(totalOut);
+
+        trafficIn = (TextView) findViewById(R.id.serverTrafficIn);
+        trafficIn.setText("");
+        trafficOut = (TextView) findViewById(R.id.serverTrafficOut);
+        trafficOut.setText("");
 
         autoConnection = getIntent().getBooleanExtra("autoConnection", false);
         fastConnection = getIntent().getBooleanExtra("fastConnection", false);
@@ -137,7 +156,6 @@ public class ServerActivity extends BaseActivity {
             }
         }
 
-        unblockCheck = (Button) findViewById(R.id.serverUnblockCheck);
         unblockCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,7 +164,6 @@ public class ServerActivity extends BaseActivity {
             }
         });
 
-        adbBlockCheck = (CheckBox) findViewById(R.id.serverBlockingCheck);
         adbBlockCheck.setChecked(defaultFilterAds);
         adbBlockCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -156,28 +173,20 @@ public class ServerActivity extends BaseActivity {
             }
         });
 
-        connectingProgress = (ProgressBar) findViewById(R.id.serverConnectingProgress);
+        lastLog.setText(R.string.server_not_connected);
 
-        String totalIn = String.format(getResources().getString(R.string.traffic_in),
-                TotalTraffic.getTotalTraffic().get(0));
-        trafficInTotally = (TextView) findViewById(R.id.serverTrafficInTotally);
-        trafficInTotally.setText(totalIn);
+        initView();
 
-        String totalOut = String.format(getResources().getString(R.string.traffic_out),
-                TotalTraffic.getTotalTraffic().get(1));
-        trafficOutTotally = (TextView) findViewById(R.id.serverTrafficOutTotally);
-        trafficOutTotally.setText(totalOut);
+        checkAvailableFilter();
+    }
 
-        trafficIn = (TextView) findViewById(R.id.serverTrafficIn);
-        trafficIn.setText("");
-        trafficOut = (TextView) findViewById(R.id.serverTrafficOut);
-        trafficOut.setText("");
+    private void initView() {
 
         ((ImageView) findViewById(R.id.serverFlag))
                 .setImageResource(
                         getResources().getIdentifier(currentServer.getCountryShort().toLowerCase(),
-                        "drawable",
-                        getPackageName()));
+                                "drawable",
+                                getPackageName()));
 
         String localeCountryName = localeCountries.get(currentServer.getCountryShort()) != null ?
                 localeCountries.get(currentServer.getCountryShort()) : currentServer.getCountryLong();
@@ -187,8 +196,8 @@ public class ServerActivity extends BaseActivity {
         ((ImageView) findViewById(R.id.serverImageConnect))
                 .setImageResource(
                         getResources().getIdentifier(ConnectUtil.getConnectIcon(currentServer),
-                        "drawable",
-                        getPackageName()));
+                                "drawable",
+                                getPackageName()));
 
         String ping = currentServer.getPing() + " " +  getString(R.string.ms);
         ((TextView) findViewById(R.id.serverPing)).setText(ping);
@@ -198,12 +207,6 @@ public class ServerActivity extends BaseActivity {
         String speed = String.valueOf(speedValue) + " " + getString(R.string.mbps);
         ((TextView) findViewById(R.id.serverSpeed)).setText(speed);
 
-
-        lastLog = (TextView) findViewById(R.id.serverStatus);
-        lastLog.setText(R.string.server_not_connected);
-
-        serverConnect = (Button) findViewById(R.id.serverConnect);
-
         if (checkStatus()) {
             adbBlockCheck.setEnabled(false);
             adbBlockCheck.setChecked(filterAds);
@@ -212,10 +215,16 @@ public class ServerActivity extends BaseActivity {
         } else {
             serverConnect.setText(getString(R.string.server_btn_connect));
         }
+    }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
 
-
-        checkAvailableFilter();
+        if (currentServer != null && connectedServer != null && !currentServer.getIp().equals(connectedServer.getIp())) {
+            currentServer = connectedServer;
+            initView();
+        }
     }
 
     private void receiveTraffic(Context context, Intent intent) {
@@ -411,7 +420,6 @@ public class ServerActivity extends BaseActivity {
     private void startVpn() {
         stopwatch = new Stopwatch();
         connectedServer = currentServer;
-        lastConnectedServer = currentServer;
         hideCurrentConnection = true;
         adbBlockCheck.setEnabled(false);
 
@@ -432,6 +440,8 @@ public class ServerActivity extends BaseActivity {
             onActivityResult(START_VPN_PROFILE, Activity.RESULT_OK, null);
         }
     }
+
+
 
     @Override
     protected void onResume() {
