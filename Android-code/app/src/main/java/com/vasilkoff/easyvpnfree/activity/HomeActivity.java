@@ -94,6 +94,13 @@ public class HomeActivity extends BaseActivity {
         invalidateOptionsMenu();
     }
 
+    @Override
+    protected void onDestroy() {
+        mapView.destroyAll();
+        AndroidGraphicFactory.clearResourceMemoryCache();
+        super.onDestroy();
+    }
+
     private void initMap() {
         AndroidGraphicFactory.createInstance(getApplication());
         mapView = new MapView(this);
