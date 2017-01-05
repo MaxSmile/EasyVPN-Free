@@ -158,7 +158,7 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
         android.app.Notification.Builder nbuilder = new Notification.Builder(this);
 
         if (mProfile != null)
-            nbuilder.setContentTitle(getString(R.string.notifcation_title, mProfile.mName));
+            nbuilder.setContentTitle(getString(R.string.notification_title, mProfile.mName));
         else
             nbuilder.setContentTitle(getString(R.string.notifcation_title_notconnect));
 
@@ -956,7 +956,14 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
             // This also mean we are no longer connected, ignore bytecount messages until next
             // CONNECTED
             // Does not work :(
-            String msg = getString(resid);
+            String msg;
+            if (resid == R.string.state_waitconnectretry) {
+                msg = VpnStatus.getLastCleanLogMessage(this);
+            } else {
+                msg = getString(resid);
+            }
+
+
             showNotification(VpnStatus.getLastCleanLogMessage(this),
                     msg, lowpriority, 0, level);
 

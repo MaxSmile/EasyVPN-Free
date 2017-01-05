@@ -89,7 +89,8 @@ public class ServerListAdapter extends BaseAdapter {
         Button button = (Button) v.findViewById(R.id.serverListConnect);
 
         if (BaseActivity.connectedServer != null && BaseActivity.connectedServer.getHostName().equals(server.getHostName())) {
-            button.setBackground(ContextCompat.getDrawable(context, R.drawable.connected_bg));
+            //button.setBackground(ContextCompat.getDrawable(context, R.drawable.connected_bg));
+            v.setBackgroundColor(ContextCompat.getColor(context, R.color.activeServer));
         }
 
         button.setOnClickListener(new View.OnClickListener() {
