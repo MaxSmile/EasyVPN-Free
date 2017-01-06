@@ -141,7 +141,7 @@ public class HomeActivity extends BaseActivity {
                 sendTouchButton("homeBtnRandomConnection");
                 Server randomServer = getRandomServer();
                 if (randomServer != null) {
-                    newConnecting(randomServer, true, true, false);
+                    newConnecting(randomServer, true, true);
                 } else {
                     String randomError = String.format(getResources().getString(R.string.error_random_country), PropertiesService.getSelectedCountry());
                     Toast.makeText(this, randomError, Toast.LENGTH_LONG).show();

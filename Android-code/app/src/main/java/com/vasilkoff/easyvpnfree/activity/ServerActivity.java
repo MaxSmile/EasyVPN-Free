@@ -125,10 +125,6 @@ public class ServerActivity extends BaseActivity {
         trafficOut = (TextView) findViewById(R.id.serverTrafficOut);
         trafficOut.setText("");
 
-        autoConnection = getIntent().getBooleanExtra("autoConnection", false);
-        fastConnection = getIntent().getBooleanExtra("fastConnection", false);
-        currentServer = (Server)getIntent().getParcelableExtra(Server.class.getCanonicalName());
-
         br = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -147,14 +143,7 @@ public class ServerActivity extends BaseActivity {
 
         registerReceiver(trafficReceiver, new IntentFilter(TotalTraffic.TRAFFIC_ACTION));
 
-        if (currentServer == null) {
-            if (connectedServer != null) {
-                currentServer = connectedServer;
-            } else {
-                onBackPressed();
-                return;
-            }
-        }
+
 
         unblockCheck.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,12 +164,25 @@ public class ServerActivity extends BaseActivity {
 
         lastLog.setText(R.string.server_not_connected);
 
-        initView();
+        initView(getIntent());
 
         checkAvailableFilter();
     }
 
-    private void initView() {
+    private void initView(Intent intent) {
+
+        autoConnection = intent.getBooleanExtra("autoConnection", false);
+        fastConnection = intent.getBooleanExtra("fastConnection", false);
+        currentServer = (Server)intent.getParcelableExtra(Server.class.getCanonicalName());
+
+        if (currentServer == null) {
+            if (connectedServer != null) {
+                currentServer = connectedServer;
+            } else {
+                onBackPressed();
+                return;
+            }
+        }
 
         ((ImageView) findViewById(R.id.serverFlag))
                 .setImageResource(
@@ -221,10 +223,7 @@ public class ServerActivity extends BaseActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
 
-        if (currentServer != null && connectedServer != null && !currentServer.getIp().equals(connectedServer.getIp())) {
-            currentServer = connectedServer;
-            initView();
-        }
+        initView(intent);
     }
 
     private void receiveTraffic(Context context, Intent intent) {
@@ -446,7 +445,6 @@ public class ServerActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         inBackground = false;
 
         if (connectedServer != null && currentServer.getIp().equals(connectedServer.getIp())) {
@@ -647,7 +645,7 @@ public class ServerActivity extends BaseActivity {
             if (!statusConnection) {
                 if (fastConnection) {
                     stopVpn();
-                    newConnecting(getRandomServer(), true, true, true);
+                    newConnecting(getRandomServer(), true, true);
                 } else if (PropertiesService.getAutomaticSwitching()){
                     if (!inBackground)
                         showAlert();
@@ -666,7 +664,7 @@ public class ServerActivity extends BaseActivity {
                                 stopVpn();
                                 autoServer = dbHelper.getSimilarServer(currentServer.getCountryLong(), currentServer.getIp());
                                 if (autoServer != null) {
-                                    newConnecting(autoServer, false, true, true);
+                                    newConnecting(autoServer, false, true);
                                 } else {
                                     onBackPressed();
                                 }

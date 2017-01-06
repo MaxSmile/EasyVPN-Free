@@ -95,7 +95,7 @@ public class LoaderActivity extends BaseActivity {
                         if (PropertiesService.getConnectOnStart()) {
                             Server randomServer = getRandomServer();
                             if (randomServer != null) {
-                                newConnecting(randomServer, true, true, true);
+                                newConnecting(randomServer, true, true);
                             } else {
                                 startActivity(new Intent(LoaderActivity.this, HomeActivity.class));
                             }
