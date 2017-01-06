@@ -32,6 +32,20 @@ android {
         disable 'MissingTranslation'
     }
 
+    productFlavors {
+        free {
+            applicationId "com.vasilkoff.easyvpnfree"
+            resValue "string", "app_name", "Easy VPN Free"
+            resValue "string", "notification_title", "Easy VPN Free - %s"
+        }
+
+        pro {
+            applicationId "com.vasilkoff.easyvpn"
+            resValue "string", "app_name", "Easy VPN"
+            resValue "string", "notification_title", "Easy VPN - %s"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false

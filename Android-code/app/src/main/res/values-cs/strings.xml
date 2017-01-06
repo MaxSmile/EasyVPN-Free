@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Jednoduché VPN zdarma</string>
     <string name="home_btn_choose_country"> Vyberte zemi </string>
     <string name="home_pop_up_title_choose_country"> Vyberte zemi </string>
     <string name="server_btn_connect"> Připojit </string>

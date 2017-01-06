@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">간단한 무료 VPN</string>
     <string name="home_btn_choose_country"> 국가를 선택 </string>
     <string name="home_pop_up_title_choose_country"> 국가를 선택 </string>
     <string name="server_btn_connect"> 연결 </string>

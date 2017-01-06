@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Simple უფასო VPN</string>
     <string name="home_btn_choose_country"> აირჩიეთ თქვენი ქვეყანა </string>
     <string name="home_pop_up_title_choose_country"> აირჩიეთ თქვენი ქვეყანა </string>
     <string name="server_btn_connect"> Connect </string>

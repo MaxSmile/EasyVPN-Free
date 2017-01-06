@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Enostavno Prosti VPN</string>
     <string name="home_btn_choose_country"> Izberite državo </string>
     <string name="home_pop_up_title_choose_country"> Izberite državo </string>
     <string name="server_btn_connect"> Poveži </string>

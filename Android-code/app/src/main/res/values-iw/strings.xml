@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">VPN חינם פשוט</string>
     <string name="home_btn_choose_country">בחר את המדינה שלך</string>
     <string name="home_pop_up_title_choose_country"> בחר את המדינה שלך </string>
     <string name="server_btn_connect"> Connect </string>

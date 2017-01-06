@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Easy VPN Free</string>
     <string name="action_settings">Настройки</string>
     <string name="action_about">О приложении</string>
     <string name="home_btn_choose_country">Выберите страну</string>

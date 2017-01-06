@@ -67,6 +67,7 @@ public class BaseActivity extends AppCompatActivity {
 
     static boolean availableFilterAds = false;
     static boolean premiumServers = false;
+
     static String adblockSKU;
     static String moreServersSKU;
     static String currentSKU;
@@ -82,6 +83,11 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public void setContentView(int layoutResID)
     {
+        if (BuildConfig.FLAVOR == "pro") {
+            availableFilterAds = true;
+            premiumServers = true;
+        }
+
         fullLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_base, null);
         FrameLayout activityContainer = (FrameLayout) fullLayout.findViewById(R.id.activity_content);
         getLayoutInflater().inflate(layoutResID, activityContainer, true);
@@ -109,6 +115,8 @@ public class BaseActivity extends AppCompatActivity {
             moreServersSKU = MORE_SERVERS_ITEM_SKU;
             adblockSKU = ADBLOCK_ITEM_SKU;
         }
+
+
 
         dbHelper = new DBHelper(this);
 
@@ -236,7 +244,10 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        initPurchaseHelper();
+
+        if (BuildConfig.FLAVOR == "free") {
+            initPurchaseHelper();
+        }
 
         mTracker.setScreenName(getClass().getSimpleName());
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());

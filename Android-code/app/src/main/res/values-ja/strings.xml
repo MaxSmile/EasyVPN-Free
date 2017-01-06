@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">シンプルな無料のVPN</string>
     <string name="home_btn_choose_country"> にあなたの国を選択</string>
     <string name="home_pop_up_title_choose_country"> にあなたの国を選択</string>
     <string name="server_btn_connect">接続</string>
