@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name=".App"
@@ -48,6 +49,28 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="f3381de560e52052038ffb42a852d4b4df492896" />
+
+        <!-- Optionally, register AnalyticsReceiver and AnalyticsService to support background
+      dispatching on non-Google Play devices -->
+        <receiver android:name="com.google.android.gms.analytics.AnalyticsReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH" />
+            </intent-filter>
+        </receiver>
+        <service android:name="com.google.android.gms.analytics.AnalyticsService"
+            android:enabled="true"
+            android:exported="false"/>
+
+        <!-- Optionally, register CampaignTrackingReceiver and CampaignTrackingService to enable
+             installation campaign reporting -->
+        <receiver android:name="com.google.android.gms.analytics.CampaignTrackingReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
+        <service android:name="com.google.android.gms.analytics.CampaignTrackingService" />
     </application>
 
 </manifest>
