@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "101174069905",
+    "project_id": "easy-vpn-155109"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:101174069905:android:21f96f0f8331f35b",
+        "android_client_info": {
+          "package_name": "com.vasilkoff.easyvpn"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMvXrN4gEs77cBnrMZdIsW-rq6mT-gkUc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-89641705-1"
+          }
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

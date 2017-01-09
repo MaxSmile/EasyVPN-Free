@@ -16,6 +16,7 @@ public class App extends Application {
     private static App instance;
     private Tracker mTracker;
     private static final String PROPERTY_ID = "UA-89622148-1";
+    private static final String PROPERTY_ID_PRO = "UA-89641705-1";
 
     @Override
     public void onCreate() {
@@ -29,7 +30,7 @@ public class App extends Application {
     synchronized public Tracker getDefaultTracker() {
         if (mTracker == null) {
             GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-            mTracker = analytics.newTracker(PROPERTY_ID);
+            mTracker = analytics.newTracker(BuildConfig.FLAVOR == "pro" ? PROPERTY_ID_PRO : PROPERTY_ID);
         }
         return mTracker;
     }
