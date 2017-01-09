@@ -181,10 +181,12 @@ public class BaseActivity extends AppCompatActivity {
         key = base64EncodedPublicKey.substring(random.nextInt(base64EncodedPublicKey.length() - 2));
 
         iapHelper.flagEndAsync();
-        iapHelper.launchPurchaseFlow(this,
-                sku, request,
-                mPurchaseFinishedListener,
-                key + sku);
+        if (iapHelper.isSetupDone() && !iapHelper.isAsyncInProgress()) {
+            iapHelper.launchPurchaseFlow(this,
+                    sku, request,
+                    mPurchaseFinishedListener,
+                    key + sku);
+        }
     }
 
 
