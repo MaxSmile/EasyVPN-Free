@@ -16,7 +16,7 @@ import java.util.List;
 import de.blinkt.openvpn.core.VpnStatus;
 
 public class ServersListActivity extends BaseActivity {
-    private ServerListAdapter serverListAdapter;
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +26,16 @@ public class ServersListActivity extends BaseActivity {
         if (!VpnStatus.isVPNActive())
             connectedServer = null;
 
+        listView = (ListView) findViewById(R.id.list);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
         String country = getIntent().getStringExtra(HomeActivity.EXTRA_COUNTRY);
-        final ListView listView = (ListView) findViewById(R.id.list);
         final List<Server> serverList = dbHelper.getServersByCountryCode(country);
-        serverListAdapter = new ServerListAdapter(this, serverList);
+        ServerListAdapter serverListAdapter = new ServerListAdapter(this, serverList);
 
         listView.setAdapter(serverListAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -42,12 +48,7 @@ public class ServersListActivity extends BaseActivity {
                 ServersListActivity.this.startActivity(intent);
             }
         });
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        serverListAdapter.notifyDataSetChanged();
         invalidateOptionsMenu();
     }
 }

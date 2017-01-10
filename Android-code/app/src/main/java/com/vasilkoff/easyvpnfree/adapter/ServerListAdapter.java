@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.vasilkoff.easyvpnfree.R;
 import com.vasilkoff.easyvpnfree.activity.BaseActivity;
 import com.vasilkoff.easyvpnfree.activity.ServerActivity;
+import com.vasilkoff.easyvpnfree.database.DBHelper;
 import com.vasilkoff.easyvpnfree.model.Server;
 import com.vasilkoff.easyvpnfree.util.ConnectUtil;
 import com.vasilkoff.easyvpnfree.util.CountriesNames;
@@ -33,7 +34,6 @@ public class ServerListAdapter extends BaseAdapter {
     private List<Server> serverList = new ArrayList<Server>();
     private Context context;
     private Map<String, String> localeCountries;
-
 
     public ServerListAdapter(Context c, List<Server> serverList) {
         inflater = LayoutInflater.from(c);

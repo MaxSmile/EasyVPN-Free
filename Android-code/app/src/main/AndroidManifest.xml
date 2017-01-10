@@ -36,6 +36,7 @@
             android:theme="@style/AppTheme.PopUp"/>
         <activity
             android:name=".activity.MyPreferencesActivity"
+            android:noHistory="true"
             android:label="@string/action_settings"/>
 
         <service

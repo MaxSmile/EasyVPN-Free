@@ -643,6 +643,8 @@ public class ServerActivity extends BaseActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             if (!statusConnection) {
+                dbHelper.setInactive(currentServer.getIp());
+
                 if (fastConnection) {
                     stopVpn();
                     newConnecting(getRandomServer(), true, true);

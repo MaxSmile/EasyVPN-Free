@@ -11,8 +11,14 @@ public class ConnectUtil {
     private static final String CONNECT_BAD = "ic_connect_bad";
     private static final String CONNECT_GOOD = "ic_connect_good";
     private static final String CONNECT_EXCELLENT = "ic_connect_excellent";
+    private static final String CONNECT_INACTIVE = "ic_connect_inactive";
 
     public static String getConnectIcon(Server server) {
+
+        if (server.getInactive() > 0) {
+            return CONNECT_INACTIVE;
+        }
+
         int speed = Integer.parseInt(server.getSpeed());
         int sessions = Integer.parseInt(server.getNumVpnSessions());
 

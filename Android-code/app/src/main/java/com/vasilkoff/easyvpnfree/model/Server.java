@@ -24,8 +24,9 @@ public class Server implements Parcelable {
     private String operator;
     private String message;
     private String configData;
+    private int inactive;
 
-    public Server(String hostName, String ip, String score, String ping, String speed, String countryLong, String countryShort, String numVpnSessions, String uptime, String totalUsers, String totalTraffic, String logType, String operator, String message, String configData) {
+    public Server(String hostName, String ip, String score, String ping, String speed, String countryLong, String countryShort, String numVpnSessions, String uptime, String totalUsers, String totalTraffic, String logType, String operator, String message, String configData, int inactive) {
         this.hostName = hostName;
         this.ip = ip;
         this.score = score;
@@ -41,6 +42,7 @@ public class Server implements Parcelable {
         this.operator = operator;
         this.message = message;
         this.configData = configData;
+        this.inactive = inactive;
     }
 
     protected Server(Parcel in) {
@@ -59,6 +61,7 @@ public class Server implements Parcelable {
         operator = in.readString();
         message = in.readString();
         configData = in.readString();
+        inactive = in.readInt();
     }
 
     public static final Creator<Server> CREATOR = new Creator<Server>() {
@@ -133,6 +136,10 @@ public class Server implements Parcelable {
         return configData;
     }
 
+    public int getInactive() {
+        return inactive;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -155,5 +162,6 @@ public class Server implements Parcelable {
         dest.writeString(operator);
         dest.writeString(message);
         dest.writeString(configData);
+        dest.writeInt(inactive);
     }
 }

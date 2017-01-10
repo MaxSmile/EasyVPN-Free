@@ -21,7 +21,7 @@ import java.util.Random;
 
 public class DBHelper  extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = "Records.db";
     public static final String TABLE_SERVERS = "servers";
     private static final String TAG = "DBHelper";
@@ -43,6 +43,7 @@ public class DBHelper  extends SQLiteOpenHelper {
     private static final String KEY_MESSAGE = "message";
     private static final String KEY_CONFIG_DATA = "configData";
     private static final String KEY_PREMIUM = "premium";
+    private static final String KEY_INACTIVE = "inactive";
 
 
     public DBHelper(Context context) {
@@ -68,6 +69,7 @@ public class DBHelper  extends SQLiteOpenHelper {
                 + KEY_OPERATOR + " text,"
                 + KEY_MESSAGE + " text,"
                 + KEY_CONFIG_DATA + " text,"
+                + KEY_INACTIVE + " integer DEFAULT 0,"
                 + KEY_PREMIUM + " integer,"
                 + "UNIQUE ("
                 + KEY_HOST_NAME
@@ -79,6 +81,15 @@ public class DBHelper  extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("drop table if exists " + TABLE_SERVERS);
         onCreate(db);
+    }
+
+    public void setInactive(String ip) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_INACTIVE, 1);
+        db.update(TABLE_SERVERS, values, KEY_IP + " = ?", new String[] {ip});
+
+        db.close();
     }
 
     public void clearTable() {
@@ -241,6 +252,8 @@ public class DBHelper  extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT * FROM "
                 + TABLE_SERVERS
                 + " WHERE "
+                + KEY_INACTIVE
+                + " <> 1 AND "
                 + KEY_COUNTRY_LONG
                 + " = ? AND "
                 + KEY_IP
@@ -257,6 +270,8 @@ public class DBHelper  extends SQLiteOpenHelper {
             cursor = db.rawQuery("SELECT * FROM "
                     + TABLE_SERVERS
                     + " WHERE "
+                    + KEY_INACTIVE
+                    + " <> 1 AND "
                     + KEY_COUNTRY_LONG
                     + " = ?", new String[] {country});
         } else {
@@ -282,7 +297,8 @@ public class DBHelper  extends SQLiteOpenHelper {
                 cursor.getString(12),
                 cursor.getString(13),
                 cursor.getString(14),
-                cursor.getString(15)
+                cursor.getString(15),
+                cursor.getInt(16)
         );
     }
 }
