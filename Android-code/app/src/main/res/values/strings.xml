@@ -7,6 +7,7 @@
     <string name="server_txt_ping">Ping:</string>
     <string name="server_txt_sessions">Sessions:</string>
     <string name="server_txt_speed">Speed:</string>
+    <string name="server_txt_city">City:</string>
     <string name="server_error_loading_profile">Error loading profile</string>
     <string name="server_txt_status">Status connection:</string>
     <string name="server_not_connected">Not connected</string>

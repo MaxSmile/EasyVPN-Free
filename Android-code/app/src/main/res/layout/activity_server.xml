@@ -126,6 +126,24 @@
                                 android:layout_height="wrap_content"
                                 style="@style/serverDetails"/>
                         </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:gravity="end"
+                                android:layout_height="wrap_content"
+                                android:text="@string/server_txt_city"
+                                style="@style/serverDetails"/>
+                            <TextView
+                                android:id="@+id/serverCity"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                style="@style/serverDetails"/>
+                        </LinearLayout>
 
                     </LinearLayout>
                 </LinearLayout>

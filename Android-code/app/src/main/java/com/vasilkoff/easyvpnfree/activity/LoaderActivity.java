@@ -130,6 +130,7 @@ public class LoaderActivity extends BaseActivity {
 
     private void downloadCSVFile(String url, String fileName) {
         stopwatch = new Stopwatch();
+
         AndroidNetworking.download(url, getCacheDir().getPath(), fileName)
                 .setTag("downloadCSV")
                 .setPriority(Priority.MEDIUM)
