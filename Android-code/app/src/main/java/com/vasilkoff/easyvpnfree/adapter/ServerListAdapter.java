@@ -81,30 +81,17 @@ public class ServerListAdapter extends BaseAdapter {
 
         ((TextView) v.findViewById(R.id.textHostName)).setText(server.getHostName());
         ((TextView) v.findViewById(R.id.textIP)).setText(server.getIp());
+        ((TextView) v.findViewById(R.id.textCity)).setText(server.getCity());
 
         String localeCountryName = localeCountries.get(server.getCountryShort()) != null ?
                 localeCountries.get(server.getCountryShort()) : server.getCountryLong();
         ((TextView) v.findViewById(R.id.textCountry)).setText(localeCountryName);
 
-        Button button = (Button) v.findViewById(R.id.serverListConnect);
-
         if (BaseActivity.connectedServer != null && BaseActivity.connectedServer.getHostName().equals(server.getHostName())) {
-            //button.setBackground(ContextCompat.getDrawable(context, R.drawable.connected_bg));
             v.setBackgroundColor(ContextCompat.getColor(context, R.color.activeServer));
         }
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BaseActivity.sendTouchButton("detailsServer");
-                Intent intent = new Intent(context, ServerActivity.class);
-                intent.putExtra(Server.class.getCanonicalName(), server);
-                context.startActivity(intent);
-            }
-        });
-
         return v;
     }
-
 
 }

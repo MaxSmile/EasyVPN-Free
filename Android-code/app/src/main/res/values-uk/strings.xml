@@ -8,6 +8,7 @@
     <string name="server_txt_ping">Пінг:</string>
     <string name="server_txt_sessions">Сесії:</string>
     <string name="server_txt_speed">Швидкість:</string>
+    <string name="server_txt_city">Місто:</string>
     <string name="server_error_loading_profile">Помилка завантаження профілю</string>
     <string name="server_txt_status">Статус з\'єднання:</string>
     <string name="server_list_more">Детальніше</string>

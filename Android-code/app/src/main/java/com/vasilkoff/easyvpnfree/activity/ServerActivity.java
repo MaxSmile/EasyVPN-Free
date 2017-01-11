@@ -194,6 +194,7 @@ public class ServerActivity extends BaseActivity {
                 localeCountries.get(currentServer.getCountryShort()) : currentServer.getCountryLong();
         ((TextView) findViewById(R.id.serverCountry)).setText(localeCountryName);
         ((TextView) findViewById(R.id.serverIP)).setText(currentServer.getIp());
+        ((TextView) findViewById(R.id.serverCity)).setText(currentServer.getCity());
         ((TextView) findViewById(R.id.serverSessions)).setText(currentServer.getNumVpnSessions());
         ((ImageView) findViewById(R.id.serverImageConnect))
                 .setImageResource(
