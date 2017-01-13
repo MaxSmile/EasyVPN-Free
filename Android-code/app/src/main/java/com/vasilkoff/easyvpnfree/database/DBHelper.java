@@ -104,25 +104,31 @@ public class DBHelper  extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void setIpInfo(JSONArray response) {
+    public String setIpInfo(JSONArray response, List<Server> serverList) {
         SQLiteDatabase db = this.getWritableDatabase();
+        String city = null;
 
         for (int i = 0; i < response.length(); i++) {
             try {
                 JSONObject ipInfo = new JSONObject(response.get(i).toString());
+                city = ipInfo.get(KEY_CITY).toString();
 
                 ContentValues values = new ContentValues();
-                values.put(KEY_CITY, ipInfo.get(KEY_CITY).toString());
+                values.put(KEY_CITY, city);
                 values.put(KEY_REGION_NAME, ipInfo.get(KEY_REGION_NAME).toString());
                 values.put(KEY_LAT, ipInfo.getDouble(KEY_LAT));
                 values.put(KEY_LON, ipInfo.getDouble(KEY_LON));
 
                 db.update(TABLE_SERVERS, values, KEY_IP + " = ?", new String[] {ipInfo.get("query").toString()});
+
+                serverList.get(i).setCity(city);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
         db.close();
+
+        return city;
     }
 
     public void clearTable() {

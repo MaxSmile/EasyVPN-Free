@@ -441,12 +441,21 @@ public class ServerActivity extends BaseActivity {
         }
     }
 
-
+    @Override
+    protected void ipInfoResult(String city) {
+        if (city != null) {
+            currentServer.setCity(city);
+            ((TextView) findViewById(R.id.serverCity)).setText(city);
+        }
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
         inBackground = false;
+
+        if (currentServer.getCity() == null)
+            getIpInfo(currentServer);
 
         if (connectedServer != null && currentServer.getIp().equals(connectedServer.getIp())) {
             hideCurrentConnection = true;
