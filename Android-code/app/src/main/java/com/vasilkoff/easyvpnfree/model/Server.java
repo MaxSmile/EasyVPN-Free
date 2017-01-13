@@ -26,8 +26,9 @@ public class Server implements Parcelable {
     private String configData;
     private int inactive;
     private String city;
+    private int type;
 
-    public Server(String hostName, String ip, String score, String ping, String speed, String countryLong, String countryShort, String numVpnSessions, String uptime, String totalUsers, String totalTraffic, String logType, String operator, String message, String configData, int inactive, String city) {
+    public Server(String hostName, String ip, String score, String ping, String speed, String countryLong, String countryShort, String numVpnSessions, String uptime, String totalUsers, String totalTraffic, String logType, String operator, String message, String configData, int inactive, String city, int type) {
         this.hostName = hostName;
         this.ip = ip;
         this.score = score;
@@ -45,6 +46,7 @@ public class Server implements Parcelable {
         this.configData = configData;
         this.inactive = inactive;
         this.city = city;
+        this.type = type;
     }
 
     protected Server(Parcel in) {
@@ -65,6 +67,7 @@ public class Server implements Parcelable {
         configData = in.readString();
         inactive = in.readInt();
         city = in.readString();
+        type = in.readInt();
     }
 
     public static final Creator<Server> CREATOR = new Creator<Server>() {
@@ -215,6 +218,14 @@ public class Server implements Parcelable {
         this.city = city;
     }
 
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -239,5 +250,6 @@ public class Server implements Parcelable {
         dest.writeString(configData);
         dest.writeInt(inactive);
         dest.writeString(city);
+        dest.writeInt(type);
     }
 }

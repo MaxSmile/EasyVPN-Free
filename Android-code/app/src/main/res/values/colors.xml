@@ -26,4 +26,5 @@
     <color name="ratingNot">#A7A7A7</color>
 
     <color name="activeServer">#cbecfd</color>
+    <color name="additionalServer">#F1DD77</color>
 </resources>

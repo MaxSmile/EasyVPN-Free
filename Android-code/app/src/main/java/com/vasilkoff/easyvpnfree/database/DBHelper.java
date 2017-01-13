@@ -25,7 +25,7 @@ import java.util.Random;
 
 public class DBHelper  extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 4;
+    public static final int DATABASE_VERSION = 5;
     public static final String DATABASE_NAME = "Records.db";
     public static final String TABLE_SERVERS = "servers";
     private static final String TAG = "DBHelper";
@@ -46,7 +46,7 @@ public class DBHelper  extends SQLiteOpenHelper {
     private static final String KEY_OPERATOR = "operator";
     private static final String KEY_MESSAGE = "message";
     private static final String KEY_CONFIG_DATA = "configData";
-    private static final String KEY_PREMIUM = "premium";
+    private static final String KEY_TYPE = "type";
     private static final String KEY_INACTIVE = "inactive";
     private static final String KEY_CITY = "city";
     private static final String KEY_REGION_NAME = "regionName";
@@ -79,10 +79,10 @@ public class DBHelper  extends SQLiteOpenHelper {
                 + KEY_CONFIG_DATA + " text,"
                 + KEY_INACTIVE + " integer DEFAULT 0,"
                 + KEY_CITY + " text,"
+                + KEY_TYPE + " integer,"
                 + KEY_REGION_NAME + " text,"
                 + KEY_LAT + " real,"
                 + KEY_LON + " real,"
-                + KEY_PREMIUM + " integer,"
                 + "UNIQUE ("
                 + KEY_HOST_NAME
                 + ") ON CONFLICT IGNORE"
@@ -131,7 +131,7 @@ public class DBHelper  extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void putLine(String line, int premium) {
+    public void putLine(String line, int type) {
         String[] data = line.split(",");
         if (data.length == 15) {
             SQLiteDatabase db = this.getWritableDatabase();
@@ -152,7 +152,7 @@ public class DBHelper  extends SQLiteOpenHelper {
             contentValues.put(KEY_OPERATOR, data[12]);
             contentValues.put(KEY_MESSAGE, data[13]);
             contentValues.put(KEY_CONFIG_DATA, data[14]);
-            contentValues.put(KEY_PREMIUM, premium);
+            contentValues.put(KEY_TYPE, type);
 
             db.insert(TABLE_SERVERS, null, contentValues);
             db.close();
@@ -172,7 +172,7 @@ public class DBHelper  extends SQLiteOpenHelper {
         SQLiteStatement statement = db.compileStatement("SELECT COUNT(*) FROM "
                 + TABLE_SERVERS
                 + " WHERE "
-                + KEY_PREMIUM
+                + KEY_TYPE
                 + " = 0");
         long count = statement.simpleQueryForLong();
         db.close();
@@ -184,7 +184,7 @@ public class DBHelper  extends SQLiteOpenHelper {
         SQLiteStatement statement = db.compileStatement("SELECT COUNT(*) FROM "
                 + TABLE_SERVERS
                 + " WHERE "
-                + KEY_PREMIUM
+                + KEY_TYPE
                 + " = 1");
         long count = statement.simpleQueryForLong();
         db.close();
@@ -338,7 +338,8 @@ public class DBHelper  extends SQLiteOpenHelper {
                 cursor.getString(14),
                 cursor.getString(15),
                 cursor.getInt(16),
-                cursor.getString(17)
+                cursor.getString(17),
+                cursor.getInt(18)
         );
     }
 }

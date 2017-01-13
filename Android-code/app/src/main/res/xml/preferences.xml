@@ -11,7 +11,7 @@
             android:dependency="automaticSwitching"
             android:key="automaticSwitchingSeconds"
             android:title="@string/automatic_switching_set_seconds"
-            android:defaultValue="120" />
+            android:defaultValue="60" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/connect_on_start_category">

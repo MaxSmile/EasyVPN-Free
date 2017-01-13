@@ -91,6 +91,10 @@ public class ServerListAdapter extends BaseAdapter {
             v.setBackgroundColor(ContextCompat.getColor(context, R.color.activeServer));
         }
 
+        if (server.getType() == 1) {
+            v.setBackgroundColor(ContextCompat.getColor(context, R.color.additionalServer));
+        }
+
         return v;
     }
 

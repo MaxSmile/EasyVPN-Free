@@ -190,11 +190,11 @@ public class LoaderActivity extends BaseActivity {
         if (reader != null) {
             try {
                 int startLine = 2;
-                int premium = 0;
+                int type = 0;
 
                 if (premiumServers && premiumStage) {
                     startLine = 0;
-                    premium = 1;
+                    type = 1;
                 } else {
                     dbHelper.clearTable();
                 }
@@ -203,7 +203,7 @@ public class LoaderActivity extends BaseActivity {
                 String line = null;
                 while ((line = reader.readLine()) != null) {
                     if (counter >= startLine) {
-                        dbHelper.putLine(line, premium);
+                        dbHelper.putLine(line, type);
                     }
                     counter++;
                     if (!premiumServers || !premiumStage) {

@@ -54,7 +54,7 @@ public class PropertiesService {
     }
 
     public static int getAutomaticSwitchingSeconds(){
-        return getPrefs().getInt(AUTOMATIC_SWITCHING_SECONDS, 120);
+        return getPrefs().getInt(AUTOMATIC_SWITCHING_SECONDS, 60);
     }
 
     public static boolean getCountryPriority(){

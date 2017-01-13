@@ -60,7 +60,7 @@
     </string>
     <string name="choose_country_priority_category">Country priority</string>
     <string name="connect_on_start_category">Auto start on boot</string>
-    <string name="try_another_server_text">You want try another server?</string>
+    <string name="try_another_server_text">Do you want try another server?</string>
     <string name="try_another_server_ok">Yes</string>
     <string name="try_another_server_no">No</string>
     <string name="traffic_in">Downloaded: %1$s</string>
