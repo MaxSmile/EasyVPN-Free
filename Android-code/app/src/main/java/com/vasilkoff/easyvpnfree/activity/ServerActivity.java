@@ -42,7 +42,7 @@ import com.crashlytics.android.answers.CustomEvent;
 import com.vasilkoff.easyvpnfree.BuildConfig;
 import com.vasilkoff.easyvpnfree.R;
 import com.vasilkoff.easyvpnfree.model.Server;
-import com.vasilkoff.easyvpnfree.util.ConnectUtil;
+import com.vasilkoff.easyvpnfree.util.ConnectionQuality;
 import com.vasilkoff.easyvpnfree.util.PropertiesService;
 import com.vasilkoff.easyvpnfree.util.Stopwatch;
 import com.vasilkoff.easyvpnfree.util.TotalTraffic;
@@ -198,7 +198,7 @@ public class ServerActivity extends BaseActivity {
         ((TextView) findViewById(R.id.serverSessions)).setText(currentServer.getNumVpnSessions());
         ((ImageView) findViewById(R.id.serverImageConnect))
                 .setImageResource(
-                        getResources().getIdentifier(ConnectUtil.getConnectIcon(currentServer),
+                        getResources().getIdentifier(ConnectionQuality.getConnectIcon(currentServer.getQuality()),
                                 "drawable",
                                 getPackageName()));
 
@@ -442,11 +442,8 @@ public class ServerActivity extends BaseActivity {
     }
 
     @Override
-    protected void ipInfoResult(String city) {
-        if (city != null) {
-            currentServer.setCity(city);
-            ((TextView) findViewById(R.id.serverCity)).setText(city);
-        }
+    protected void ipInfoResult() {
+        ((TextView) findViewById(R.id.serverCity)).setText(currentServer.getCity());
     }
 
     @Override

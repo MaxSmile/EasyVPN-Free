@@ -14,6 +14,7 @@ import com.vasilkoff.easyvpnfree.App;
 import com.vasilkoff.easyvpnfree.R;
 import com.vasilkoff.easyvpnfree.database.DBHelper;
 import com.vasilkoff.easyvpnfree.model.Country;
+import com.vasilkoff.easyvpnfree.model.Server;
 import com.vasilkoff.easyvpnfree.util.CountriesNames;
 import com.vasilkoff.easyvpnfree.util.PropertiesService;
 
@@ -56,15 +57,15 @@ public class MyPreferencesActivity extends PreferenceActivity {
             addPreferencesFromResource(R.xml.preferences);
 
             DBHelper dbHelper = new DBHelper(getActivity().getApplicationContext());
-            List<Country> countryList = dbHelper.getUniqueCountries();
+            List<Server> countryList = dbHelper.getUniqueCountries();
             CharSequence entriesValues[] = new CharSequence[countryList.size()];
             CharSequence entries[] = new CharSequence[countryList.size()];
 
             for (int i = 0; i < countryList.size(); i++) {
-                entriesValues[i] = countryList.get(i).getCountryName();
-                String localeCountryName = CountriesNames.getCountries().get(countryList.get(i).getCountryCode()) != null ?
-                        CountriesNames.getCountries().get(countryList.get(i).getCountryCode()) :
-                        countryList.get(i).getCountryName();
+                entriesValues[i] = countryList.get(i).getCountryLong();
+                String localeCountryName = CountriesNames.getCountries().get(countryList.get(i).getCountryShort()) != null ?
+                        CountriesNames.getCountries().get(countryList.get(i).getCountryShort()) :
+                        countryList.get(i).getCountryLong();
                 entries[i] = localeCountryName;
             }
 

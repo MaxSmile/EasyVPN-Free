@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.vasilkoff.easyvpnfree.model.Country;
 import com.vasilkoff.easyvpnfree.model.Server;
+import com.vasilkoff.easyvpnfree.util.ConnectionQuality;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,7 +48,7 @@ public class DBHelper  extends SQLiteOpenHelper {
     private static final String KEY_MESSAGE = "message";
     private static final String KEY_CONFIG_DATA = "configData";
     private static final String KEY_TYPE = "type";
-    private static final String KEY_INACTIVE = "inactive";
+    private static final String KEY_QUALITY = "quality";
     private static final String KEY_CITY = "city";
     private static final String KEY_REGION_NAME = "regionName";
     private static final String KEY_LAT = "lat";
@@ -77,7 +78,7 @@ public class DBHelper  extends SQLiteOpenHelper {
                 + KEY_OPERATOR + " text,"
                 + KEY_MESSAGE + " text,"
                 + KEY_CONFIG_DATA + " text,"
-                + KEY_INACTIVE + " integer DEFAULT 0,"
+                + KEY_QUALITY + " integer,"
                 + KEY_CITY + " text,"
                 + KEY_TYPE + " integer,"
                 + KEY_REGION_NAME + " text,"
@@ -98,20 +99,19 @@ public class DBHelper  extends SQLiteOpenHelper {
     public void setInactive(String ip) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(KEY_INACTIVE, 1);
+        values.put(KEY_QUALITY, 0);
         db.update(TABLE_SERVERS, values, KEY_IP + " = ?", new String[] {ip});
 
         db.close();
     }
 
-    public String setIpInfo(JSONArray response, List<Server> serverList) {
+    public boolean setIpInfo(JSONArray response, List<Server> serverList) {
+        boolean result = false;
         SQLiteDatabase db = this.getWritableDatabase();
-        String city = null;
-
         for (int i = 0; i < response.length(); i++) {
             try {
                 JSONObject ipInfo = new JSONObject(response.get(i).toString());
-                city = ipInfo.get(KEY_CITY).toString();
+                String city = ipInfo.get(KEY_CITY).toString();
 
                 ContentValues values = new ContentValues();
                 values.put(KEY_CITY, city);
@@ -122,13 +122,15 @@ public class DBHelper  extends SQLiteOpenHelper {
                 db.update(TABLE_SERVERS, values, KEY_IP + " = ?", new String[] {ipInfo.get("query").toString()});
 
                 serverList.get(i).setCity(city);
+                result = true;
             } catch (JSONException e) {
+                result = false;
                 e.printStackTrace();
             }
         }
         db.close();
 
-        return city;
+        return result;
     }
 
     public void clearTable() {
@@ -159,6 +161,9 @@ public class DBHelper  extends SQLiteOpenHelper {
             contentValues.put(KEY_MESSAGE, data[13]);
             contentValues.put(KEY_CONFIG_DATA, data[14]);
             contentValues.put(KEY_TYPE, type);
+
+            contentValues.put(KEY_QUALITY,
+                    ConnectionQuality.getConnectionQuality(data[4], data[7], data[3]));
 
             db.insert(TABLE_SERVERS, null, contentValues);
             db.close();
@@ -197,22 +202,20 @@ public class DBHelper  extends SQLiteOpenHelper {
         return count;
     }
 
-    public List<Country> getUniqueCountries() {
-        List<Country> countryList = new ArrayList<Country>();
+    public List<Server> getUniqueCountries() {
+        List<Server> countryList = new ArrayList<Server>();
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT DISTINCT "
-                + KEY_COUNTRY_LONG
-                + ","
-                + KEY_COUNTRY_SHORT
-                + " FROM "
-                + TABLE_SERVERS
-                + " ORDER BY "
-                + KEY_COUNTRY_LONG
-                + " ASC", null);
+        Cursor cursor = db.query(TABLE_SERVERS,
+                null,
+                null,
+                null,
+                KEY_COUNTRY_LONG,
+                "MAX(" + KEY_QUALITY + ")",
+                null);
 
         if (cursor.moveToFirst()) {
             do {
-                countryList.add(new Country(cursor.getString(0), null, 0, 0, cursor.getString(1)));
+                countryList.add(parseServer(cursor));
             } while (cursor.moveToNext());
         } else {
             Log.d(TAG ,"0 rows");
@@ -228,7 +231,13 @@ public class DBHelper  extends SQLiteOpenHelper {
         List<Server> serverList = new ArrayList<Server>();
         if (country != null) {
             SQLiteDatabase db = this.getWritableDatabase();
-            Cursor cursor = db.query(TABLE_SERVERS, null, KEY_COUNTRY_SHORT + "=?", new String[]{country}, null, null, null);
+            Cursor cursor = db.query(TABLE_SERVERS,
+                    null,
+                    KEY_COUNTRY_SHORT + "=?",
+                    new String[]{country},
+                    null,
+                    null,
+                    KEY_QUALITY + " DESC");
 
             if (cursor.moveToFirst()) {
                 do {
@@ -252,20 +261,16 @@ public class DBHelper  extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                int speed = Integer.parseInt(cursor.getString(5));
-                int sessions = Integer.parseInt(cursor.getString(8));
-
-                int ping = 0;
-                if (!(cursor.getString(4).equals("-") || cursor.getString(4).equals(""))) {
-                    ping = Integer.parseInt(cursor.getString(4));
-                }
-
-                if (speed > 10000000 && ping < 30 && (sessions != 0 && sessions < 100)) {
-                    serverListExcellent.add(parseServer(cursor));
-                } else if (speed < 1000000 || ping > 100 || (sessions == 0 || sessions > 150)) {
-                    serverListBad.add(parseServer(cursor));
-                } else {
-                    serverListGood.add(parseServer(cursor));
+                switch (cursor.getInt(16)) {
+                    case 1:
+                        serverListBad.add(parseServer(cursor));
+                        break;
+                    case 2:
+                        serverListGood.add(parseServer(cursor));
+                        break;
+                    case 3:
+                        serverListExcellent.add(parseServer(cursor));
+                        break;
                 }
 
             } while (cursor.moveToNext());
@@ -293,7 +298,7 @@ public class DBHelper  extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT * FROM "
                 + TABLE_SERVERS
                 + " WHERE "
-                + KEY_INACTIVE
+                + KEY_QUALITY
                 + " <> 1 AND "
                 + KEY_COUNTRY_LONG
                 + " = ? AND "
@@ -311,16 +316,16 @@ public class DBHelper  extends SQLiteOpenHelper {
             cursor = db.rawQuery("SELECT * FROM "
                     + TABLE_SERVERS
                     + " WHERE "
-                    + KEY_INACTIVE
-                    + " <> 1 AND "
+                    + KEY_QUALITY
+                    + " <> 0 AND "
                     + KEY_COUNTRY_LONG
                     + " = ?", new String[] {country});
         } else {
             cursor = db.rawQuery("SELECT * FROM "
                     + TABLE_SERVERS
                     + " WHERE "
-                    + KEY_INACTIVE
-                    + " <> 1", null);
+                    + KEY_QUALITY
+                    + " <> 0", null);
         }
 
         return parseGoodRandomServer(cursor, db);

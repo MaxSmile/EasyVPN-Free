@@ -24,11 +24,12 @@ public class Server implements Parcelable {
     private String operator;
     private String message;
     private String configData;
-    private int inactive;
+    private int quality;
     private String city;
     private int type;
 
-    public Server(String hostName, String ip, String score, String ping, String speed, String countryLong, String countryShort, String numVpnSessions, String uptime, String totalUsers, String totalTraffic, String logType, String operator, String message, String configData, int inactive, String city, int type) {
+    public Server(String hostName, String ip, String score, String ping, String speed, String countryLong, String countryShort, String numVpnSessions, String uptime, String totalUsers, String totalTraffic, String logType, String operator, String message, String configData, int quality, String city, int type) {
+
         this.hostName = hostName;
         this.ip = ip;
         this.score = score;
@@ -44,7 +45,7 @@ public class Server implements Parcelable {
         this.operator = operator;
         this.message = message;
         this.configData = configData;
-        this.inactive = inactive;
+        this.quality = quality;
         this.city = city;
         this.type = type;
     }
@@ -65,7 +66,7 @@ public class Server implements Parcelable {
         operator = in.readString();
         message = in.readString();
         configData = in.readString();
-        inactive = in.readInt();
+        quality = in.readInt();
         city = in.readString();
         type = in.readInt();
     }
@@ -202,12 +203,12 @@ public class Server implements Parcelable {
         this.configData = configData;
     }
 
-    public int getInactive() {
-        return inactive;
+    public int getQuality() {
+        return quality;
     }
 
-    public void setInactive(int inactive) {
-        this.inactive = inactive;
+    public void setQuality(int quality) {
+        this.quality = quality;
     }
 
     public String getCity() {
@@ -225,6 +226,7 @@ public class Server implements Parcelable {
     public void setType(int type) {
         this.type = type;
     }
+
 
     @Override
     public int describeContents() {
@@ -248,7 +250,7 @@ public class Server implements Parcelable {
         dest.writeString(operator);
         dest.writeString(message);
         dest.writeString(configData);
-        dest.writeInt(inactive);
+        dest.writeInt(quality);
         dest.writeString(city);
         dest.writeInt(type);
     }

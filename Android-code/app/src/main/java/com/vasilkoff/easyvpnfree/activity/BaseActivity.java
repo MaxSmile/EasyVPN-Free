@@ -371,7 +371,7 @@ public class BaseActivity extends AppCompatActivity {
             .build());
     }
 
-    protected void ipInfoResult(String city) {
+    protected void ipInfoResult() {
 
     }
 
@@ -404,7 +404,8 @@ public class BaseActivity extends AppCompatActivity {
                 .getAsJSONArray(new JSONArrayRequestListener() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        ipInfoResult(dbHelper.setIpInfo(response, serverList));
+                        if (dbHelper.setIpInfo(response, serverList))
+                            ipInfoResult();
                     }
                     @Override
                     public void onError(ANError error) {

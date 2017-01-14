@@ -64,10 +64,12 @@ public class HomeActivity extends BaseActivity {
     private PopupWindow popupWindow;
     private RelativeLayout homeContextRL;
 
-    private List<Country> countryList;
+    private List<Server> countryList;
     private final String COUNTRY_FILE_NAME = "countries.json";
 
     private List<Country> countryLatLonList = null;
+
+    private Layers layers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +94,8 @@ public class HomeActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         invalidateOptionsMenu();
+        /*if (layers != null)
+            initServerOnMap(layers);*/
     }
 
     @Override
@@ -114,15 +118,15 @@ public class HomeActivity extends BaseActivity {
         mapView.setZoomLevel((byte) 2);
         mapView.getModel().displayModel.setBackgroundColor(ContextCompat.getColor(this, R.color.mapBackground));
 
-        Layers layers = mapView.getLayerManager().getLayers();
+        layers = mapView.getLayerManager().getLayers();
 
         MapCreator mapCreator = new MapCreator(this, layers);
         mapCreator.parseGeoJson("world_map.geo.json");
 
+        initServerOnMap(layers);
+
         LinearLayout map = (LinearLayout) findViewById(R.id.map);
         map.addView(mapView);
-
-        initServerOnMap(layers);
     }
 
 
@@ -175,9 +179,9 @@ public class HomeActivity extends BaseActivity {
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
 
         final List<String> countryListName = new ArrayList<String>();
-        for (Country country : countryList) {
-            String localeCountryName = localeCountries.get(country.getCountryCode()) != null ?
-                    localeCountries.get(country.getCountryCode()) : country.getCountryName();
+        for (Server server : countryList) {
+            String localeCountryName = localeCountries.get(server.getCountryShort()) != null ?
+                    localeCountries.get(server.getCountryShort()) : server.getCountryLong();
             countryListName.add(localeCountryName);
         }
 
@@ -197,9 +201,9 @@ public class HomeActivity extends BaseActivity {
         popupWindow.showAtLocation(homeContextRL, Gravity.CENTER,0, 0);
     }
 
-    private void onSelectCountry(Country country) {
+    private void onSelectCountry(Server server) {
         Intent intent = new Intent(getApplicationContext(), ServersListActivity.class);
-        intent.putExtra(EXTRA_COUNTRY, country.getCountryCode());
+        intent.putExtra(EXTRA_COUNTRY, server.getCountryShort());
         startActivity(intent);
     }
 
@@ -207,19 +211,19 @@ public class HomeActivity extends BaseActivity {
         Type listType = new TypeToken<ArrayList<Country>>(){}.getType();
         countryLatLonList =  new Gson().fromJson(LoadData.fromFile(COUNTRY_FILE_NAME, this), listType);
 
-        for (Country countryUnique : countryList) {
+        for (Server server : countryList) {
             for (Country country : countryLatLonList) {
-                if (countryUnique.getCountryCode().equals(country.getCountryCode())) {
+                if (server.getCountryShort().equals(country.getCountryCode())) {
                     LatLong position = new LatLong(country.getCapitalLatitude(), country.getCapitalLongitude());
                     Bitmap bitmap = AndroidGraphicFactory.convertToBitmap(ContextCompat.getDrawable(this, R.drawable.ic_server_full));
 
-                    MyMarker countryMarker = new MyMarker(position, bitmap, 0, 0, country) {
+                    MyMarker countryMarker = new MyMarker(position, bitmap, 0, 0, server) {
                         @Override
                         public boolean onTap(LatLong geoPoint, Point viewPosition,
                                              Point tapPoint) {
 
                             if (contains(viewPosition, tapPoint)) {
-                                onSelectCountry((Country)getRelationObject());
+                                onSelectCountry((Server)getRelationObject());
                                 return true;
                             }
                             return false;
@@ -227,6 +231,7 @@ public class HomeActivity extends BaseActivity {
                     };
 
                     layers.add(countryMarker);
+
 
                     String localeCountryName = localeCountries.get(country.getCountryCode()) != null ?
                             localeCountries.get(country.getCountryCode()) : country.getCountryName();

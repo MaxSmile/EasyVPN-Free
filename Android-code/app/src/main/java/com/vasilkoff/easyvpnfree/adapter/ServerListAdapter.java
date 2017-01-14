@@ -1,24 +1,18 @@
 package com.vasilkoff.easyvpnfree.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.vasilkoff.easyvpnfree.R;
 import com.vasilkoff.easyvpnfree.activity.BaseActivity;
-import com.vasilkoff.easyvpnfree.activity.ServerActivity;
-import com.vasilkoff.easyvpnfree.database.DBHelper;
 import com.vasilkoff.easyvpnfree.model.Server;
-import com.vasilkoff.easyvpnfree.util.ConnectUtil;
+import com.vasilkoff.easyvpnfree.util.ConnectionQuality;
 import com.vasilkoff.easyvpnfree.util.CountriesNames;
 
 import java.util.ArrayList;
@@ -75,7 +69,7 @@ public class ServerListAdapter extends BaseAdapter {
                                 context.getPackageName()));
         ((ImageView) v.findViewById(R.id.imageConnect))
                 .setImageResource(
-                        context.getResources().getIdentifier(ConnectUtil.getConnectIcon(server),
+                        context.getResources().getIdentifier(ConnectionQuality.getConnectIcon(server.getQuality()),
                                 "drawable",
                                 context.getPackageName()));
 

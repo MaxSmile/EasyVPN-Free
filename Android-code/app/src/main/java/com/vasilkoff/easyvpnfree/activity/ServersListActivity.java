@@ -40,7 +40,7 @@ public class ServersListActivity extends BaseActivity {
     }
 
     @Override
-    protected void ipInfoResult(String city) {
+    protected void ipInfoResult() {
         serverListAdapter.notifyDataSetChanged();
     }
 
