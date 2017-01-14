@@ -13,6 +13,11 @@ public class ConnectionQuality {
     private static final String CONNECT_EXCELLENT = "ic_connect_excellent";
     private static final String CONNECT_INACTIVE = "ic_connect_inactive";
 
+    private static final String POINT_BAD = "ic_point_red";
+    private static final String POINT_GOOD = "ic_point_yellow";
+    private static final String POINT_EXCELLENT = "ic_point_green";
+    private static final String POINT_INACTIVE = "ic_point_grey";
+
     public static String getConnectIcon(int quality) {
         switch (quality) {
             case 0:
@@ -25,6 +30,21 @@ public class ConnectionQuality {
                 return CONNECT_EXCELLENT;
             default:
                 return CONNECT_INACTIVE;
+        }
+    }
+
+    public static String getPointIcon(int quality) {
+        switch (quality) {
+            case 0:
+                return POINT_INACTIVE;
+            case 1:
+                return POINT_BAD;
+            case 2:
+                return POINT_GOOD;
+            case 3:
+                return POINT_EXCELLENT;
+            default:
+                return POINT_INACTIVE;
         }
     }
 

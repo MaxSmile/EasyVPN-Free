@@ -34,6 +34,7 @@ import com.vasilkoff.easyvpnfree.model.Country;
 import com.vasilkoff.easyvpnfree.model.Server;
 import com.vasilkoff.easyvpnfree.util.BitmapGenerator;
 
+import com.vasilkoff.easyvpnfree.util.ConnectionQuality;
 import com.vasilkoff.easyvpnfree.util.LoadData;
 import com.vasilkoff.easyvpnfree.util.PropertiesService;
 import com.vasilkoff.easyvpnfree.util.map.MapCreator;
@@ -94,8 +95,6 @@ public class HomeActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         invalidateOptionsMenu();
-        /*if (layers != null)
-            initServerOnMap(layers);*/
     }
 
     @Override
@@ -215,7 +214,10 @@ public class HomeActivity extends BaseActivity {
             for (Country country : countryLatLonList) {
                 if (server.getCountryShort().equals(country.getCountryCode())) {
                     LatLong position = new LatLong(country.getCapitalLatitude(), country.getCapitalLongitude());
-                    Bitmap bitmap = AndroidGraphicFactory.convertToBitmap(ContextCompat.getDrawable(this, R.drawable.ic_server_full));
+                    Bitmap bitmap = AndroidGraphicFactory.convertToBitmap(ContextCompat.getDrawable(this,
+                            getResources().getIdentifier(ConnectionQuality.getPointIcon(server.getQuality()),
+                                    "drawable",
+                                    getPackageName())));
 
                     MyMarker countryMarker = new MyMarker(position, bitmap, 0, 0, server) {
                         @Override
