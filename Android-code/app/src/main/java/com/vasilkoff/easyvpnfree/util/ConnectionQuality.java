@@ -1,7 +1,5 @@
 package com.vasilkoff.easyvpnfree.util;
 
-import com.vasilkoff.easyvpnfree.model.Server;
-
 /**
  * Created by Kusenko on 09.12.2016.
  */
@@ -17,6 +15,11 @@ public class ConnectionQuality {
     private static final String POINT_GOOD = "ic_point_yellow";
     private static final String POINT_EXCELLENT = "ic_point_green";
     private static final String POINT_INACTIVE = "ic_point_grey";
+
+    private static final String SIMPLE_POINT_BAD = "ic_simple_point_red";
+    private static final String SIMPLE_POINT_GOOD = "ic_simple_point_yellow";
+    private static final String SIMPLE_POINT_EXCELLENT = "ic_simple_point_green";
+    private static final String SIMPLE_POINT_INACTIVE = "ic_simple_point_grey";
 
     public static String getConnectIcon(int quality) {
         switch (quality) {
@@ -45,6 +48,21 @@ public class ConnectionQuality {
                 return POINT_EXCELLENT;
             default:
                 return POINT_INACTIVE;
+        }
+    }
+
+    public static String getSimplePointIcon(int quality) {
+        switch (quality) {
+            case 0:
+                return SIMPLE_POINT_INACTIVE;
+            case 1:
+                return SIMPLE_POINT_BAD;
+            case 2:
+                return SIMPLE_POINT_GOOD;
+            case 3:
+                return SIMPLE_POINT_EXCELLENT;
+            default:
+                return SIMPLE_POINT_INACTIVE;
         }
     }
 

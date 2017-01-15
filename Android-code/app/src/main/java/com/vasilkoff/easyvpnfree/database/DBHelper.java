@@ -227,6 +227,29 @@ public class DBHelper  extends SQLiteOpenHelper {
         return countryList;
     }
 
+    public List<Server> getServersWithGPS() {
+        List<Server> serverList = new ArrayList<Server>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM "
+                + TABLE_SERVERS
+                + " WHERE "
+                + KEY_LAT
+                + " <> 0", null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                serverList.add(parseServer(cursor));
+            } while (cursor.moveToNext());
+        } else {
+            Log.d(TAG ,"0 rows");
+        }
+
+        cursor.close();
+        db.close();
+
+        return serverList;
+    }
+
     public List<Server> getServersByCountryCode(String country) {
         List<Server> serverList = new ArrayList<Server>();
         if (country != null) {
@@ -350,7 +373,10 @@ public class DBHelper  extends SQLiteOpenHelper {
                 cursor.getString(15),
                 cursor.getInt(16),
                 cursor.getString(17),
-                cursor.getInt(18)
+                cursor.getInt(18),
+                cursor.getString(19),
+                cursor.getDouble(20),
+                cursor.getDouble(21)
         );
     }
 }

@@ -71,6 +71,7 @@ public class HomeActivity extends BaseActivity {
     private List<Country> countryLatLonList = null;
 
     private Layers layers;
+    private List<Marker> markerList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +96,8 @@ public class HomeActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         invalidateOptionsMenu();
+
+        initDetailsServerOnMap();
     }
 
     @Override
@@ -204,6 +207,27 @@ public class HomeActivity extends BaseActivity {
         Intent intent = new Intent(getApplicationContext(), ServersListActivity.class);
         intent.putExtra(EXTRA_COUNTRY, server.getCountryShort());
         startActivity(intent);
+    }
+
+    private void initDetailsServerOnMap() {
+        if (markerList != null && markerList.size() > 0) {
+            for (Marker marker : markerList) {
+                layers.remove(marker);
+            }
+        }
+        List<Server> serverList = dbHelper.getServersWithGPS();
+
+        markerList = new ArrayList<Marker>();
+        for (Server server : serverList) {
+            LatLong position = new LatLong(server.getLat(), server.getLon());
+            Bitmap bitmap = AndroidGraphicFactory.convertToBitmap(ContextCompat.getDrawable(this,
+                    getResources().getIdentifier(ConnectionQuality.getSimplePointIcon(server.getQuality()),
+                            "drawable",
+                            getPackageName())));
+            Marker serverMarker = new Marker(position, bitmap, 0, 0);
+            markerList.add(serverMarker);
+            layers.add(serverMarker);
+        }
     }
 
     private void initServerOnMap(Layers layers) {

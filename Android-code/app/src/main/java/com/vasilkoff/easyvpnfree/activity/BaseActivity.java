@@ -51,7 +51,7 @@ import de.blinkt.openvpn.core.VpnStatus;
  * Created by Kusenko on 20.10.2016.
  */
 
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     private DrawerLayout fullLayout;
     private Toolbar toolbar;

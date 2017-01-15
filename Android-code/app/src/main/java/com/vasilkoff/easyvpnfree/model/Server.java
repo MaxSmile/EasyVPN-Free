@@ -27,9 +27,11 @@ public class Server implements Parcelable {
     private int quality;
     private String city;
     private int type;
+    private String regionName;
+    private double lat;
+    private double lon;
 
-    public Server(String hostName, String ip, String score, String ping, String speed, String countryLong, String countryShort, String numVpnSessions, String uptime, String totalUsers, String totalTraffic, String logType, String operator, String message, String configData, int quality, String city, int type) {
-
+    public Server(String hostName, String ip, String score, String ping, String speed, String countryLong, String countryShort, String numVpnSessions, String uptime, String totalUsers, String totalTraffic, String logType, String operator, String message, String configData, int quality, String city, int type, String regionName, double lat, double lon) {
         this.hostName = hostName;
         this.ip = ip;
         this.score = score;
@@ -48,6 +50,9 @@ public class Server implements Parcelable {
         this.quality = quality;
         this.city = city;
         this.type = type;
+        this.regionName = regionName;
+        this.lat = lat;
+        this.lon = lon;
     }
 
     protected Server(Parcel in) {
@@ -69,6 +74,9 @@ public class Server implements Parcelable {
         quality = in.readInt();
         city = in.readString();
         type = in.readInt();
+        regionName = in.readString();
+        lat = in.readDouble();
+        lon = in.readDouble();
     }
 
     public static final Creator<Server> CREATOR = new Creator<Server>() {
@@ -227,6 +235,29 @@ public class Server implements Parcelable {
         this.type = type;
     }
 
+    public String getRegionName() {
+        return regionName;
+    }
+
+    public void setRegionName(String regionName) {
+        this.regionName = regionName;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLon() {
+        return lon;
+    }
+
+    public void setLon(double lon) {
+        this.lon = lon;
+    }
 
     @Override
     public int describeContents() {
@@ -253,5 +284,8 @@ public class Server implements Parcelable {
         dest.writeInt(quality);
         dest.writeString(city);
         dest.writeInt(type);
+        dest.writeString(regionName);
+        dest.writeDouble(lat);
+        dest.writeDouble(lon);
     }
 }

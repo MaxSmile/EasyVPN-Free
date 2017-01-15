@@ -308,11 +308,13 @@ public class ServerActivity extends BaseActivity {
                 statusConnection = true;
                 connectingProgress.setVisibility(View.GONE);
 
-                if (PropertiesService.getDownloaded() >= 104857600 && PropertiesService.getShowRating()) {
-                    PropertiesService.setShowRating(false);
-                    showRating();
-                } else if (!inBackground) {
-                    chooseAction();
+                if (!inBackground) {
+                    if (PropertiesService.getDownloaded() >= 104857600 && PropertiesService.getShowRating()) {
+                        PropertiesService.setShowRating(false);
+                        showRating();
+                    } else {
+                        chooseAction();
+                    }
                 }
 
                 serverConnect.setText(getString(R.string.server_btn_disconnect));
