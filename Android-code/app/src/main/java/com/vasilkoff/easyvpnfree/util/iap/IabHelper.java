@@ -1011,4 +1011,7 @@ public class IabHelper {
     public boolean isSetupDone (){
         return mSetupDone;
     }
+    public boolean isDisposed (){
+        return mDisposed;
+    }
 }

@@ -148,30 +148,32 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     private void initPurchaseHelper() {
-        iapHelper = new IabHelper(this, getString(R.string.base64EncodedPublicKey));
-        iapHelper.enableDebugLogging(BuildConfig.DEBUG);
+        if (iapHelper == null) {
+            iapHelper = new IabHelper(this, getString(R.string.base64EncodedPublicKey));
+            iapHelper.enableDebugLogging(BuildConfig.DEBUG);
 
-        iapHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-            @Override
-            public void onIabSetupFinished(IabResult result) {
-                if (result.isSuccess()) {
-                    // Have we been disposed of in the meantime? If so, quit.
-                    if (iapHelper == null) return;
+            iapHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+                @Override
+                public void onIabSetupFinished(IabResult result) {
+                    if (result.isSuccess()) {
+                        // Have we been disposed of in the meantime? If so, quit.
+                        if (iapHelper == null) return;
 
-                    // IAB is fully set up. Now, let's get an inventory of stuff we own.
-                    Log.d(IAP_TAG, "Setup successful. Querying inventory.");
+                        // IAB is fully set up. Now, let's get an inventory of stuff we own.
+                        Log.d(IAP_TAG, "Setup successful. Querying inventory.");
 
-                    checkPurchase();
-                } else {
-                    Log.d(IAP_TAG, "Oh noes, there was a problem.");
+                        checkPurchase();
+                    } else {
+                        Log.d(IAP_TAG, "Oh noes, there was a problem.");
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     private void checkPurchase() {
         iapHelper.flagEndAsync();
-        if(iapHelper.isSetupDone() && !iapHelper.isAsyncInProgress()) {
+        if(iapHelper.isSetupDone() && !iapHelper.isAsyncInProgress() && !iapHelper.isDisposed()) {
             iapHelper.queryInventoryAsync(mGotInventoryListener);
         }
     }
@@ -183,7 +185,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         key = base64EncodedPublicKey.substring(random.nextInt(base64EncodedPublicKey.length() - 2));
 
         iapHelper.flagEndAsync();
-        if (iapHelper.isSetupDone() && !iapHelper.isAsyncInProgress()) {
+        if (iapHelper.isSetupDone() && !iapHelper.isAsyncInProgress() && !iapHelper.isDisposed()) {
             iapHelper.launchPurchaseFlow(this,
                     sku, request,
                     mPurchaseFinishedListener,
@@ -371,9 +373,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             .build());
     }
 
-    protected void ipInfoResult() {
-
-    }
+    protected void ipInfoResult() {}
 
     protected void getIpInfo(Server server) {
         List<Server> serverList = new ArrayList<Server>();
