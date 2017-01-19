@@ -509,7 +509,7 @@ public class ServerActivity extends BaseActivity {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case START_VPN_PROFILE :
-                    VPNLaunchHelper.startOpenVpn(vpnProfile, this);
+                    VPNLaunchHelper.startOpenVpn(vpnProfile, getBaseContext());
                     break;
                 case ADBLOCK_REQUEST:
                     Log.d(IAP_TAG, "onActivityResult(" + requestCode + "," + resultCode + "," + data);
