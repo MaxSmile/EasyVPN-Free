@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.net.VpnService;
 import android.os.AsyncTask;
 import android.os.IBinder;
+import android.support.v4.content.ContextCompat;
 import android.view.ViewGroup.LayoutParams;
 
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -83,6 +85,7 @@ public class ServerActivity extends BaseActivity {
     private TextView trafficOutTotally;
     private TextView trafficIn;
     private TextView trafficOut;
+    private ImageButton bookmark;
 
     private static boolean filterAds = false;
     private static boolean defaultFilterAds = true;
@@ -103,6 +106,7 @@ public class ServerActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server);
 
+        bookmark = (ImageButton) findViewById(R.id.serverBookmark);
         parentLayout = (LinearLayout) findViewById(R.id.serverParentLayout);
         unblockCheck = (Button) findViewById(R.id.serverUnblockCheck);
         adbBlockCheck = (CheckBox) findViewById(R.id.serverBlockingCheck);
@@ -183,6 +187,11 @@ public class ServerActivity extends BaseActivity {
                 return;
             }
         }
+
+        int bookmarkBg = dbHelper.checkBookmark(currentServer) ?
+                R.drawable.ic_bookmark_red :
+                R.drawable.ic_bookmark_grey;
+        bookmark.setBackground(ContextCompat.getDrawable(this, bookmarkBg));
 
         ((ImageView) findViewById(R.id.serverFlag))
                 .setImageResource(
@@ -356,6 +365,16 @@ public class ServerActivity extends BaseActivity {
                 sendTouchButton("serverBtnCheckIp");
                 Intent browse = new Intent( Intent.ACTION_VIEW , Uri.parse(getString(R.string.url_check_ip)));
                 startActivity(browse);
+                break;
+            case R.id.serverBookmark:
+                sendTouchButton("serverBookmark");
+                if (dbHelper.checkBookmark(currentServer)) {
+                    dbHelper.delBookmark(currentServer);
+                    bookmark.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_bookmark_grey));
+                } else {
+                    dbHelper.setBookmark(currentServer);
+                    bookmark.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_bookmark_red));
+                }
                 break;
         }
 

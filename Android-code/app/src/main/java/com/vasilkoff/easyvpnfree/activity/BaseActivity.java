@@ -316,6 +316,9 @@ public abstract class BaseActivity extends AppCompatActivity {
                 sendTouchButton("Settings");
                 startActivity(new Intent(this, MyPreferencesActivity.class));
                 return true;
+            case R.id.action_bookmarks:
+                startActivity(new Intent(this, BookmarkServerListActivity.class));
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

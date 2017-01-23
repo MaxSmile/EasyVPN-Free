@@ -78,5 +78,7 @@
         \nMore than 22 countries to connect and unblock all blocked websites.
         \n\nhttps://play.google.com/store/apps/details?id=com.vasilkoff.easyvpnfree
     </string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="bookmark_delete">Delete</string>
 
 </resources>

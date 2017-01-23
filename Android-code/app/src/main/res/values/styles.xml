@@ -19,6 +19,11 @@
         <item name="android:layout_gravity">center</item>
     </style>
 
+    <style name="serverName">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/serverName</item>
+    </style>
+
     <style name="serverList" >
         <item name="android:textSize">14sp</item>
     </style>

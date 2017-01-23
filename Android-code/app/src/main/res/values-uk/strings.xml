@@ -73,4 +73,6 @@
     </string>
     <string name="choose_country_priority_category">Пріорітет країни</string>
     <string name="connect_on_start_category">Підключення на старті</string>
+    <string name="bookmarks">Закладки</string>
+    <string name="bookmark_delete">Видалити</string>
 </resources>

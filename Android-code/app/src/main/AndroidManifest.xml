@@ -17,27 +17,28 @@
         <activity android:name=".activity.LauncherActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".activity.LoaderActivity"
-            android:noHistory="true"/>
+            android:noHistory="true" />
         <activity android:name=".activity.HomeActivity">
 
         </activity>
-        <activity android:name=".activity.ServersListActivity"/>
+        <activity android:name=".activity.ServersListActivity" />
         <activity
             android:name=".activity.ServerActivity"
-            android:launchMode="singleTop"/>
-        <activity android:name=".activity.AboutActivity"/>
+            android:launchMode="singleTop" />
+        <activity android:name=".activity.AboutActivity" />
         <activity
             android:name=".activity.ServersInfo"
-            android:theme="@style/AppTheme.PopUp"/>
+            android:theme="@style/AppTheme.PopUp" />
         <activity
             android:name=".activity.MyPreferencesActivity"
-            android:noHistory="true"
-            android:label="@string/action_settings"/>
+            android:label="@string/action_settings"
+            android:noHistory="true" />
 
         <service
             android:name="de.blinkt.openvpn.core.OpenVPNService"
@@ -51,27 +52,38 @@
             android:name="io.fabric.ApiKey"
             android:value="f3381de560e52052038ffb42a852d4b4df492896" />
 
-        <!-- Optionally, register AnalyticsReceiver and AnalyticsService to support background
-      dispatching on non-Google Play devices -->
-        <receiver android:name="com.google.android.gms.analytics.AnalyticsReceiver"
+        <!--
+      Optionally, register AnalyticsReceiver and AnalyticsService to support background
+      dispatching on non-Google Play devices
+        -->
+        <receiver
+            android:name="com.google.android.gms.analytics.AnalyticsReceiver"
             android:enabled="true">
             <intent-filter>
                 <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH" />
             </intent-filter>
         </receiver>
-        <service android:name="com.google.android.gms.analytics.AnalyticsService"
-            android:enabled="true"
-            android:exported="false"/>
 
-        <!-- Optionally, register CampaignTrackingReceiver and CampaignTrackingService to enable
-             installation campaign reporting -->
-        <receiver android:name="com.google.android.gms.analytics.CampaignTrackingReceiver"
+        <service
+            android:name="com.google.android.gms.analytics.AnalyticsService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <!--
+             Optionally, register CampaignTrackingReceiver and CampaignTrackingService to enable
+             installation campaign reporting
+        -->
+        <receiver
+            android:name="com.google.android.gms.analytics.CampaignTrackingReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
         </receiver>
+
         <service android:name="com.google.android.gms.analytics.CampaignTrackingService" />
+
+        <activity android:name=".activity.BookmarkServerListActivity"></activity>
     </application>
 
 </manifest>
