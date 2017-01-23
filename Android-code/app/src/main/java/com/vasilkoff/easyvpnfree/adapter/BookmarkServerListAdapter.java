@@ -50,8 +50,12 @@ public class BookmarkServerListAdapter extends RecyclerView.Adapter<BookmarkServ
     public void onBindViewHolder(BookmarkHolder holder, final int position) {
         final Server server = serverList.get(position);
 
+        String code = server.getCountryShort().toLowerCase();
+        if (code.equals("do"))
+            code = "dom";
+
         holder.flag.setImageResource(
-                context.getResources().getIdentifier(server.getCountryShort().toLowerCase(),
+                context.getResources().getIdentifier(code,
                         "drawable",
                         context.getPackageName()));
         holder.quality.setImageResource(

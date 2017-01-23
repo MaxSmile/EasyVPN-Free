@@ -193,9 +193,13 @@ public class ServerActivity extends BaseActivity {
                 R.drawable.ic_bookmark_grey;
         bookmark.setBackground(ContextCompat.getDrawable(this, bookmarkBg));
 
+        String code = currentServer.getCountryShort().toLowerCase();
+        if (code.equals("do"))
+            code = "dom";
+
         ((ImageView) findViewById(R.id.serverFlag))
                 .setImageResource(
-                        getResources().getIdentifier(currentServer.getCountryShort().toLowerCase(),
+                        getResources().getIdentifier(code,
                                 "drawable",
                                 getPackageName()));
 
