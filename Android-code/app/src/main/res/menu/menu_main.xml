@@ -36,5 +36,10 @@
         android:orderInCategory="105"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_bookmarks"
+        android:orderInCategory="105"
+        android:title="@string/bookmarks"
+        app:showAsAction="never" />
 
 </menu>

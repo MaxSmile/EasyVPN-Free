@@ -27,4 +27,7 @@
 
     <color name="activeServer">#cbecfd</color>
     <color name="additionalServer">#F1DD77</color>
+
+    <color name="serverNameBg">#cbecfd</color>
+    <color name="serverName">#356690</color>
 </resources>

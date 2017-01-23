@@ -23,7 +23,7 @@ android {
         applicationId "com.vasilkoff.easyvpnfree"
         minSdkVersion 17
         targetSdkVersion 24
-        versionCode 44
+        versionCode 45
         versionName "1.5"
         setProperty("archivesBaseName", "easyvpnfree-$versionName-$versionCode")
     }
@@ -66,6 +66,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:support-v4:24.2.1'
     compile 'com.android.support:design:24.2.1'
+    compile 'com.android.support:recyclerview-v7:24.2.1'
+    compile 'com.android.support:cardview-v7:24.2.1'
 
     compile 'com.daimajia.numberprogressbar:library:1.2@aar'
     compile 'com.amitshekhar.android:android-networking:0.2.0'

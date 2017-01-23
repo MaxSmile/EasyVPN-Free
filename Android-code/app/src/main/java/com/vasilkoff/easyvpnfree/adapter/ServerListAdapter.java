@@ -62,9 +62,14 @@ public class ServerListAdapter extends BaseAdapter {
 
         final Server server = getItem(position);
 
+        String code = server.getCountryShort().toLowerCase();
+        if (code.equals("do"))
+            code = "dom";
+
+
         ((ImageView) v.findViewById(R.id.imageFlag))
                 .setImageResource(
-                        context.getResources().getIdentifier(server.getCountryShort().toLowerCase(),
+                        context.getResources().getIdentifier(code,
                                 "drawable",
                                 context.getPackageName()));
         ((ImageView) v.findViewById(R.id.imageConnect))

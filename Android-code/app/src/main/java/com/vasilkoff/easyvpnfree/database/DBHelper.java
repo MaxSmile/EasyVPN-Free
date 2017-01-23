@@ -26,9 +26,10 @@ import java.util.Random;
 
 public class DBHelper  extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 5;
-    public static final String DATABASE_NAME = "Records.db";
-    public static final String TABLE_SERVERS = "servers";
+    private static final int DATABASE_VERSION = 6;
+    private static final String DATABASE_NAME = "Records.db";
+    private static final String TABLE_SERVERS = "servers";
+    private static final String TABLE_BOOKMARK_SERVERS = "bookmark_servers";
     private static final String TAG = "DBHelper";
 
     private static final String KEY_ID = "_id";
@@ -61,7 +62,19 @@ public class DBHelper  extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table " + TABLE_SERVERS + "("
+        createTable(db, TABLE_SERVERS);
+        createTable(db, TABLE_BOOKMARK_SERVERS);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("drop table if exists " + TABLE_SERVERS);
+        db.execSQL("drop table if exists " + TABLE_BOOKMARK_SERVERS);
+        onCreate(db);
+    }
+
+    private void createTable(SQLiteDatabase db, String name) {
+        db.execSQL("create table " + name + "("
                 + KEY_ID + " integer primary key,"
                 + KEY_HOST_NAME + " text,"
                 + KEY_IP + " text,"
@@ -88,12 +101,6 @@ public class DBHelper  extends SQLiteOpenHelper {
                 + KEY_HOST_NAME
                 + ") ON CONFLICT IGNORE"
                 + ")");
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("drop table if exists " + TABLE_SERVERS);
-        onCreate(db);
     }
 
     public void setInactive(String ip) {
@@ -137,6 +144,81 @@ public class DBHelper  extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_SERVERS, null, null);
         db.close();
+    }
+
+    public void setBookmark(Server server) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(KEY_HOST_NAME, server.getHostName());
+        contentValues.put(KEY_IP, server.getIp());
+        contentValues.put(KEY_SCORE, server.getScore());
+        contentValues.put(KEY_PING, server.getPing());
+        contentValues.put(KEY_SPEED, server.getSpeed());
+        contentValues.put(KEY_COUNTRY_LONG, server.getCountryLong());
+        contentValues.put(KEY_COUNTRY_SHORT, server.getCountryShort());
+        contentValues.put(KEY_NUM_VPN_SESSIONS, server.getNumVpnSessions());
+        contentValues.put(KEY_UPTIME, server.getUptime());
+        contentValues.put(KEY_TOTAL_USERS, server.getTotalUsers());
+        contentValues.put(KEY_TOTAL_TRAFFIC, server.getTotalTraffic());
+        contentValues.put(KEY_LOG_TYPE, server.getLogType());
+        contentValues.put(KEY_OPERATOR, server.getOperator());
+        contentValues.put(KEY_MESSAGE, server.getMessage());
+        contentValues.put(KEY_CONFIG_DATA, server.getConfigData());
+        contentValues.put(KEY_TYPE, server.getType());
+        contentValues.put(KEY_QUALITY, server.getQuality());
+        contentValues.put(KEY_CITY, server.getCity());
+
+        db.insert(TABLE_BOOKMARK_SERVERS, null, contentValues);
+        db.close();
+    }
+
+    public void delBookmark(Server server) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_BOOKMARK_SERVERS, KEY_IP + " = ?", new String[] {server.getIp()});
+        db.close();
+    }
+
+    public List<Server> getBookmarks() {
+        List<Server> serverList = new ArrayList<Server>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.query(TABLE_BOOKMARK_SERVERS, null, null, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                serverList.add(parseServer(cursor));
+            } while (cursor.moveToNext());
+        } else {
+            Log.d(TAG ,"0 rows");
+        }
+
+        cursor.close();
+        db.close();
+
+        return serverList;
+    }
+
+    public boolean checkBookmark(Server server) {
+        boolean result = false;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.query(TABLE_BOOKMARK_SERVERS,
+                null,
+                KEY_IP + "=?",
+                new String[]{server.getIp()},
+                null,
+                null,
+                null);
+
+        if (cursor.moveToFirst()) {
+            result = true;
+        } else {
+            Log.d(TAG ,"0 rows");
+        }
+
+        cursor.close();
+        db.close();
+
+        return result;
     }
 
     public void putLine(String line, int type) {
