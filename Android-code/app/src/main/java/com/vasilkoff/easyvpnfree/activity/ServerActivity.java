@@ -27,6 +27,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -372,6 +373,8 @@ public class ServerActivity extends BaseActivity {
                 break;
             case R.id.serverBookmark:
                 sendTouchButton("serverBookmark");
+
+                bookmark.startAnimation(AnimationUtils.loadAnimation(this, R.anim.scale));
                 if (dbHelper.checkBookmark(currentServer)) {
                     dbHelper.delBookmark(currentServer);
                     bookmark.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_bookmark_grey));
