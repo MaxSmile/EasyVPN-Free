@@ -44,6 +44,12 @@ android {
             resValue "string", "app_name", "Easy VPN"
             resValue "string", "notification_title", "Easy VPN - %s"
         }
+
+        underground {
+            applicationId "com.vasilkoff.easyvpnunderground"
+            resValue "string", "app_name", "Easy VPN"
+            resValue "string", "notification_title", "Easy VPN - %s"
+        }
     }
 
     buildTypes {
