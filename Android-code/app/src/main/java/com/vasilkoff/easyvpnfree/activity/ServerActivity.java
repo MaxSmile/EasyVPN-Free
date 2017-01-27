@@ -323,7 +323,8 @@ public class ServerActivity extends BaseActivity {
                 connectingProgress.setVisibility(View.GONE);
 
                 if (!inBackground) {
-                    if (PropertiesService.getDownloaded() >= 104857600 && PropertiesService.getShowRating()) {
+                    if (PropertiesService.getDownloaded() >= 104857600 && PropertiesService.getShowRating()
+                            && BuildConfig.FLAVOR != "underground") {
                         PropertiesService.setShowRating(false);
                         showRating();
                     } else {
@@ -565,7 +566,8 @@ public class ServerActivity extends BaseActivity {
         popupWindow.setFocusable(true);
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
 
-        ((Button)view.findViewById(R.id.successPopUpBtnPlayMarket)).setOnClickListener(new View.OnClickListener() {
+        Button marketButton = (Button)view.findViewById(R.id.successPopUpBtnPlayMarket);
+        marketButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendTouchButton("successPopUpBtnPlayMarket");
@@ -577,6 +579,9 @@ public class ServerActivity extends BaseActivity {
                 }
             }
         });
+        if (BuildConfig.FLAVOR == "underground")
+            marketButton.setVisibility(View.GONE);
+
         ((Button)view.findViewById(R.id.successPopUpBtnBrowser)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

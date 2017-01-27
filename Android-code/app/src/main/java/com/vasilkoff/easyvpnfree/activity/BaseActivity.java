@@ -85,7 +85,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public void setContentView(int layoutResID)
     {
-        if (BuildConfig.FLAVOR == "pro") {
+        if (BuildConfig.FLAVOR == "pro" || BuildConfig.FLAVOR == "underground") {
             availableFilterAds = true;
             premiumServers = true;
         }
@@ -274,6 +274,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
             if (premiumServers && menu.getItem(i).getItemId() == R.id.actionGetMoreServers)
                 menu.getItem(i).setTitle(getString(R.string.current_servers_list));
+
+            if (BuildConfig.FLAVOR == "underground" && menu.getItem(i).getItemId() == R.id.actionShare)
+                menu.getItem(i).setVisible(false);
         }
 
         return useMenu();
