@@ -26,6 +26,9 @@ import com.vasilkoff.easyvpnfree.util.Stopwatch;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 
 public class LoaderActivity extends BaseActivity {
 
@@ -131,9 +134,16 @@ public class LoaderActivity extends BaseActivity {
     private void downloadCSVFile(String url, String fileName) {
         stopwatch = new Stopwatch();
 
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+                .build();
+
         AndroidNetworking.download(url, getCacheDir().getPath(), fileName)
                 .setTag("downloadCSV")
                 .setPriority(Priority.MEDIUM)
+                .setOkHttpClient(okHttpClient)
                 .build()
                 .setDownloadProgressListener(new DownloadProgressListener() {
                     @Override

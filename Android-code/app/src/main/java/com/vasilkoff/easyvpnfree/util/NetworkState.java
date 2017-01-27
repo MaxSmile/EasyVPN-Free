@@ -8,6 +8,7 @@ import com.vasilkoff.easyvpnfree.App;
 
 
 public class NetworkState {
+
     public static boolean isOnline()
     {
         ConnectivityManager cm =
@@ -19,6 +20,4 @@ public class NetworkState {
         }
         return false;
     }
-
-
 }
