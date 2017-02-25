@@ -1,12 +1,16 @@
 package com.vasilkoff.easyvpnfree.activity;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 
 
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -98,6 +102,15 @@ public class HomeActivity extends BaseActivity {
         invalidateOptionsMenu();
 
         initDetailsServerOnMap();
+
+        if (PropertiesService.getShowNote()) {
+            homeContextRL.post(new Runnable() {
+                @Override
+                public void run() {
+                    showNote();
+                }
+            });
+        }
     }
 
     @Override
@@ -158,27 +171,7 @@ public class HomeActivity extends BaseActivity {
     }
 
     private void chooseCountry() {
-        LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.pop_up_choose_country,null);
-
-        if (getResources().getConfiguration().orientation == 1) {
-            popupWindow = new PopupWindow(
-                    view,
-                    (int)(widthWindow * 0.8f),
-                    (int)(heightWindow * 0.7f)
-            );
-        } else {
-            popupWindow = new PopupWindow(
-                    view,
-                    (int)(widthWindow * 0.6f),
-                    (int)(heightWindow * 0.8f)
-            );
-        }
-
-
-        popupWindow.setOutsideTouchable(false);
-        popupWindow.setFocusable(true);
-        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+        View view = initPopUp(R.layout.pop_up_choose_country, 0.6f, 0.8f, 0.8f, 0.7f);
 
         final List<String> countryListName = new ArrayList<String>();
         for (Server server : countryList) {
@@ -201,6 +194,52 @@ public class HomeActivity extends BaseActivity {
         });
 
         popupWindow.showAtLocation(homeContextRL, Gravity.CENTER,0, 0);
+    }
+
+    private void showNote() {
+        View view = initPopUp(R.layout.pop_up_note, 0.6f, 0.5f, 0.9f, 0.4f);
+        ((TextView) view.findViewById(R.id.noteLink)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in=new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.vpngate.net/en/join.aspx"));
+                startActivity(in);
+            }
+        });
+
+        popupWindow.showAtLocation(homeContextRL, Gravity.CENTER,0, 0);
+
+        PropertiesService.setShowNote(false);
+    }
+
+    private View initPopUp(int resourse,
+                            float landPercentW,
+                            float landPercentH,
+                            float portraitPercentW,
+                            float portraitPercentH) {
+
+        LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(resourse, null);
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            popupWindow = new PopupWindow(
+                    view,
+                    (int)(widthWindow * landPercentW),
+                    (int)(heightWindow * landPercentH)
+            );
+        } else {
+            popupWindow = new PopupWindow(
+                    view,
+                    (int)(widthWindow * portraitPercentW),
+                    (int)(heightWindow * portraitPercentH)
+            );
+        }
+
+
+        popupWindow.setOutsideTouchable(false);
+        popupWindow.setFocusable(true);
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+
+        return view;
     }
 
     private void onSelectCountry(Server server) {

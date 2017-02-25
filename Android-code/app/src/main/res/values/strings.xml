@@ -80,5 +80,10 @@
     </string>
     <string name="bookmarks">Bookmarks</string>
     <string name="bookmark_delete">Delete</string>
-
+    <string name="note_title"><b>Note</b></string>
+    <string name="note_text">The list of the servers you will find
+        in this application are from VPN Gate and are
+        provided by <b>volunteers around the world</b>.
+    </string>
+    <string name="note_link">\nYou can provide your own computer as a VPN server to join this experiment.</string>
 </resources>

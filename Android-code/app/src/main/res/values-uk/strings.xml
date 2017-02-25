@@ -75,4 +75,10 @@
     <string name="connect_on_start_category">Підключення на старті</string>
     <string name="bookmarks">Закладки</string>
     <string name="bookmark_delete">Видалити</string>
+    <string name="note_title"><b>Примітка</b></string>
+    <string name="note_text">Список серверів, які ви знайдете в цьому додатку,
+        від VPNGate і забезпечуються <b>добровольцями по всьому світу</b>.
+    </string>
+    <string name="note_link">\nВи можете надати свій власний комп\'ютер в якості сервера VPN,
+        щоб приєднатися до цього експерименту</string>
 </resources>
