@@ -101,6 +101,7 @@ public class ServerActivity extends BaseActivity {
     private WaitConnectionAsync waitConnection;
     private boolean inBackground;
     private static Stopwatch stopwatch;
+    private boolean isBindedService = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -491,7 +492,7 @@ public class ServerActivity extends BaseActivity {
 
         Intent intent = new Intent(this, OpenVPNService.class);
         intent.setAction(OpenVPNService.START_SERVICE);
-        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+        isBindedService = bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 
         if (checkStatus()) {
             try {
@@ -516,7 +517,11 @@ public class ServerActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
         inBackground = true;
-        unbindService(mConnection);
+
+        if (isBindedService) {
+            isBindedService = false;
+            unbindService(mConnection);
+        }
     }
 
     @Override

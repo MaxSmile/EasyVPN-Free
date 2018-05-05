@@ -47,7 +47,7 @@ public class LoaderActivity extends BaseActivity {
 
     private boolean premiumStage = true;
 
-    private final String PREMIUM_URL = "http://easyvpn.rusweb.club/?type=csv";
+    private final String PREMIUM_URL = "http://easyvpn.vasilkoff.com/?type=csv";
     private final String PREMIUM_FILE_NAME = "premiumServers.csv";
 
     private int percentDownload = 0;
