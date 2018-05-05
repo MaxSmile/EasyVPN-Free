@@ -24,7 +24,7 @@ android {
         minSdkVersion 17
         targetSdkVersion 24
         versionCode 50
-        versionName "1.5"
+        versionName "1.6"
         setProperty("archivesBaseName", "easyvpnfree-$versionName-$versionCode")
     }
 
