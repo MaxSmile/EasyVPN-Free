@@ -390,7 +390,14 @@ public class ServerActivity extends BaseActivity {
     }
 
     private boolean loadVpnProfile() {
-        byte[] data = Base64.decode(currentServer.getConfigData(), Base64.DEFAULT);
+        byte[] data;
+        try {
+            data = Base64.decode(currentServer.getConfigData(), Base64.DEFAULT);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
         ConfigParser cp = new ConfigParser();
         InputStreamReader isr = new InputStreamReader(new ByteArrayInputStream(data));
         try {
