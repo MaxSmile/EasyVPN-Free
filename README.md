@@ -1,5 +1,7 @@
 # Easy VPN Free
 ----
+## UPDATE
+Fixed crash on **Android 10**
 ## Introduction
 
 Android application which lets you easily to connect to a number of free VPN server around the world with just a single tap!
